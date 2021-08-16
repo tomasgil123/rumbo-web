@@ -7,8 +7,8 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
+    "@types/node": "^16.6.1",
+    "@types/react": "^17.0.18",
     "@types/react-dom": "^17.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -24,8 +24,24 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "overrides": [
+      {
+        "files": ["*.ts", "*.tsx"],
+        "rules": {
+          "@typescript-eslint/explicit-function-return-type": ["error"]
+        }
+      }
     ]
   },
   "browserslist": {
@@ -39,5 +55,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^4.29.2",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2"
   }
 }
