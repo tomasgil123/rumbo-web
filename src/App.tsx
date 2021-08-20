@@ -11,16 +11,14 @@ const App = (): JSX.Element => {
   const token = getLocalAccessToken()
   return (
     <Router>
-      <div>
-        {/* A <Switch> looks through its children <Route>s and
+      {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/dashboard">{token ? <Dashboard /> : <Redirect to="/" />}</Route>
-          <Route path="/">
-            <Login />
-          </Route>
-        </Switch>
-      </div>
+      <Switch>
+        <Route path="/dashboard">{token ? <Dashboard /> : <Redirect to="/" />}</Route>
+        <Route path="/">
+          <Login />
+        </Route>
+      </Switch>
     </Router>
   )
 }
