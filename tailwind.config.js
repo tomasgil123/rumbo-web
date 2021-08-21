@@ -11,6 +11,9 @@ module.exports = {
           DEFAULT: '#28458e',
           dark: '#004a99',
         },
+        danger: {
+          DEFAULT: '#e30816',
+        },
       },
     },
   },

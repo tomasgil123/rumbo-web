@@ -4,7 +4,7 @@ import { refreshTokens } from 'services/session'
 // create axios instance
 // this way we set some defaults to every request we will make
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -14,6 +14,7 @@ const instance = axios.create({
 // set the AUTH token for any request
 instance.interceptors.request.use(function (config) {
   const token = getLocalAccessToken()
+  debugger
   config.headers.Authorization = token ? `Bearer ${token}` : ''
   return config
 })
@@ -67,3 +68,5 @@ instance.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+export default instance
