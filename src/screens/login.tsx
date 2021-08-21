@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 // services
 import { login } from 'services/session'
@@ -10,6 +11,7 @@ import Spinner from 'components/spinner'
 const LoginScreen = (): JSX.Element => {
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
+  const history = useHistory()
   const {
     register,
     handleSubmit,
@@ -29,6 +31,7 @@ const LoginScreen = (): JSX.Element => {
       setLocalAccessToken(access)
       setLocalRefreshToken(refresh)
       setLoading(false)
+      history.push('/dashboard')
     } catch (err) {
       setLoading(false)
       setError(true)
