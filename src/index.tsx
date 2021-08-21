@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import 'simple-line-icons/css/simple-line-icons.css'
 
 if (process.env.NODE_ENV === 'development') {
   const { worker } = require('./mocks/browser')
