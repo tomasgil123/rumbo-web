@@ -40,7 +40,7 @@ const LoginScreen = (): JSX.Element => {
 
   return (
     <div className="h-full bg-primary-dark">
-      <div className="flex justify-center flex-col items-center px-4 max-w-xs mx-auto">
+      <div className="pt-16 md:pt-32 flex justify-center flex-col items-center px-4 max-w-xs mx-auto">
         <img
           className="w-40 md:w-60 mb-4 md:mb-6"
           src={process.env.PUBLIC_URL + '/pepsico_logo_white.png'}
@@ -55,7 +55,7 @@ const LoginScreen = (): JSX.Element => {
         >
           <span className="text-white self-start pb-2 font-bold">Usuario</span>
           <input
-            className=" focus:text-white text-white mb-4 w-full outline-none bg-transparent border-b-2 border-white"
+            className=" focus:text-white text-white mb-4 w-full outline-none bg-primary-dark border-b-2 border-white"
             {...register('user', { required: true })}
           />
           {errors.user && (
@@ -63,7 +63,7 @@ const LoginScreen = (): JSX.Element => {
           )}
           <span className="text-white self-start pb-2 font-bold">Contraseña</span>
           <input
-            className="focus:text-white text-white mb-6 w-full outline-none bg-transparent border-b-2 border-white"
+            className="focus:text-white text-white mb-6 w-full outline-none bg-primary-dark border-b-2 border-white"
             {...register('password', { required: true })}
           />
           {errors.password && (
