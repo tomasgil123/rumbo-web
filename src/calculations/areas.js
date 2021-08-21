@@ -1,4 +1,4 @@
-import Module from './modules_n'
+import Module from './modules'
 import Guideline from './guidelines'
 import StatisticsHelpers from './statisticsHelpers'
 
