@@ -12,7 +12,14 @@ module.exports = {
           dark: '#004a99',
         },
         danger: {
+          light: '#eb7b30',
           DEFAULT: '#e30816',
+        },
+        success: {
+          DEFAULT: '#5c9551',
+        },
+        disabled: {
+          DEFAULT: '#999999',
         },
       },
     },

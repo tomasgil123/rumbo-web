@@ -8,3 +8,8 @@ export interface Task {
   status: string
   guideline_pk: string
 }
+
+export interface TaskStatus {
+  status: string
+  color: string
+}
