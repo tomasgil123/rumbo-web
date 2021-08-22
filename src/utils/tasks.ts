@@ -1,5 +1,5 @@
 // types
-import { TaskStatus } from 'types/tasks'
+import { TaskStatus, Task } from 'types/tasks'
 
 export const STATUS_NEW = '0'
 export const STATUS_PENDING = '1'
@@ -21,4 +21,14 @@ export const getStatusDisplay = (statusValue: string): TaskStatus => {
     default:
       return { status: 'Nueva', color: 'text-danger' }
   }
+}
+
+// task with a status of pending can be expired if they have a deadline
+// and that deadline is before yesterday
+export const isTaskExpired = (task: Task): boolean => {
+  const yesterday = new Date()
+  yesterday.setDate(new Date().getDate() - 1)
+  return (
+    task.deadline !== null && task.status === STATUS_PENDING && new Date(task.deadline) < yesterday
+  )
 }

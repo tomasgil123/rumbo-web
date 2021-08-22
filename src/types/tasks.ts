@@ -6,7 +6,9 @@ export interface Task {
   deadline: string | null
   last_change: string
   status: string
-  guideline_pk: string
+  area_pk: number
+  guideline_pk: number
+  guideline_name: string
 }
 
 export interface TaskStatus {
