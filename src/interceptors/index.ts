@@ -14,7 +14,6 @@ const instance = axios.create({
 // set the AUTH token for any request
 instance.interceptors.request.use(function (config) {
   const token = getLocalAccessToken()
-  debugger
   config.headers.Authorization = token ? `Bearer ${token}` : ''
   return config
 })

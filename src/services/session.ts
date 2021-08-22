@@ -27,6 +27,5 @@ export const login = async (username: string, password: string): Promise<LoginRe
     password: password,
   }
   const response: AxiosResponse<Credentials> = await axios.post('token/', JSON.stringify(loginData))
-  debugger
   return { status: response.status, data: response.data }
 }

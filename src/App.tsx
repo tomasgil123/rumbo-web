@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 // Screens
 import Login from 'screens/login'
 import Dashboard from 'screens/dashboard'
+import Tasks from 'screens/tasks'
 // Utils
 import { getLocalAccessToken } from 'utils/session'
 
@@ -14,10 +15,11 @@ const App = (): JSX.Element => {
       {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
       <Switch>
-        <Route path="/dashboard">{token ? <Dashboard /> : <Redirect to="/" />}</Route>
-        <Route path="/">
+        <Route exact path="/">
           <Login />
         </Route>
+        <Route path="/dashboard">{token ? <Dashboard /> : <Redirect to="/" />}</Route>
+        <Route path="/tareas">{token ? <Tasks /> : <Redirect to="/" />}</Route>
       </Switch>
     </Router>
   )
