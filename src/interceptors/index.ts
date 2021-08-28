@@ -10,7 +10,6 @@ const instance = axios.create({
     'Content-Type': 'application/json',
   },
 })
-
 // set the AUTH token for any request
 instance.interceptors.request.use(function (config) {
   const token = getLocalAccessToken()
