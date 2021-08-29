@@ -8,20 +8,24 @@ interface InitialData {
   isLoading: boolean
   error: unknown
   auditProgram: AuditProgram | null
+  distributorIds: number[] | null
 }
 
 const useInitialData = (): InitialData => {
   const { isLoading, error, data } = useQuery('initialData', () =>
     axios.get('/api/v1/initialData?distributors_ids=true').then((res) => res)
   )
-  console.log('data', data)
+
   const auditProgram = data
     ? flatInitialData((data as any).data.audit_programs[0] as AuditProgramRaw)
     : null
+  const distributorIds = data ? data.data.distributors_id : null
+
   return {
     isLoading,
     error,
     auditProgram,
+    distributorIds,
   }
 }
 

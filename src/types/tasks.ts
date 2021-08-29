@@ -1,4 +1,4 @@
-export interface Task {
+export interface TaskRaw {
   pk: number
   created_by: string
   assigned_to: string
@@ -6,9 +6,12 @@ export interface Task {
   deadline: string | null
   last_change: string
   status: string
-  area_pk: number
-  guideline_pk: number
-  guideline_name: string
+}
+
+export interface Task extends TaskRaw {
+  //area_pk: number
+  guidelinePk: number
+  //guideline_name: string
 }
 
 export interface TaskStatus {
