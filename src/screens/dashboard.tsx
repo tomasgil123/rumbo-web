@@ -1,14 +1,12 @@
 import React from 'react'
-import { useQuery } from 'react-query'
-import axios from 'interceptors'
 // components
 import Layout from 'components/layout'
 import Spinner from 'components/spinner'
+// utils
+import useInitialData from 'hooks/useInitialData'
 
 const DashboardScreen = (): JSX.Element => {
-  const { isLoading, error, data } = useQuery('initialData', () =>
-    axios.get('/api/v1/initialData?distributors_ids=true').then((res) => res)
-  )
+  const { isLoading, error, auditProgram } = useInitialData()
 
   if (isLoading)
     return (
@@ -19,7 +17,7 @@ const DashboardScreen = (): JSX.Element => {
 
   if (error) return <div>An error has occurred</div>
 
-  console.log('data', data)
+  console.log('data', auditProgram)
 
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
