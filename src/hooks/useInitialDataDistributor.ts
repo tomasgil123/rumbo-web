@@ -4,6 +4,7 @@ import axios from 'interceptors'
 import { flatInitialDataDistributorSurvey } from 'utils/initialData'
 // types
 import { SurveyActive, SurveyInactive } from 'types/survey'
+import { AuditProgram } from 'types/auditProgram'
 
 interface InitialDataDistributor {
   isLoadingDistributor: boolean
@@ -11,7 +12,10 @@ interface InitialDataDistributor {
   survey: SurveyActive | SurveyInactive | null
 }
 
-const useInitialDataDistributor = (distributorId: number | null): InitialDataDistributor => {
+const useInitialDataDistributor = (
+  distributorId: number | null,
+  auditProgram: AuditProgram | null
+): InitialDataDistributor => {
   const { isLoading, error, data } = useQuery(
     'initialDataDistributorId',
     () =>
@@ -22,7 +26,10 @@ const useInitialDataDistributor = (distributorId: number | null): InitialDataDis
     }
   )
   const surveyActive = data
-    ? flatInitialDataDistributorSurvey(data.data.distributors[0].surveys[0])
+    ? flatInitialDataDistributorSurvey(
+        data.data.distributors[0].surveys[0],
+        auditProgram as AuditProgram
+      )
     : null
 
   return {

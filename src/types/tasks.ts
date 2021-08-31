@@ -9,9 +9,10 @@ export interface TaskRaw {
 }
 
 export interface Task extends TaskRaw {
-  //area_pk: number
+  areaPk: number
+  modulePk: number
   guidelinePk: number
-  //guideline_name: string
+  guidelineName: string
 }
 
 export interface TaskStatus {

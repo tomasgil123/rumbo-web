@@ -2,7 +2,6 @@ import { AuditProgram, AuditProgramRaw } from 'types/auditProgram'
 import { AreaRaw, Area } from 'types/area'
 import { SurveyActive, SurveyActiveRaw, SurveyInactive } from 'types/survey'
 import { Answer } from 'types/answer'
-import { Task } from 'types/tasks'
 
 export const flatInitialData = (initialData: AuditProgramRaw): AuditProgram => {
   let flatAuditProgram: AuditProgram = {} as AuditProgram
@@ -44,7 +43,8 @@ export const flatInitialData = (initialData: AuditProgramRaw): AuditProgram => {
 }
 
 export const flatInitialDataDistributorSurvey = (
-  initialData: SurveyActiveRaw | SurveyInactive
+  initialData: SurveyActiveRaw | SurveyInactive,
+  auditProgram: AuditProgram
 ): SurveyActive | SurveyInactive => {
   let flatMainSurvey: SurveyActive = {} as SurveyActive
   const mainSurvey = JSON.parse(JSON.stringify(initialData))
@@ -58,11 +58,22 @@ export const flatInitialDataDistributorSurvey = (
     answers.forEach((answer: Answer) => {
       flatMainSurvey.answers[answer.guideline_pk] = JSON.parse(JSON.stringify(answer))
       const { tasks } = answer
-      const tasksWithGuidelinePk = tasks.map((task) => {
-        const taskWithGuidelinePk = { ...task, guidelinePk: answer.guideline_pk }
-        return taskWithGuidelinePk
-      })
-      flatMainSurvey.tasks[answer.guideline_pk] = tasksWithGuidelinePk
+      if (tasks.length > 0) {
+        const tasksWithGuidelinePk = tasks.map((task) => {
+          const areaPk = auditProgram.guidelines[answer.guideline_pk].areaPk
+          const modulePk = auditProgram.guidelines[answer.guideline_pk].modulePk
+          const guidelineName = auditProgram.guidelines[answer.guideline_pk].name
+          const taskWithGuidelinePk = {
+            ...task,
+            guidelinePk: answer.guideline_pk,
+            guidelineName,
+            modulePk,
+            areaPk,
+          }
+          return taskWithGuidelinePk
+        })
+        flatMainSurvey.tasks[answer.guideline_pk] = tasksWithGuidelinePk
+      }
     })
     return flatMainSurvey
   } else {

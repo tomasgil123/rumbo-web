@@ -9,8 +9,10 @@ import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 const DashboardScreen = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
-  const { isLoadingDistributor, errorDistributor, survey } =
-    useInitialDataDistributor(distributorId)
+  const { isLoadingDistributor, errorDistributor, survey } = useInitialDataDistributor(
+    distributorId,
+    auditProgram
+  )
 
   if (isLoading || isLoadingDistributor)
     return (
