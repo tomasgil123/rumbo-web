@@ -32,3 +32,12 @@ export const isTaskExpired = (task: Task): boolean => {
     task.deadline !== null && task.status === STATUS_PENDING && new Date(task.deadline) < yesterday
   )
 }
+
+export const getTaskByStatus = (arrayOfTasks: any): any => {
+  const news = arrayOfTasks.filter((task: Task) => task.status === '0')
+  const pending = arrayOfTasks.filter((task: Task) => task.status === '1' && !isTaskExpired(task))
+  const expired = arrayOfTasks.filter((task: Task) => task.status === '1' && isTaskExpired(task))
+  const resolved = arrayOfTasks.filter((task: Task) => task.status === '2')
+
+  return { news: news, pending: pending, expired: expired, resolved: resolved }
+}
