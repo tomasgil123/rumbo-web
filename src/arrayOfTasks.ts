@@ -8,8 +8,8 @@ export const arrayOfTasks = [
     last_change: '2021-07-27T11:25:52.359943Z',
     status: '0',
     area_pk: 1,
-    guideline_pk: 10,
-    guideline_name: 'Lineamiento 10',
+    guidelinePk: 10,
+    guidelineName: 'Lineamiento 10',
   },
   {
     pk: 37854,
@@ -21,8 +21,8 @@ export const arrayOfTasks = [
     last_change: '2021-07-27T11:25:52.359943Z',
     status: '0',
     area_pk: 1,
-    guideline_pk: 100,
-    guideline_name: 'Lineamiento 100',
+    guidelinePk: 100,
+    guidelineName: 'Lineamiento 100',
   },
   {
     pk: 374,
@@ -33,8 +33,8 @@ export const arrayOfTasks = [
     last_change: '2021-07-27T11:25:52.359943Z',
     status: '1',
     area_pk: 1,
-    guideline_pk: 66,
-    guideline_name: 'order 66',
+    guidelinePk: 66,
+    guidelineName: 'order 66',
   },
   {
     pk: 3754,
@@ -45,8 +45,8 @@ export const arrayOfTasks = [
     last_change: '2021-07-27T11:25:52.359943Z',
     status: '0',
     area_pk: 1,
-    guideline_pk: 10,
-    guideline_name: 'Lineamiento 10',
+    guidelinePk: 10,
+    guidelineName: 'Lineamiento 10',
   },
   {
     pk: 3785,
@@ -57,8 +57,8 @@ export const arrayOfTasks = [
     last_change: '2021-07-27T11:25:52.359943Z',
     status: '1',
     area_pk: 1,
-    guideline_pk: 10,
-    guideline_name: 'Lineamiento 10',
+    guidelinePk: 10,
+    guidelineName: 'Lineamiento 10',
   },
   {
     pk: 378,
@@ -69,8 +69,8 @@ export const arrayOfTasks = [
     last_change: '2021-07-27T11:25:52.359943Z',
     status: '2',
     area_pk: 1,
-    guideline_pk: 10,
-    guideline_name: 'Lineamiento 10',
+    guidelinePk: 10,
+    guidelineName: 'Lineamiento 10',
   },
 ]
 
