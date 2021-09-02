@@ -16,7 +16,7 @@ export const flatInitialData = (initialData: AuditProgramRaw): AuditProgram => {
     const { modules, ...mainSpecsArea } = area
     const areWithModulePks: Area = {
       ...mainSpecsArea,
-      modulePks: modules.map((module) => module.pk),
+      module_pks: modules.map((module) => module.pk),
     }
     flatAuditProgram.areas[area.pk] = areWithModulePks
 
@@ -25,7 +25,7 @@ export const flatInitialData = (initialData: AuditProgramRaw): AuditProgram => {
       const moduleWithGuidelinePks = {
         ...mainSpecsModule,
         areaPk: area.pk,
-        guidelinePks: guidelines.map((guideline) => guideline.pk),
+        guideline_pks: guidelines.map((guideline) => guideline.pk),
       }
 
       flatAuditProgram.modules[module.pk] = moduleWithGuidelinePks

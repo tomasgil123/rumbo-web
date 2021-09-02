@@ -15,4 +15,4 @@ export interface AreaRaw {
   modules: ModuleRaw[]
 }
 
-export type Area = Omit<AreaRaw, 'modules'> & { modulePks: number[] }
+export type Area = Omit<AreaRaw, 'modules'> & { module_pks: number[] }
