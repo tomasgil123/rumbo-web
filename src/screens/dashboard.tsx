@@ -2,6 +2,7 @@ import React from 'react'
 // components
 import Layout from 'components/layout'
 import Spinner from 'components/spinner'
+import ProgressCircle from 'components/progressCircle'
 // utils
 import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
@@ -56,6 +57,16 @@ const DashboardScreen = (): JSX.Element => {
       </div>
       <div className="rounded shadow-lg p-4">
         <div>Performance</div>
+        <div>
+          <ProgressCircle
+            progresses={[
+              { percent: 100, color: '#cde1c9' },
+              { percent: 20, color: '#5c9551' },
+            ]}
+            percentage={20}
+            active={true}
+          />
+        </div>
       </div>
     </div>
   )
