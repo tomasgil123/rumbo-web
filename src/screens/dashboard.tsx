@@ -54,33 +54,33 @@ const DashboardScreen = (): JSX.Element => {
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
       <div className="rounded shadow-lg p-4">
-        <div className="text-center text-primary-dark text-sm md:text-1xl ">
+        <div className="text-center text-primary-dark text-base md:text-xl ">
           Tareas plan operativo
         </div>
 
         <div className="flex flex-row justify-center ">
-          <div className="p-4">
+          <div className="p-2 md:p-4">
             <div className="flex items-center justify-around">
               <i className="icon-note text-danger-light text-sm md:text-2xl" />
               <span>{taskByStatus.news.length}</span>
             </div>
             <p>Nuevas</p>
           </div>
-          <div className="p-4">
+          <div className="p-2 md:p-4">
             <div className="flex items-center justify-around">
               <i className="icon-fire text-danger text-sm md:text-2xl"></i>
               {taskByStatus.expired.length}
             </div>
             <p>Vencidas</p>
           </div>
-          <div className="p-4">
+          <div className="p-2 md:p-4">
             <div className="flex items-center justify-around">
               <i className="icon-note text-primary-light text-sm md:text-2xl"></i>
               {taskByStatus.pending.length}
             </div>
             <p>Pendientes</p>
           </div>
-          <div className="p-4">
+          <div className="p-2 md:p-4">
             <div className="flex items-center justify-around">
               <i className="icon-note text-success text-sm md:text-2xl"></i>
               {taskByStatus.resolved.length}

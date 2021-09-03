@@ -18,6 +18,7 @@ const App = (): JSX.Element => {
       <Router>
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
+<<<<<<< HEAD
         <Switch>
           <Route exact path="/">
             <Login />
@@ -27,6 +28,16 @@ const App = (): JSX.Element => {
         </Switch>
       </Router>
     </QueryClientProvider>
+=======
+      <Switch>
+        <Route exact path="/">
+          <Login />
+        </Route>
+        <Route path="/dashboard">{token ? <Dashboard /> : <Redirect to="/" />}</Route>
+        <Route path="/tareas">{token ? <Tasks /> : <Redirect to="/" />}</Route>
+      </Switch>
+    </Router>
+>>>>>>> 95abc44 (fix: modify padding for mobile and title size)
   )
 }
 
