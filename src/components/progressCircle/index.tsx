@@ -1,9 +1,10 @@
 import React, { useContext } from 'react'
-import { IntersectionContext } from 'components/intersectionObserver'
-import { generateVariants } from './utils'
-
 import { motion } from 'framer-motion'
+// components
+import { IntersectionContext } from 'components/intersectionObserver'
 import Counter from 'components/counter'
+// utils
+import { generateVariants } from './utils'
 
 //types
 export interface Progress {
@@ -13,28 +14,27 @@ export interface Progress {
 
 interface Props {
   progresses: Progress[]
-  percentage: number
+  value: number
+  isPercentage: boolean
   duration?: number
   delay?: number
   easing?: string
   emptyStroke?: string
   emptyStrokeOpacity?: number
   strokeWidth?: number
-  active: boolean
   size?: number
   unavaliableData?: boolean
 }
 
 const ProgressCircle = ({
   progresses,
-  percentage,
-  emptyStroke = '#999999',
+  value,
+  isPercentage,
+  emptyStroke = 'text-disabled',
   emptyStrokeOpacity = 0.25,
   duration = 1.5,
   delay = 0.5,
-  strokeWidth = 5,
-  active,
-  size = 80,
+  strokeWidth = 4,
   unavaliableData = false,
 }: Props): JSX.Element => {
   const { inView } = useContext(IntersectionContext)
@@ -49,17 +49,22 @@ const ProgressCircle = ({
 
   return (
     <>
-      <div className="relative flex items-center justify-center w-20 h-20">
-        <div className="absolute font-bold text-base">
+      <div className="relative flex items-center justify-center w-20 md:w-28 h-20 md:h-28">
+        <div className="absolute font-bold text-base md:text-xl">
           {unavaliableData ? (
             <div className="text-center text-sm">
               <div>NO DISPONIBLE</div>
             </div>
           ) : (
-            <Counter valueTo={percentage} totalDuration={duration + delay} />
+            <Counter
+              isPercentage={isPercentage}
+              color={progresses[1].color}
+              valueTo={value}
+              totalDuration={duration + delay}
+            />
           )}
         </div>
-        <div className="relative w-20 h-20">
+        <div className="relative w-20 md:w-28 h-20 md:h-28">
           <svg
             viewBox="0 0 100 100"
             version="1.1"
@@ -71,9 +76,8 @@ const ProgressCircle = ({
               cx="50"
               cy="50"
               r={radius}
-              className="circle"
+              className={`circle stroke-current ${emptyStroke}`}
               strokeWidth={strokeWidth}
-              stroke={emptyStroke}
               strokeOpacity={emptyStrokeOpacity}
               fill="transparent"
             />
@@ -95,8 +99,8 @@ const ProgressCircle = ({
                   cx="50"
                   cy="50"
                   r={radius}
+                  className={`stroke-current ${progresses[index].color}`}
                   strokeWidth={strokeWidth}
-                  stroke={progresses[index].color}
                   fill="transparent"
                   strokeDashoffset={fillPercents}
                   strokeDasharray={circumference}

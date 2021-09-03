@@ -7,9 +7,17 @@ interface Props {
   valueFrom?: number
   valueTo?: number
   totalDuration?: number
+  color: string
+  isPercentage: boolean
 }
 
-const Counter = ({ valueFrom = 0, valueTo = 100, totalDuration = 3.5 }: Props): JSX.Element => {
+const Counter = ({
+  valueFrom = 0,
+  valueTo = 100,
+  totalDuration = 3.5,
+  color,
+  isPercentage,
+}: Props): JSX.Element => {
   const { inView } = useContext(IntersectionContext)
   const [count, setCount] = useState(valueFrom)
 
@@ -19,7 +27,7 @@ const Counter = ({ valueFrom = 0, valueTo = 100, totalDuration = 3.5 }: Props): 
     }
   }, (totalDuration / valueTo) * 1000)
 
-  return <div>{count}%</div>
+  return <div className={`${color}`}>{isPercentage ? `${count}%` : count}</div>
 }
 
 export default Counter

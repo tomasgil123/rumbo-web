@@ -6,11 +6,10 @@ import ProgressCircle from 'components/progressCircle'
 // utils
 import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
-// calculations
-import Survey from 'calculations/surveys'
-import StatisticsHelpers from 'calculations/statisticsHelpers'
+import useSurveyCalculations from 'hooks/userSurveyCalculations'
 // types
 import { SurveyActive } from 'types/survey'
+import { AuditProgram } from 'types/auditProgram'
 
 const DashboardScreen = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
@@ -18,6 +17,10 @@ const DashboardScreen = (): JSX.Element => {
   const { isLoadingDistributor, errorDistributor, survey } = useInitialDataDistributor(
     distributorId,
     auditProgram
+  )
+  const { isApproved, points, percentage } = useSurveyCalculations(
+    survey as SurveyActive,
+    auditProgram as AuditProgram
   )
 
   if (isLoading || isLoadingDistributor)
@@ -28,21 +31,6 @@ const DashboardScreen = (): JSX.Element => {
     )
 
   if (error || errorDistributor) return <div>An error has occurred</div>
-
-  if ((survey as SurveyActive)?.answers) {
-    const surveyResults = new Survey(
-      { isAudit: false },
-      auditProgram?.guidelines,
-      StatisticsHelpers.generateAnswers(
-        (survey as SurveyActive)?.answers,
-        auditProgram?.guidelines
-      ),
-      Object.values(auditProgram?.areas as any),
-      auditProgram?.modules
-    )
-    console.log('percent', surveyResults.getPointsPercent())
-    console.log('is aproved', surveyResults.isApproved())
-  }
 
   console.log('data', auditProgram)
   console.log('survey', survey)
@@ -60,11 +48,21 @@ const DashboardScreen = (): JSX.Element => {
         <div>
           <ProgressCircle
             progresses={[
-              { percent: 100, color: '#cde1c9' },
-              { percent: 20, color: '#5c9551' },
+              { percent: 100, color: isApproved ? 'text-success-light' : 'text-danger-light' },
+              { percent: points, color: isApproved ? 'text-success' : 'text-danger' },
             ]}
-            percentage={20}
-            active={true}
+            value={points}
+            isPercentage={false}
+          />
+        </div>
+        <div>
+          <ProgressCircle
+            progresses={[
+              { percent: 100, color: isApproved ? 'text-success-light' : 'text-danger-light' },
+              { percent: percentage, color: isApproved ? 'text-success' : 'text-danger' },
+            ]}
+            value={percentage}
+            isPercentage={true}
           />
         </div>
       </div>
