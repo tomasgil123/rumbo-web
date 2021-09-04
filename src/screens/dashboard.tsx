@@ -7,7 +7,7 @@ import IconCircle from 'components/iconCircle'
 // utils
 import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
-import useSurveyCalculations from 'hooks/userSurveyCalculations'
+import useSurveyCalculations from 'hooks/useSurveyCalculations'
 import useAreaCalculations from 'hooks/useAreaCalculations'
 // types
 import { SurveyActive } from 'types/survey'

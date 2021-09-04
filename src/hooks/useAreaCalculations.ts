@@ -44,7 +44,7 @@ const useAreaCalculations = (
             Object.keys(auditProgram?.guidelines)
           ),
           auditProgram?.modules,
-          false
+          survey.is_audit
         )
 
         setIsAreaAprroved(areaResults.isApproved())

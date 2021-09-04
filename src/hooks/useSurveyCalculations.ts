@@ -23,7 +23,7 @@ const useSurveyCalculations = (survey: SurveyActive, auditProgram: AuditProgram)
       // and the points the user got
       if ((survey as SurveyActive)?.answers) {
         const surveyResults = new Survey(
-          { isAudit: false },
+          { isAudit: survey.is_audit },
           auditProgram?.guidelines,
           StatisticsHelpers.generateAnswers(
             (survey as SurveyActive)?.answers,
@@ -32,9 +32,6 @@ const useSurveyCalculations = (survey: SurveyActive, auditProgram: AuditProgram)
           Object.values(auditProgram?.areas as any),
           auditProgram?.modules
         )
-        console.log('percent', surveyResults.getPointsPercent())
-        console.log('is aproved', surveyResults.isApproved())
-        console.log('points', surveyResults.getGivenPoints())
         setIsAprroved(surveyResults.isApproved())
         setPoints(surveyResults.getGivenPoints())
         setPercentage(surveyResults.getPointsPercent())
