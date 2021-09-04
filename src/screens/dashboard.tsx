@@ -84,6 +84,7 @@ const DashboardScreen = (): JSX.Element => {
             </div>
             <p>Resueltas</p>
           </div>
+        </div>
       </div>
       <div className="flex flex-row rounded shadow-lg p-4 mt-4 bg-white">
         <div className="flex-1 flex flex-col items-center md:ml-16">
