@@ -11,6 +11,9 @@ interface Calculations {
   areaPoints: number
   areaPercentage: number
   numberUnapprovedRequiredGuidelines: number
+  modulesApprovedStatus: boolean[]
+  requiredGuidelinesApprovedStatus: boolean[]
+  numberRequiredGuidelines: number
 }
 
 const useAreaCalculations = (
@@ -22,6 +25,11 @@ const useAreaCalculations = (
   const [areaPoints, setAreaPoints] = useState(0)
   const [areaPercentage, setAreaPercentage] = useState(0)
   const [numberUnapprovedRequiredGuidelines, setNumberUnapprovedRequiredGuidelines] = useState(0)
+  const [modulesApprovedStatus, setModulesApprovedStatus] = useState<boolean[]>([])
+  const [requiredGuidelinesApprovedStatus, setRequiredGuidelinesApprovedStatus] = useState<
+    boolean[]
+  >([])
+  const [numberRequiredGuidelines, setNumberRequiredGuidelines] = useState(0)
 
   useEffect(() => {
     if (survey) {
@@ -42,6 +50,13 @@ const useAreaCalculations = (
         setAreaPoints(areaResults.getGivenPoints())
         setAreaPercentage(areaResults.getPointsPercent())
         setNumberUnapprovedRequiredGuidelines(areaResults.getNumberUnapprovedRequiredGuidelines())
+        setModulesApprovedStatus(
+          areaResults.getModulesApprovedStatus().map((module) => module.approved)
+        )
+        setRequiredGuidelinesApprovedStatus(
+          areaResults.getRequiredGuidelinesApprovedStatus().map((guideline) => guideline.approved)
+        )
+        setNumberRequiredGuidelines(areaResults.getNumberRequiredGuidelines())
       }
     }
   }, [survey])
@@ -51,6 +66,9 @@ const useAreaCalculations = (
     areaPoints,
     areaPercentage,
     numberUnapprovedRequiredGuidelines,
+    modulesApprovedStatus,
+    requiredGuidelinesApprovedStatus,
+    numberRequiredGuidelines,
   }
 }
 
