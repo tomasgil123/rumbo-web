@@ -13,7 +13,11 @@ import useAreaCalculations from 'hooks/useAreaCalculations'
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
 
+import { arrayOfTasks } from 'arrayOfTask'
+import { getTaskByStatus } from 'utils/tasks'
+
 const DashboardScreen = (): JSX.Element => {
+  const taskByStatus = getTaskByStatus(arrayOfTasks)
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
   const { isLoadingDistributor, errorDistributor, survey } = useInitialDataDistributor(
@@ -46,11 +50,40 @@ const DashboardScreen = (): JSX.Element => {
 
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
-      <div className="rounded shadow-lg p-4 bg-white">
-        <div>Tareas plan operativo</div>
-        <div>
-          <i className="icon-note"></i>
+      <div className="rounded shadow-lg p-4">
+        <div className="text-center text-primary-dark text-base md:text-xl ">
+          Tareas plan operativo
         </div>
+
+        <div className="flex flex-row justify-center ">
+          <div className="p-2 md:p-4">
+            <div className="flex items-center justify-around">
+              <i className="icon-note text-danger-light text-sm md:text-2xl" />
+              <span>{taskByStatus.news.length}</span>
+            </div>
+            <p>Nuevas</p>
+          </div>
+          <div className="p-2 md:p-4">
+            <div className="flex items-center justify-around">
+              <i className="icon-fire text-danger text-sm md:text-2xl"></i>
+              {taskByStatus.expired.length}
+            </div>
+            <p>Vencidas</p>
+          </div>
+          <div className="p-2 md:p-4">
+            <div className="flex items-center justify-around">
+              <i className="icon-note text-primary-light text-sm md:text-2xl"></i>
+              {taskByStatus.pending.length}
+            </div>
+            <p>Pendientes</p>
+          </div>
+          <div className="p-2 md:p-4">
+            <div className="flex items-center justify-around">
+              <i className="icon-note text-success text-sm md:text-2xl"></i>
+              {taskByStatus.resolved.length}
+            </div>
+            <p>Resueltas</p>
+          </div>
       </div>
       <div className="flex flex-row rounded shadow-lg p-4 mt-4 bg-white">
         <div className="flex-1 flex flex-col items-center md:ml-16">
