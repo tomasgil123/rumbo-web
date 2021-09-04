@@ -50,7 +50,7 @@ const DashboardScreen = (): JSX.Element => {
 
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
-      <div className="rounded shadow-lg p-4">
+      <div className="rounded shadow-lg p-4 bg-white">
         <div className="text-center text-primary-dark text-base md:text-xl ">
           Tareas plan operativo
         </div>
