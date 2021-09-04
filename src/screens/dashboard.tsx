@@ -37,15 +37,15 @@ const DashboardScreen = (): JSX.Element => {
 
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
-      <div className="rounded shadow-lg p-4">
+      <div className="rounded shadow-lg p-4 bg-white">
         <div>Tareas plan operativo</div>
         <div>
           <i className="icon-note"></i>
         </div>
       </div>
-      <div className="rounded shadow-lg p-4">
-        <div>Performance</div>
-        <div>
+      <div className="flex flex-row rounded shadow-lg p-4 mt-4 bg-white">
+        <div className="flex-1 flex flex-col items-center md:ml-16">
+          <div className="flex-grow pb-2 md:pb-4 md:text-lg">Puntaje total</div>
           <ProgressCircle
             progresses={[
               { percent: 100, color: isApproved ? 'text-success-light' : 'text-danger-light' },
@@ -55,7 +55,8 @@ const DashboardScreen = (): JSX.Element => {
             isPercentage={false}
           />
         </div>
-        <div>
+        <div className="flex-1 flex flex-col items-center md:mr-16">
+          <div className="text-center pb-2 md:pb-4 md:text-lg">Porcentaje de aprobación</div>
           <ProgressCircle
             progresses={[
               { percent: 100, color: isApproved ? 'text-success-light' : 'text-danger-light' },
