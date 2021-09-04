@@ -26,6 +26,7 @@ export interface SurveyActiveRaw {
   distributor_pk: number
   program: null
   answers: Answer[]
+  is_audit: boolean
 }
 
 export type SurveyActive = Omit<SurveyActiveRaw, 'answers'> & {
