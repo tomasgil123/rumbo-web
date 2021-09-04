@@ -7,6 +7,7 @@ import ProgressCircle from 'components/progressCircle'
 import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useSurveyCalculations from 'hooks/userSurveyCalculations'
+import useAreaCalculations from 'hooks/useAreaCalculations'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
@@ -22,7 +23,14 @@ const DashboardScreen = (): JSX.Element => {
     survey as SurveyActive,
     auditProgram as AuditProgram
   )
-
+  const essentialAreaPk = auditProgram?.areas
+    ? Object.values(auditProgram?.areas).find((area) => area.essential)
+    : 0
+  const { isAreaApproved, numberUnapprovedRequiredGuidelines } = useAreaCalculations(
+    survey as SurveyActive,
+    auditProgram as AuditProgram,
+    essentialAreaPk
+  )
   if (isLoading || isLoadingDistributor)
     return (
       <div className="mt-8 md:mt-16 mx-auto px-4">
@@ -65,6 +73,17 @@ const DashboardScreen = (): JSX.Element => {
             value={percentage}
             isPercentage={true}
           />
+        </div>
+      </div>
+      <div>
+        <div>LINEAMIENTOS BASICOS</div>
+        <div>
+          <div>
+            <div>Desaprobados</div>
+          </div>
+          <div>
+            <div>Desaprobados</div>
+          </div>
         </div>
       </div>
     </div>
