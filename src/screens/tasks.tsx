@@ -16,10 +16,10 @@ const TaskList = (): JSX.Element => {
     <div className="flex flex-row justify-center content-between">
       <ul>
         <div>
-          <div className="flex justify-center divide-y divide-danger-light p-2 divide-opacity-50">
-            <div> </div>
-            <div>Nuevas</div>
-            <div> </div>
+          <div className="py-4">
+            <div className=" text-center border-t border-b border-danger-light w-44 mx-auto ">
+              Nuevas
+            </div>
           </div>
           {taskByStatus.news.map((task: TaskModel) => (
             <li>
@@ -30,10 +30,10 @@ const TaskList = (): JSX.Element => {
           ))}
         </div>
         <div>
-          <div className="flex justify-center divide-y divide-danger divide-opacity-50 ">
-            <div> </div>
-            <div>Vencidas</div>
-            <div> </div>
+          <div className="py-4">
+            <div className=" text-center border-t border-b border-danger w-44 mx-auto ">
+              Vencidas
+            </div>
           </div>
           {taskByStatus.expired.map((task: TaskModel) => (
             <li>
@@ -44,11 +44,12 @@ const TaskList = (): JSX.Element => {
           ))}
         </div>
         <div>
-          <div className="flex justify-center divide-y divide-primary-light divide-opacity-50  ">
-            <div> </div>
-            <div>Pendientes</div>
-            <div> </div>
+          <div className="py-4">
+            <div className=" text-center border-t border-b border-primary-light w-44 mx-auto ">
+              Pendientes
+            </div>
           </div>
+
           {taskByStatus.pending.map((task: TaskModel) => (
             <li>
               <div>
@@ -58,11 +59,12 @@ const TaskList = (): JSX.Element => {
           ))}
         </div>
         <div>
-          <div className="flex justify-center divide-y divide-success divide-opacity-50 ">
-            <div> </div>
-            <div>Resueltas</div>
-            <div> </div>
+          <div className="py-4">
+            <div className=" text-center border-t border-b border-success w-44 mx-auto ">
+              Resueltas
+            </div>
           </div>
+
           {taskByStatus.resolved.map((task: TaskModel) => (
             <li>
               <div>
