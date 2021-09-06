@@ -2,38 +2,13 @@ import React from 'react'
 import { Switch, Route, useRouteMatch, Link } from 'react-router-dom'
 // components
 import Layout from 'components/layout'
-import TaskD from 'domain/tasks/task'
+import Task from 'domain/tasks/task'
+import TaskPresentation from 'domain/tasks/taskPresentation'
 //types
-import { Task } from 'types/tasks'
-import { MouseEventHandler } from 'react'
+import { Task as TaskModel } from 'types/tasks'
 
-import { isTaskExpired, getTaskByStatus } from 'utils/tasks'
+import { getTaskByStatus } from 'utils/tasks'
 import arrayOfTasks from 'arrayOfTasks'
-
-interface myProps {
-  task: Task
-  icon: string
-}
-const TaskPresentation = ({ task, icon }: myProps): JSX.Element => {
-  return (
-    <Link to={`tareas/${task.pk}`}>
-      <div className="flex flex-row justify-between items-start shadow-md w-full py-2 md:w-72">
-        <span className="w-20 justify-self-center">{task.guidelinePk}</span>
-        <div className="flex flex-col justify-center px-4">
-          <h1 className="uppercase">{task.guidelineName}</h1>
-          <ul className="text-disabled">
-            <li>limite:{task.deadline}</li>
-            <li>persona asignada:{task.assigned_to}</li>
-            <li>descripcion:{task.description}</li>
-          </ul>
-        </div>
-        <div className="w-20  ">
-          <i className={icon} />
-        </div>
-      </div>
-    </Link>
-  )
-}
 
 const TaskList = (): JSX.Element => {
   const taskByStatus = getTaskByStatus(arrayOfTasks)
@@ -46,7 +21,7 @@ const TaskList = (): JSX.Element => {
             <div>Nuevas</div>
             <div> </div>
           </div>
-          {taskByStatus.news.map((task: Task) => (
+          {taskByStatus.news.map((task: TaskModel) => (
             <li>
               <div>
                 <TaskPresentation task={task} icon={'icon-note text-danger-light'} />
@@ -60,7 +35,7 @@ const TaskList = (): JSX.Element => {
             <div>Vencidas</div>
             <div> </div>
           </div>
-          {taskByStatus.expired.map((task: Task) => (
+          {taskByStatus.expired.map((task: TaskModel) => (
             <li>
               <div>
                 <TaskPresentation task={task} icon={'icon-fire text-danger'} />
@@ -74,7 +49,7 @@ const TaskList = (): JSX.Element => {
             <div>Pendientes</div>
             <div> </div>
           </div>
-          {taskByStatus.pending.map((task: Task) => (
+          {taskByStatus.pending.map((task: TaskModel) => (
             <li>
               <div>
                 <TaskPresentation task={task} icon={'icon-note text-primary-light'} />
@@ -88,7 +63,7 @@ const TaskList = (): JSX.Element => {
             <div>Resueltas</div>
             <div> </div>
           </div>
-          {taskByStatus.resolved.map((task: Task) => (
+          {taskByStatus.resolved.map((task: TaskModel) => (
             <li>
               <div>
                 <TaskPresentation task={task} icon={'icon-note text-success'} />
@@ -112,7 +87,7 @@ const TasksScreen = (): JSX.Element => {
 
       <Switch>
         <Route path={`${match.path}/:taskId`}>
-          <TaskD />
+          <Task />
         </Route>
         <Route path={match.path}>
           <TaskList />
