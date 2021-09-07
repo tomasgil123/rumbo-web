@@ -8,14 +8,14 @@ interface myProps {
 const TaskPresentation = ({ task, icon }: myProps): JSX.Element => {
   return (
     <Link to={`tareas/${task.pk}`}>
-      <div className="flex flex-row items-start shadow-md h-40 w-full p-2 md:w-72">
+      <div className="flex flex-row items-start shadow-md h-32 w-full p-2 md:w-100">
         <span className="w-20 text-center ">{task.guidelinePk}</span>
-        <div className="flex flex-col justify-center w-56 px-4 ">
+        <div className="flex flex-col justify-center w-60 px-4 ">
           <h1 className="uppercase">{task.guidelineName}</h1>
-          <ul className="text-disabled">
+          <ul className="text-disabled text-sm">
             <li>Limite:{task.deadline}</li>
             <li>Persona asignada:{task.assigned_to}</li>
-            <li className="truncate">escripción:{task.description}</li>
+            <li className="truncate">Descripción:{task.description}</li>
           </ul>
         </div>
         <div className="w-20 text-center ml-auto">
