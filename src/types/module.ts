@@ -13,4 +13,4 @@ export interface ModuleRaw {
   guidelines: GuidelineRaw[]
 }
 
-export type Module = Omit<ModuleRaw, 'guidelines'> & { guidelinePks: number[]; areaPk: number }
+export type Module = Omit<ModuleRaw, 'guidelines'> & { guideline_pks: number[]; areaPk: number }

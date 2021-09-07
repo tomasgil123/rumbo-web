@@ -15,7 +15,7 @@ export const getStatusDisplay = (statusValue: string): TaskStatus => {
     case STATUS_PENDING:
       return { status: 'Pendiente', color: 'text-danger-light' }
     case STATUS_DONE:
-      return { status: 'Realizada', color: 'text-sucess' }
+      return { status: 'Realizada', color: 'text-success' }
     case STATUS_LOCKED:
       return { status: 'Bloqueada', color: 'text-disabled' }
     default:
