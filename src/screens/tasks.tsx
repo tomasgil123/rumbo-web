@@ -3,7 +3,7 @@ import { Switch, Route, useRouteMatch, Link } from 'react-router-dom'
 // components
 import Layout from 'components/layout'
 import Task from 'domain/tasks/task'
-import TaskPresentation from 'domain/tasks/taskPresentation'
+import TaskCard from 'domain/tasks/taskCard'
 //types
 import { Task as TaskModel } from 'types/tasks'
 
@@ -14,7 +14,7 @@ const TaskList = (): JSX.Element => {
   const taskByStatus = getTaskByStatus(arrayOfTasks)
   return (
     <div className="flex flex-row justify-center content-between">
-      <ul>
+      <ul className="px-4">
         <div>
           <div className="py-4">
             <div className=" text-center border-t border-b border-danger-light w-44 mx-auto ">
@@ -23,9 +23,7 @@ const TaskList = (): JSX.Element => {
           </div>
           {taskByStatus.news.map((task: TaskModel) => (
             <li>
-              <div>
-                <TaskPresentation task={task} icon={'icon-note text-danger-light'} />
-              </div>
+              <TaskCard task={task} icon={'icon-note text-danger-light'} />
             </li>
           ))}
         </div>
@@ -37,9 +35,7 @@ const TaskList = (): JSX.Element => {
           </div>
           {taskByStatus.expired.map((task: TaskModel) => (
             <li>
-              <div>
-                <TaskPresentation task={task} icon={'icon-fire text-danger'} />
-              </div>
+              <TaskCard task={task} icon={'icon-fire text-danger'} />
             </li>
           ))}
         </div>
@@ -52,9 +48,7 @@ const TaskList = (): JSX.Element => {
 
           {taskByStatus.pending.map((task: TaskModel) => (
             <li>
-              <div>
-                <TaskPresentation task={task} icon={'icon-note text-primary-light'} />
-              </div>
+              <TaskCard task={task} icon={'icon-note text-primary-light'} />
             </li>
           ))}
         </div>
@@ -67,9 +61,7 @@ const TaskList = (): JSX.Element => {
 
           {taskByStatus.resolved.map((task: TaskModel) => (
             <li>
-              <div>
-                <TaskPresentation task={task} icon={'icon-note text-success'} />
-              </div>
+              <TaskCard task={task} icon={'icon-note text-success'} />
             </li>
           ))}
         </div>
