@@ -12,12 +12,11 @@ import useAreaCalculations from 'hooks/useAreaCalculations'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
+import { Task } from 'types/tasks'
 
-import { arrayOfTasks } from 'arrayOfTask'
 import { getTaskByStatus } from 'utils/tasks'
 
 const DashboardScreen = (): JSX.Element => {
-  const taskByStatus = getTaskByStatus(arrayOfTasks)
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
   const { isLoadingDistributor, errorDistributor, survey } = useInitialDataDistributor(
@@ -47,6 +46,14 @@ const DashboardScreen = (): JSX.Element => {
 
   console.log('data', auditProgram)
   console.log('survey', survey)
+
+  const arrayOfTaskArray = Object.values((survey as any).tasks)
+
+  const arrayOfRealTask = arrayOfTaskArray.reduce(
+    (acc: Task[], tasks: any): Task[] => acc.concat(tasks.map((task: Task) => task)),
+    []
+  )
+  const taskByStatus = getTaskByStatus(arrayOfRealTask)
 
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
