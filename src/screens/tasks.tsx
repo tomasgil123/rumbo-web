@@ -4,14 +4,41 @@ import { Switch, Route, useRouteMatch, Link } from 'react-router-dom'
 import Layout from 'components/layout'
 import Task from 'domain/tasks/task'
 import TaskCard from 'domain/tasks/taskCard'
+import Spinner from 'components/spinner'
 //types
 import { Task as TaskModel } from 'types/tasks'
 
 import { getTaskByStatus } from 'utils/tasks'
 import arrayOfTasks from 'arrayOfTasks'
+//utils
+import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
+import useInitialData from 'hooks/useInitialData'
 
 const TaskList = (): JSX.Element => {
-  const taskByStatus = getTaskByStatus(arrayOfTasks)
+  const { isLoading, error, auditProgram, distributorIds } = useInitialData()
+  const distributorId = distributorIds ? distributorIds[0] : null
+  const { isLoadingDistributor, errorDistributor, survey } = useInitialDataDistributor(
+    distributorId,
+    auditProgram
+  )
+
+  if (isLoading || isLoadingDistributor)
+    return (
+      <div className="mt-8 md:mt-16 mx-auto px-4">
+        <Spinner />
+      </div>
+    )
+
+  if (error || errorDistributor) return <div>An error has occurred</div>
+
+  const arrayOfTaskArray = Object.values((survey as any).tasks)
+
+  const arrayOfRealTask = arrayOfTaskArray.reduce(
+    (acc: TaskModel[], tasks: any): TaskModel[] => acc.concat(tasks.map((task: TaskModel) => task)),
+    []
+  )
+  const taskByStatus = getTaskByStatus(arrayOfRealTask)
+
   return (
     <div className="flex flex-row justify-center content-between">
       <ul className="px-4">
