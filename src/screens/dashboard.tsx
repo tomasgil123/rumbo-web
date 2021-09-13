@@ -9,12 +9,11 @@ import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useSurveyCalculations from 'hooks/useSurveyCalculations'
 import useAreaCalculations from 'hooks/useAreaCalculations'
+import { getTaskByStatus } from 'utils/tasks'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
 import { Task } from 'types/tasks'
-
-import { getTaskByStatus } from 'utils/tasks'
 
 const DashboardScreen = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
