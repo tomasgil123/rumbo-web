@@ -1,5 +1,5 @@
 // types
-import { TaskStatus, Task } from 'types/tasks'
+import { TaskStatus, Task, taskByStatus } from 'types/tasks'
 
 export const STATUS_NEW = '0'
 export const STATUS_PENDING = '1'
@@ -33,11 +33,20 @@ export const isTaskExpired = (task: Task): boolean => {
   )
 }
 
-export const getTaskByStatus = (arrayOfTasks: any): any => {
+export const getTaskByStatus = (arrayOfTasks: Task[]): taskByStatus => {
   const news = arrayOfTasks.filter((task: Task) => task.status === '0')
   const pending = arrayOfTasks.filter((task: Task) => task.status === '1' && !isTaskExpired(task))
   const expired = arrayOfTasks.filter((task: Task) => task.status === '1' && isTaskExpired(task))
   const resolved = arrayOfTasks.filter((task: Task) => task.status === '2')
 
   return { news: news, pending: pending, expired: expired, resolved: resolved }
+}
+
+export const getFlatArrayFromObjectValues = (survey: any): Task[] => {
+  const arrayOfTaskArray = Object.values(survey.tasks)
+  const arrayFlatTasks = arrayOfTaskArray.reduce(
+    (acc: Task[], tasks: any): Task[] => acc.concat(tasks.map((task: Task) => task)),
+    []
+  )
+  return arrayFlatTasks
 }

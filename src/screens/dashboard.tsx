@@ -9,15 +9,13 @@ import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useSurveyCalculations from 'hooks/useSurveyCalculations'
 import useAreaCalculations from 'hooks/useAreaCalculations'
+import { getTaskByStatus, getFlatArrayFromObjectValues } from 'utils/tasks'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
-
-import { arrayOfTasks } from 'arrayOfTask'
-import { getTaskByStatus } from 'utils/tasks'
+import { Task } from 'types/tasks'
 
 const DashboardScreen = (): JSX.Element => {
-  const taskByStatus = getTaskByStatus(arrayOfTasks)
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
   const { isLoadingDistributor, errorDistributor, survey } = useInitialDataDistributor(
@@ -43,11 +41,14 @@ const DashboardScreen = (): JSX.Element => {
       </div>
     )
 
-  if (error || errorDistributor) return <div>An error has occurred</div>
+  if (error || errorDistributor) return <div>Ha ocurrido un error</div>
 
-  console.log('data', auditProgram)
-  console.log('survey', survey)
+  const arrayFlatTasks = getFlatArrayFromObjectValues(survey)
+  const taskByStatus = getTaskByStatus(arrayFlatTasks)
 
+  if (arrayFlatTasks.length === 0) {
+    return <div>Todavia no se ha creado ninguna tarea</div>
+  }
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
       <div className="rounded shadow-lg p-4 bg-white">
@@ -112,6 +113,7 @@ const DashboardScreen = (): JSX.Element => {
           />
         </div>
       </div>
+
       <div className="pt-6 md:pt-8">
         <div className="text-center pb-4 md:pb-4 md:text-lg font-bold text-gray-700">
           LINEAMIENTOS BASICOS
