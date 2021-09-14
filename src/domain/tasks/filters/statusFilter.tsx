@@ -1,13 +1,12 @@
-import arrayOfTasks from 'arrayOfTasks'
 import React, { useState } from 'react'
 //utils
 
 //types
-import { Task } from 'types/tasks'
+import { Task as TaskModel, taskByStatus } from 'types/tasks'
 
 interface Props {
-  taskByStatus: any
-  handleClick: any
+  taskByStatus: taskByStatus
+  handleClick: (param: string) => void
 }
 
 const StatusFilter = ({ taskByStatus, handleClick }: Props): JSX.Element => {

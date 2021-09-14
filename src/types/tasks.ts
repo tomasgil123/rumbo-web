@@ -19,3 +19,10 @@ export interface TaskStatus {
   status: string
   color: string
 }
+
+export interface taskByStatus {
+  news: Task[]
+  pending: Task[]
+  expired: Task[]
+  resolved: Task[]
+}

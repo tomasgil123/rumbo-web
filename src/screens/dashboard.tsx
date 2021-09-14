@@ -9,7 +9,7 @@ import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useSurveyCalculations from 'hooks/useSurveyCalculations'
 import useAreaCalculations from 'hooks/useAreaCalculations'
-import { getTaskByStatus } from 'utils/tasks'
+import { getTaskByStatus, getFlatArrayFromObjectValues } from 'utils/tasks'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
@@ -41,17 +41,9 @@ const DashboardScreen = (): JSX.Element => {
       </div>
     )
 
-  if (error || errorDistributor) return <div>An error has occurred</div>
+  if (error || errorDistributor) return <div>Ha ocurrido un error</div>
 
-  console.log('data', auditProgram)
-  console.log('survey', survey)
-
-  const arrayOfTaskArray = Object.values((survey as any).tasks)
-
-  const arrayOfRealTask = arrayOfTaskArray.reduce(
-    (acc: Task[], tasks: any): Task[] => acc.concat(tasks.map((task: Task) => task)),
-    []
-  )
+  const arrayOfRealTask = getFlatArrayFromObjectValues(survey)
   const taskByStatus = getTaskByStatus(arrayOfRealTask)
 
   if (arrayOfRealTask.length === 0) {

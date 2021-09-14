@@ -1,5 +1,13 @@
 import { Task as TaskModel } from 'types/tasks'
+
 import TaskCard from './taskCard'
+
+export interface taskByStatus {
+  news: TaskModel[]
+  pending: TaskModel[]
+  expired: TaskModel[]
+  resolved: TaskModel[]
+}
 
 interface props {
   taskByStatus: any

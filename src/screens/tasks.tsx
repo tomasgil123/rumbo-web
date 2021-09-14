@@ -5,12 +5,12 @@ import Layout from 'components/layout'
 import Task from 'domain/tasks/task'
 import TaskCard from 'domain/tasks/taskCard'
 import Spinner from 'components/spinner'
-import StatusFilter from 'components/filters/statusFilter'
+import StatusFilter from 'domain/tasks/filters/statusFilter'
 import TasksByStatus from 'domain/tasks/TasksByStatus'
 //types
 import { Task as TaskModel } from 'types/tasks'
 
-import { getTaskByStatus } from 'utils/tasks'
+import { getTaskByStatus, getFlatArrayFromObjectValues } from 'utils/tasks'
 
 //utils
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
@@ -32,17 +32,10 @@ const TaskList = (): JSX.Element => {
       </div>
     )
 
-  if (error || errorDistributor) return <div>An error has occurred</div>
+  if (error || errorDistributor) return <div>Ha ocurrido un error</div>
 
-  const arrayOfTaskArray = Object.values((survey as any).tasks)
-
-  const arrayOfRealTask = arrayOfTaskArray.reduce(
-    (acc: TaskModel[], tasks: any): TaskModel[] => acc.concat(tasks.map((task: TaskModel) => task)),
-    []
-  )
+  const arrayOfRealTask = getFlatArrayFromObjectValues(survey)
   const taskByStatus = getTaskByStatus(arrayOfRealTask)
-
-  debugger
 
   const handleClick = (status: string): void => {
     setStatusFilter(status)
