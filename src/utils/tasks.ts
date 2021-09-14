@@ -44,9 +44,9 @@ export const getTaskByStatus = (arrayOfTasks: Task[]): taskByStatus => {
 
 export const getFlatArrayFromObjectValues = (survey: any): Task[] => {
   const arrayOfTaskArray = Object.values(survey.tasks)
-  const arrayOfRealTask = arrayOfTaskArray.reduce(
+  const arrayFlatTasks = arrayOfTaskArray.reduce(
     (acc: Task[], tasks: any): Task[] => acc.concat(tasks.map((task: Task) => task)),
     []
   )
-  return arrayOfRealTask
+  return arrayFlatTasks
 }

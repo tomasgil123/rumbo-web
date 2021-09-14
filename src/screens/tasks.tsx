@@ -34,8 +34,8 @@ const TaskList = (): JSX.Element => {
 
   if (error || errorDistributor) return <div>Ha ocurrido un error</div>
 
-  const arrayOfRealTask = getFlatArrayFromObjectValues(survey)
-  const taskByStatus = getTaskByStatus(arrayOfRealTask)
+  const arrayFlatTasks = getFlatArrayFromObjectValues(survey)
+  const taskByStatus = getTaskByStatus(arrayFlatTasks)
 
   const handleClick = (status: string): void => {
     setStatusFilter(status)

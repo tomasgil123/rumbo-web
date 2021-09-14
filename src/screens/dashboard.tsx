@@ -43,10 +43,10 @@ const DashboardScreen = (): JSX.Element => {
 
   if (error || errorDistributor) return <div>Ha ocurrido un error</div>
 
-  const arrayOfRealTask = getFlatArrayFromObjectValues(survey)
-  const taskByStatus = getTaskByStatus(arrayOfRealTask)
+  const arrayFlatTasks = getFlatArrayFromObjectValues(survey)
+  const taskByStatus = getTaskByStatus(arrayFlatTasks)
 
-  if (arrayOfRealTask.length === 0) {
+  if (arrayFlatTasks.length === 0) {
     return <div>Todavia no se ha creado ninguna tarea</div>
   }
   return (
