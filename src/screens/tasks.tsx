@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { ChangeEvent } from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 // components
 import Layout from 'components/layout'
@@ -19,30 +19,6 @@ import useTaskFilters from 'hooks/useTaskFilters'
 //types
 import { TypeTaskStatus } from 'types/tasks'
 
-// podemos tener un array de funciones que sean los filtros que se tiene que aplicar
-// entonces, cuando se hace click en un filtro se agregar el filtro
-// al array y ademas de llama a la funcion onApplyFilters
-
-// tenemos que armar una funcion que nos permita determinar el tipo
-// de una tarea
-
-// como hago para saber si al hacer click sobre un filtro lo tengo
-// que sacar u agregar?
-// Puedo fijarme si la funcion ya esta en el array de filtros
-// si esta, significa que tengo que sacarla
-
-// como gestiono el filtro de nombre?
-// cada vez que se escribe una palabra
-// no puedo suamr una funcion filter al array de filters
-// a la funcion onApplyFilters le voy a tener que psar un parametros
-// que va a ser el search filter
-
-// puedo poner la funcion de filter por name como default adentro del array de filters
-// es medio o mismo
-
-// como gestiono las areas?
-// de la misma forma que el filtro de nombre
-
 const TaskList = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
@@ -50,9 +26,7 @@ const TaskList = (): JSX.Element => {
     distributorId,
     auditProgram
   )
-  console.log('survey', survey)
   const arrayFlatTasks = survey ? getFlatArrayFromObjectValues(survey) : []
-  // const tasksByStatus = getTaskByStatus(arrayFlatTasks)
 
   const {
     statusFilters,
@@ -79,25 +53,6 @@ const TaskList = (): JSX.Element => {
     addFilterStatus(status)
   }
 
-  const filteredByGuiline = arrayFlatTasks.filter((task) =>
-    task.guidelineName.includes(guidelineNameFilter.toUpperCase())
-  )
-
-  // tasksByStatus es el title de status
-  // tenemos que iterar sobre los 4 posibles status
-  // cada taskByStatus recibe todas las tareas para mostrar
-  // pero si recibe todas las tareas las tiene que filtrar
-  // vamos a pensar los filtros de otra manera
-
-  // no alcanza con pensar los filtros de otra manera
-  // siempre vamos a necesitar filtrar
-
-  // hay alguna forma de agrupar las tareas por tipo de status?
-
-  // creo que no hay forma de zafar, vamos a tener que
-  // exportar las funciones de filtros desde useTasksFilters
-  // o podemos exportar getTasksByStatus desde useTasksFilters
-
   return (
     <div>
       <div className="flex flex-row justify-center content-between">
@@ -123,135 +78,6 @@ const TaskList = (): JSX.Element => {
       </div>
     </div>
   )
-  // switch (statusFilter) {
-  //   case 'news':
-  //     return (
-  //       <div className="flex flex-row justify-center content-between">
-  //         <ul className="px-4">
-  //           <div>
-  //             <StatusFilter taskByStatus={taskByStatus} handleClick={handleClick} />
-  //           </div>
-  //           <TasksByStatus
-  //             taskByStatus={taskByStatus}
-  //             borderColor={'border-danger-light'}
-  //             label={'Nuevas'}
-  //             status={'news'}
-  //             icon={'icon-note text-danger-light'}
-  //           />
-  //         </ul>
-  //       </div>
-  //     )
-  //   case 'expired':
-  //     return (
-  //       <div className="flex flex-row justify-center content-between">
-  //         <ul className="px-4">
-  //           <div>
-  //             <StatusFilter taskByStatus={taskByStatus} handleClick={handleClick} />
-  //           </div>
-  //           <TasksByStatus
-  //             taskByStatus={taskByStatus}
-  //             borderColor={'border-danger'}
-  //             label={'Vencidas'}
-  //             status={'expired'}
-  //             icon={'icon-fire text-danger'}
-  //           />
-  //         </ul>
-  //       </div>
-  //     )
-  //   case 'pending':
-  //     return (
-  //       <div className="flex flex-row justify-center content-between">
-  //         <ul className="px-4">
-  //           <div>
-  //             <StatusFilter taskByStatus={taskByStatus} handleClick={handleClick} />
-  //           </div>
-  //           <TasksByStatus
-  //             taskByStatus={taskByStatus}
-  //             borderColor={'border-primary-light'}
-  //             label={'Pendientes'}
-  //             status={'pending'}
-  //             icon={'icon-note text-primary-ligh'}
-  //           />
-  //         </ul>
-  //       </div>
-  //     )
-  //   case 'resolved':
-  //     return (
-  //       <div className="flex flex-row justify-center content-between">
-  //         <ul className="px-4">
-  //           <div>
-  //             <StatusFilter taskByStatus={taskByStatus} handleClick={handleClick} />
-  //           </div>
-  //           <TasksByStatus
-  //             taskByStatus={taskByStatus}
-  //             borderColor={'border-success'}
-  //             label={'Resueltas'}
-  //             status={'resolved'}
-  //             icon={'icon-note text-primary-light'}
-  //           />
-  //         </ul>
-  //       </div>
-  //     )
-  //   default:
-  //     return (
-  //       <div className="flex flex-row justify-center content-between">
-  //         <ul className="px-4">
-  //           <div>
-  //             <GuidelineNameFilter
-  //               handleSearchChange={handleSearchChange}
-  //               guidelineNameFilter={guidelineNameFilter}
-  //             />
-  //             <StatusFilter taskByStatus={taskByStatus} handleClick={handleClick} />
-  //           </div>
-  //           {taskByStatus.news.length > 0 ? (
-  //             <TasksByStatus
-  //               taskByStatus={taskByStatus}
-  //               borderColor={'border-danger-light'}
-  //               label={'Nuevas'}
-  //               status={'news'}
-  //               icon={'icon-note text-danger-light'}
-  //             />
-  //           ) : (
-  //             <div> </div>
-  //           )}
-  //           {taskByStatus.expired.length > 0 ? (
-  //             <TasksByStatus
-  //               taskByStatus={taskByStatus}
-  //               borderColor={'border-danger'}
-  //               label={'Vencidas'}
-  //               status={'expired'}
-  //               icon={'icon-fire text-danger'}
-  //             />
-  //           ) : (
-  //             <div> </div>
-  //           )}
-
-  //           {taskByStatus.pending.length > 0 ? (
-  //             <TasksByStatus
-  //               taskByStatus={taskByStatus}
-  //               borderColor={'border-primary-light'}
-  //               label={'Pendientes'}
-  //               status={'pending'}
-  //               icon={'icon-note text-primary-light'}
-  //             />
-  //           ) : (
-  //             <div> </div>
-  //           )}
-  //           {taskByStatus.resolved.length > 0 ? (
-  //             <TasksByStatus
-  //               taskByStatus={taskByStatus}
-  //               borderColor={'border-success'}
-  //               label={'Resueltas'}
-  //               status={'resolved'}
-  //               icon={'icon-note text-success'}
-  //             />
-  //           ) : (
-  //             <div> </div>
-  //           )}
-  //         </ul>
-  //       </div>
-  //     )
-  // }
 }
 
 const TasksScreen = (): JSX.Element => {

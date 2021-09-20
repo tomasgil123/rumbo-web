@@ -18,17 +18,19 @@ const useTaskFilters = (tasks: Task[]): TasksFilters => {
   const [guidelineNameFilter, setGuidelineNameFilter] = useState('')
 
   useEffect(() => {
+    // the first value of tasks we get is an empty array
     setTasksToShow(tasks)
   }, [tasks.length])
 
-  const onApplyFilters = (statusFilters: TypeTaskStatus[]): void => {
+  // every time the user applies a filter this gets trigger
+  const onApplyFilters = (statusFilters: TypeTaskStatus[], guidelineNameFilter: string): void => {
     const filters: any = {
       [TaskStatus.new]: (task: Task): boolean => task.status === '0',
       [TaskStatus.pending]: (task: Task): boolean => task.status === '1' && !isTaskExpired(task),
       [TaskStatus.expired]: (task: Task): boolean => task.status === '1' && isTaskExpired(task),
       [TaskStatus.done]: (task: Task): boolean => task.status === '2',
       guidelineNameFilter: (task: Task): boolean =>
-        task.guidelineName.includes(guidelineNameFilter),
+        task.guidelineName.toLowerCase().includes(guidelineNameFilter),
     }
     const filtersToApply: any[] = []
     statusFilters.forEach((status) => {
@@ -37,8 +39,6 @@ const useTaskFilters = (tasks: Task[]): TasksFilters => {
     if (guidelineNameFilter) {
       filtersToApply.push(filters['guidelineNameFilter'])
     }
-    debugger
-    console.log('filtersToApply', filtersToApply)
 
     setTasksToShow(tasks.filter((item) => filtersToApply.every((filter) => filter(item))))
   }
@@ -46,18 +46,23 @@ const useTaskFilters = (tasks: Task[]): TasksFilters => {
   const addFilterStatus = (status: TypeTaskStatus): void => {
     if (statusFilters.includes(status)) {
       setStatusFilters(statusFilters.filter((s) => !(s === status)))
-      onApplyFilters(statusFilters.filter((s) => !(s === status)))
+      onApplyFilters(
+        statusFilters.filter((s) => !(s === status)),
+        guidelineNameFilter
+      )
     } else {
       setStatusFilters([...statusFilters, status])
-      onApplyFilters([...statusFilters, status])
+      onApplyFilters([...statusFilters, status], guidelineNameFilter)
     }
   }
 
   const addGuidelineNameFilter = (name: string): void => {
     setGuidelineNameFilter(name)
-    //onApplyFilters('test')
+    onApplyFilters(statusFilters, name)
   }
+  // after we filter the tasks we grouped them
   const tasksToShowGrouped = getTaskByStatus(tasksToShow)
+
   return {
     statusFilters,
     addFilterStatus,
