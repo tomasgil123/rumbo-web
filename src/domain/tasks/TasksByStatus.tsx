@@ -1,3 +1,4 @@
+import { StringDecoder } from 'string_decoder'
 import { Task as TaskModel } from 'types/tasks'
 
 import TaskCard from './taskCard'
@@ -10,25 +11,28 @@ export interface taskByStatus {
 }
 
 interface props {
-  taskByStatus: any
-  borderColor: string
-  status: string
+  tasks: TaskModel[]
+  borderColor: StringDecoder
   label: string
   icon: string
 }
 
-const TasksByStatus = ({ taskByStatus, borderColor, status, label, icon }: props): JSX.Element => {
+const TasksByStatus = ({ tasks, borderColor, label, icon }: props): JSX.Element => {
   return (
-    <div>
-      <div className="py-4">
-        <div className={`text-center border-t border-b ${borderColor} w-44 mx-auto`}>{label}</div>
-      </div>
-      {taskByStatus[`${status}`].map((task: TaskModel) => (
-        <li>
-          <TaskCard task={task} icon={icon} />
-        </li>
-      ))}
-    </div>
+    <>
+      {tasks.length > 0 && (
+        <div>
+          <div className="py-4">
+            <div className={`text-center border-t border-b ${borderColor} w-44 mx-auto`}>
+              {label}
+            </div>
+          </div>
+          {tasks.map((task: TaskModel) => (
+            <TaskCard task={task} icon={icon} />
+          ))}
+        </div>
+      )}
+    </>
   )
 }
 export default TasksByStatus

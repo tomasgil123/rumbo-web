@@ -1,51 +1,49 @@
-import React, { useState } from 'react'
-//utils
-
+import React from 'react'
 //types
-import { Task as TaskModel, taskByStatus } from 'types/tasks'
+import { TaskStatus, TasksGroupedByStatus, TypeTaskStatus } from 'types/tasks'
 
 interface Props {
-  taskByStatus: taskByStatus
-  handleClick: (param: string) => void
+  taskByStatus: TasksGroupedByStatus
+  handleClick: (status: TypeTaskStatus) => void
 }
 
 const StatusFilter = ({ taskByStatus, handleClick }: Props): JSX.Element => {
   return (
     <div className="flex flex-row justify-center ">
-      <button onClick={(): void => handleClick('news')}>
+      <button onClick={(): void => handleClick(TaskStatus.new)}>
         <div className="p-2 md:p-4">
           <div className="flex items-center justify-around">
             <i className="icon-note text-disabled text-sm md:text-2xl" />
-            <span>{taskByStatus.news.length}</span>
+            <span>{taskByStatus[TaskStatus.new].length}</span>
           </div>
-          <p>Nuevas</p>
+          <p>{TaskStatus.new}</p>
         </div>
       </button>
-      <button onClick={(): void => handleClick('expired')}>
+      <button onClick={(): void => handleClick(TaskStatus.expired)}>
         <div className="p-2 md:p-4">
           <div className="flex items-center justify-around">
             <i className="icon-fire text-disabled text-sm md:text-2xl"></i>
-            {taskByStatus.expired.length}
+            {taskByStatus[TaskStatus.expired].length}
           </div>
-          <p>Vencidas</p>
+          <p>{TaskStatus.expired}</p>
         </div>
       </button>
-      <button onClick={(): void => handleClick('pending')}>
+      <button onClick={(): void => handleClick(TaskStatus.pending)}>
         <div className="p-2 md:p-4">
           <div className="flex items-center justify-around">
             <i className="icon-note text-disabled text-sm md:text-2xl"></i>
-            {taskByStatus.pending.length}
+            {taskByStatus[TaskStatus.pending].length}
           </div>
-          <p>Pendientes</p>
+          <p>{TaskStatus.pending}</p>
         </div>
       </button>
-      <button onClick={(): void => handleClick('resolved')}>
+      <button onClick={(): void => handleClick(TaskStatus.done)}>
         <div className="p-2 md:p-4">
           <div className="flex items-center justify-around">
             <i className="icon-note text-disabled text-sm md:text-2xl"></i>
-            {taskByStatus.resolved.length}
+            {taskByStatus[TaskStatus.done].length}
           </div>
-          <p>Resueltas</p>
+          <p>{TaskStatus.done}</p>
         </div>
       </button>
     </div>
