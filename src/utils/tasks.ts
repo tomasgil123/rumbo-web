@@ -1,5 +1,5 @@
 // types
-import { TaskStatus, Task, taskByStatus } from 'types/tasks'
+import { Task, TasksGroupedByStatus } from 'types/tasks'
 
 export const STATUS_NEW = '0'
 export const STATUS_PENDING = '1'
@@ -7,21 +7,6 @@ export const STATUS_DONE = '2'
 export const STATUS_LOCKED = '4'
 export const STATUS_DELETED = '5'
 export const STATUS_DUE = '-1'
-
-export const getStatusDisplay = (statusValue: string): TaskStatus => {
-  switch (statusValue) {
-    case STATUS_NEW:
-      return { status: 'Nueva', color: 'text-danger' }
-    case STATUS_PENDING:
-      return { status: 'Pendiente', color: 'text-danger-light' }
-    case STATUS_DONE:
-      return { status: 'Realizada', color: 'text-success' }
-    case STATUS_LOCKED:
-      return { status: 'Bloqueada', color: 'text-disabled' }
-    default:
-      return { status: 'Nueva', color: 'text-danger' }
-  }
-}
 
 // task with a status of pending can be expired if they have a deadline
 // and that deadline is before yesterday
@@ -33,13 +18,25 @@ export const isTaskExpired = (task: Task): boolean => {
   )
 }
 
-export const getTaskByStatus = (arrayOfTasks: Task[]): taskByStatus => {
-  const news = arrayOfTasks.filter((task: Task) => task.status === '0')
+export const TasksStyles = {
+  Nuevas: { icon: 'icon-note text-danger-light', borderColor: 'border-danger-light' },
+  Pendientes: { icon: 'icon-note text-primary-light', borderColor: 'border-primary-light' },
+  Vencidas: { icon: 'icon-note text-border-danger', borderColor: 'border-danger' },
+  Hechas: { icon: 'icon-note text-border-success', borderColor: 'border-success' },
+}
+
+export const getTaskByStatus = (arrayOfTasks: Task[]): TasksGroupedByStatus => {
+  const newT = arrayOfTasks.filter((task: Task) => task.status === '0')
   const pending = arrayOfTasks.filter((task: Task) => task.status === '1' && !isTaskExpired(task))
   const expired = arrayOfTasks.filter((task: Task) => task.status === '1' && isTaskExpired(task))
-  const resolved = arrayOfTasks.filter((task: Task) => task.status === '2')
+  const done = arrayOfTasks.filter((task: Task) => task.status === '2')
 
-  return { news: news, pending: pending, expired: expired, resolved: resolved }
+  return {
+    Nuevas: newT,
+    Pendientes: pending,
+    Vencidas: expired,
+    Hechas: done,
+  }
 }
 
 export const getFlatArrayFromObjectValues = (survey: any): Task[] => {

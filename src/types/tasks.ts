@@ -15,14 +15,22 @@ export interface Task extends TaskRaw {
   guidelineName: string
 }
 
-export interface TaskStatus {
-  status: string
-  color: string
+export enum TaskStatus {
+  new = 'Nuevas',
+  pending = 'Pendientes',
+  expired = 'Vencidas',
+  done = 'Hechas',
 }
 
-export interface taskByStatus {
-  news: Task[]
-  pending: Task[]
-  expired: Task[]
-  resolved: Task[]
+export interface TasksGroupedByStatus {
+  Nuevas: Task[]
+  Pendientes: Task[]
+  Vencidas: Task[]
+  Hechas: Task[]
 }
+
+export type TypeTaskStatus =
+  | TaskStatus.new
+  | TaskStatus.pending
+  | TaskStatus.expired
+  | TaskStatus.done

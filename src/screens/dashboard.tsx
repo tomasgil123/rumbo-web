@@ -13,7 +13,7 @@ import { getTaskByStatus, getFlatArrayFromObjectValues } from 'utils/tasks'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
-import { Task } from 'types/tasks'
+import { TaskStatus } from 'types/tasks'
 
 const DashboardScreen = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
@@ -26,6 +26,7 @@ const DashboardScreen = (): JSX.Element => {
     survey as SurveyActive,
     auditProgram as AuditProgram
   )
+
   const essentialAreaPk = auditProgram?.areas
     ? Object.values(auditProgram?.areas).find((area) => area.essential)
     : 0
@@ -60,30 +61,30 @@ const DashboardScreen = (): JSX.Element => {
           <div className="p-2 md:p-4">
             <div className="flex items-center justify-around">
               <i className="icon-note text-danger-light text-sm md:text-2xl" />
-              <span>{taskByStatus.news.length}</span>
+              <span>{taskByStatus[TaskStatus.new].length}</span>
             </div>
-            <p>Nuevas</p>
+            <p>{TaskStatus.new}</p>
           </div>
           <div className="p-2 md:p-4">
             <div className="flex items-center justify-around">
               <i className="icon-fire text-danger text-sm md:text-2xl"></i>
-              {taskByStatus.expired.length}
+              {taskByStatus[TaskStatus.expired].length}
             </div>
-            <p>Vencidas</p>
+            <p>{TaskStatus.expired}</p>
           </div>
           <div className="p-2 md:p-4">
             <div className="flex items-center justify-around">
               <i className="icon-note text-primary-light text-sm md:text-2xl"></i>
-              {taskByStatus.pending.length}
+              {taskByStatus[TaskStatus.pending].length}
             </div>
-            <p>Pendientes</p>
+            <p>{TaskStatus.pending}</p>
           </div>
           <div className="p-2 md:p-4">
             <div className="flex items-center justify-around">
               <i className="icon-note text-success text-sm md:text-2xl"></i>
-              {taskByStatus.resolved.length}
+              {taskByStatus[TaskStatus.done].length}
             </div>
-            <p>Resueltas</p>
+            <p>{TaskStatus.done}</p>
           </div>
         </div>
       </div>

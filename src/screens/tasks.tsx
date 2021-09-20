@@ -1,20 +1,23 @@
-import React, { useState } from 'react'
-import { Switch, Route, useRouteMatch, Link } from 'react-router-dom'
+import React, { ChangeEvent } from 'react'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 // components
 import Layout from 'components/layout'
 import Task from 'domain/tasks/task'
-import TaskCard from 'domain/tasks/taskCard'
+
 import Spinner from 'components/spinner'
 import StatusFilter from 'domain/tasks/filters/statusFilter'
 import TasksByStatus from 'domain/tasks/TasksByStatus'
-//types
-import { Task as TaskModel } from 'types/tasks'
+import GuidelineNameFilter from 'domain/tasks/filters/GuidelineNameFilter'
 
-import { getTaskByStatus, getFlatArrayFromObjectValues } from 'utils/tasks'
+import { getFlatArrayFromObjectValues, TasksStyles } from 'utils/tasks'
 
 //utils
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useInitialData from 'hooks/useInitialData'
+import useTaskFilters from 'hooks/useTaskFilters'
+
+//types
+import { TypeTaskStatus } from 'types/tasks'
 
 const TaskList = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
@@ -23,7 +26,15 @@ const TaskList = (): JSX.Element => {
     distributorId,
     auditProgram
   )
-  const [statusFilter, setStatusFilter] = useState('')
+  const arrayFlatTasks = survey ? getFlatArrayFromObjectValues(survey) : []
+
+  const {
+    statusFilters,
+    addFilterStatus,
+    guidelineNameFilter,
+    addGuidelineNameFilter,
+    tasksToShowGrouped,
+  } = useTaskFilters(arrayFlatTasks)
 
   if (isLoading || isLoadingDistributor)
     return (
@@ -34,113 +45,37 @@ const TaskList = (): JSX.Element => {
 
   if (error || errorDistributor) return <div>Ha ocurrido un error</div>
 
-  const arrayFlatTasks = getFlatArrayFromObjectValues(survey)
-  const taskByStatus = getTaskByStatus(arrayFlatTasks)
-
-  const handleClick = (status: string): void => {
-    setStatusFilter(status)
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    addGuidelineNameFilter(event.target.value)
   }
 
-  switch (statusFilter) {
-    case 'news':
-      return (
-        <div className="flex flex-row justify-center content-between">
-          <ul className="px-4">
-            <div>
-              <StatusFilter taskByStatus={taskByStatus} handleClick={handleClick} />
-            </div>
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-danger-light'}
-              label={'Nuevas'}
-              status={'news'}
-            />
-          </ul>
-        </div>
-      )
-    case 'expired':
-      return (
-        <div className="flex flex-row justify-center content-between">
-          <ul className="px-4">
-            <div>
-              <StatusFilter taskByStatus={taskByStatus} handleClick={handleClick} />
-            </div>
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-danger'}
-              label={'Vencidas'}
-              status={'expired'}
-            />
-          </ul>
-        </div>
-      )
-    case 'pending':
-      return (
-        <div className="flex flex-row justify-center content-between">
-          <ul className="px-4">
-            <div>
-              <StatusFilter taskByStatus={taskByStatus} handleClick={handleClick} />
-            </div>
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-primary-light'}
-              label={'Pendientes'}
-              status={'pending'}
-            />
-          </ul>
-        </div>
-      )
-    case 'resolved':
-      return (
-        <div className="flex flex-row justify-center content-between">
-          <ul className="px-4">
-            <div>
-              <StatusFilter taskByStatus={taskByStatus} handleClick={handleClick} />
-            </div>
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-success'}
-              label={'Resueltas'}
-              status={'resolved'}
-            />
-          </ul>
-        </div>
-      )
-    default:
-      return (
-        <div className="flex flex-row justify-center content-between">
-          <ul className="px-4">
-            <div>
-              <StatusFilter taskByStatus={taskByStatus} handleClick={handleClick} />
-            </div>
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-danger-light'}
-              label={'Nuevas'}
-              status={'news'}
-            />
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-danger'}
-              label={'Vencidas'}
-              status={'expired'}
-            />
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-primary-light'}
-              label={'Pendientes'}
-              status={'pending'}
-            />
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-success'}
-              label={'Resueltas'}
-              status={'resolved'}
-            />
-          </ul>
-        </div>
-      )
+  const onApplyFilterStatus = (status: TypeTaskStatus): void => {
+    addFilterStatus(status)
   }
+
+  return (
+    <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
+      <ul className="px-4">
+        <div className="shadow-md rounded bg-white w-full">
+          <StatusFilter taskByStatus={tasksToShowGrouped} handleClick={onApplyFilterStatus} />
+          <GuidelineNameFilter
+            guidelineNameFilter={guidelineNameFilter}
+            handleSearchChange={handleSearchChange}
+          />
+        </div>
+        {Object.keys(tasksToShowGrouped).map(
+          (groupTasks): JSX.Element => (
+            <TasksByStatus
+              tasks={(tasksToShowGrouped as any)[groupTasks]}
+              borderColor={(TasksStyles as any)[groupTasks].borderColor}
+              label={groupTasks}
+              icon={(TasksStyles as any)[groupTasks].icon}
+            />
+          )
+        )}
+      </ul>
+    </div>
+  )
 }
 
 const TasksScreen = (): JSX.Element => {
