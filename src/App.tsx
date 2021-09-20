@@ -22,14 +22,8 @@ const App = (): JSX.Element => {
           <Route exact path="/">
             <Login />
           </Route>
-          {/* <Route path="/dashboard">{token ? <Dashboard /> : <Redirect to="/" />}</Route>
-          <Route path="/tareas">{token ? <Tasks /> : <Redirect to="/" />}</Route>*/}{' '}
-          <Route path="/tareas">
-            <Tasks />
-          </Route>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
+          <Route path="/dashboard">{token ? <Dashboard /> : <Redirect to="/" />}</Route>
+          <Route path="/tareas">{token ? <Tasks /> : <Redirect to="/" />}</Route>
         </Switch>
       </Router>
     </QueryClientProvider>
