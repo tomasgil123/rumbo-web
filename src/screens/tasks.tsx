@@ -54,28 +54,26 @@ const TaskList = (): JSX.Element => {
   }
 
   return (
-    <div>
-      <div className="flex flex-row justify-center content-between">
-        <ul className="px-4">
-          <div>
-            <StatusFilter taskByStatus={tasksToShowGrouped} handleClick={onApplyFilterStatus} />
-            <GuidelineNameFilter
-              guidelineNameFilter={guidelineNameFilter}
-              handleSearchChange={handleSearchChange}
+    <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
+      <ul className="px-4">
+        <div className="shadow-md rounded bg-white w-full">
+          <StatusFilter taskByStatus={tasksToShowGrouped} handleClick={onApplyFilterStatus} />
+          <GuidelineNameFilter
+            guidelineNameFilter={guidelineNameFilter}
+            handleSearchChange={handleSearchChange}
+          />
+        </div>
+        {Object.keys(tasksToShowGrouped).map(
+          (groupTasks): JSX.Element => (
+            <TasksByStatus
+              tasks={(tasksToShowGrouped as any)[groupTasks]}
+              borderColor={(TasksStyles as any)[groupTasks].borderColor}
+              label={groupTasks}
+              icon={(TasksStyles as any)[groupTasks].icon}
             />
-          </div>
-          {Object.keys(tasksToShowGrouped).map(
-            (groupTasks): JSX.Element => (
-              <TasksByStatus
-                tasks={(tasksToShowGrouped as any)[groupTasks]}
-                borderColor={(TasksStyles as any)[groupTasks].borderColor}
-                label={groupTasks}
-                icon={(TasksStyles as any)[groupTasks].icon}
-              />
-            )
-          )}
-        </ul>
-      </div>
+          )
+        )}
+      </ul>
     </div>
   )
 }
