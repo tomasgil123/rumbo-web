@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
-import { Switch, Route, useRouteMatch, Link } from 'react-router-dom'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 // components
 import Layout from 'components/layout'
 import Task from 'domain/tasks/task'
-import TaskCard from 'domain/tasks/taskCard'
+
 import Spinner from 'components/spinner'
 import StatusFilter from 'domain/tasks/filters/statusFilter'
 import TasksByStatus from 'domain/tasks/TasksByStatus'
-//types
-import { Task as TaskModel } from 'types/tasks'
+import GuidelineNameFilter from 'domain/tasks/filters/GuidelineNameFilter'
 
 import { getTaskByStatus, getFlatArrayFromObjectValues } from 'utils/tasks'
 
@@ -24,6 +23,7 @@ const TaskList = (): JSX.Element => {
     auditProgram
   )
   const [statusFilter, setStatusFilter] = useState('')
+  const [guidelineNameFilter, setGuidelineNameFilter] = useState('')
 
   if (isLoading || isLoadingDistributor)
     return (
@@ -41,6 +41,13 @@ const TaskList = (): JSX.Element => {
     setStatusFilter(status)
   }
 
+  const handleSearchChange = (event: any): void => {
+    setGuidelineNameFilter(event.target.value)
+  }
+
+  const filteredByGuiline = arrayFlatTasks.filter((task) =>
+    task.guidelineName.includes(guidelineNameFilter.toUpperCase())
+  )
   switch (statusFilter) {
     case 'news':
       return (
@@ -54,6 +61,7 @@ const TaskList = (): JSX.Element => {
               borderColor={'border-danger-light'}
               label={'Nuevas'}
               status={'news'}
+              icon={'icon-note text-danger-light'}
             />
           </ul>
         </div>
@@ -70,6 +78,7 @@ const TaskList = (): JSX.Element => {
               borderColor={'border-danger'}
               label={'Vencidas'}
               status={'expired'}
+              icon={'icon-fire text-danger'}
             />
           </ul>
         </div>
@@ -86,6 +95,7 @@ const TaskList = (): JSX.Element => {
               borderColor={'border-primary-light'}
               label={'Pendientes'}
               status={'pending'}
+              icon={'icon-note text-primary-ligh'}
             />
           </ul>
         </div>
@@ -102,6 +112,7 @@ const TaskList = (): JSX.Element => {
               borderColor={'border-success'}
               label={'Resueltas'}
               status={'resolved'}
+              icon={'icon-note text-primary-light'}
             />
           </ul>
         </div>
@@ -111,32 +122,57 @@ const TaskList = (): JSX.Element => {
         <div className="flex flex-row justify-center content-between">
           <ul className="px-4">
             <div>
+              <GuidelineNameFilter
+                handleSearchChange={handleSearchChange}
+                guidelineNameFilter={guidelineNameFilter}
+              />
               <StatusFilter taskByStatus={taskByStatus} handleClick={handleClick} />
             </div>
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-danger-light'}
-              label={'Nuevas'}
-              status={'news'}
-            />
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-danger'}
-              label={'Vencidas'}
-              status={'expired'}
-            />
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-primary-light'}
-              label={'Pendientes'}
-              status={'pending'}
-            />
-            <TasksByStatus
-              taskByStatus={taskByStatus}
-              borderColor={'border-success'}
-              label={'Resueltas'}
-              status={'resolved'}
-            />
+            {taskByStatus.news.length > 0 ? (
+              <TasksByStatus
+                taskByStatus={taskByStatus}
+                borderColor={'border-danger-light'}
+                label={'Nuevas'}
+                status={'news'}
+                icon={'icon-note text-danger-light'}
+              />
+            ) : (
+              <div> </div>
+            )}
+            {taskByStatus.expired.length > 0 ? (
+              <TasksByStatus
+                taskByStatus={taskByStatus}
+                borderColor={'border-danger'}
+                label={'Vencidas'}
+                status={'expired'}
+                icon={'icon-fire text-danger'}
+              />
+            ) : (
+              <div> </div>
+            )}
+
+            {taskByStatus.pending.length > 0 ? (
+              <TasksByStatus
+                taskByStatus={taskByStatus}
+                borderColor={'border-primary-light'}
+                label={'Pendientes'}
+                status={'pending'}
+                icon={'icon-note text-primary-light'}
+              />
+            ) : (
+              <div> </div>
+            )}
+            {taskByStatus.resolved.length > 0 ? (
+              <TasksByStatus
+                taskByStatus={taskByStatus}
+                borderColor={'border-success'}
+                label={'Resueltas'}
+                status={'resolved'}
+                icon={'icon-note text-success'}
+              />
+            ) : (
+              <div> </div>
+            )}
           </ul>
         </div>
       )

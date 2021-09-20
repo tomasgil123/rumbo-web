@@ -14,9 +14,10 @@ interface props {
   borderColor: string
   status: string
   label: string
+  icon: string
 }
 
-const TasksByStatus = ({ taskByStatus, borderColor, status, label }: props): JSX.Element => {
+const TasksByStatus = ({ taskByStatus, borderColor, status, label, icon }: props): JSX.Element => {
   return (
     <div>
       <div className="py-4">
@@ -24,7 +25,7 @@ const TasksByStatus = ({ taskByStatus, borderColor, status, label }: props): JSX
       </div>
       {taskByStatus[`${status}`].map((task: TaskModel) => (
         <li>
-          <TaskCard task={task} icon={'icon-note text-danger-light'} />
+          <TaskCard task={task} icon={icon} />
         </li>
       ))}
     </div>

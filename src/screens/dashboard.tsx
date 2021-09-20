@@ -13,7 +13,6 @@ import { getTaskByStatus, getFlatArrayFromObjectValues } from 'utils/tasks'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
-import { Task } from 'types/tasks'
 
 const DashboardScreen = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
@@ -26,6 +25,7 @@ const DashboardScreen = (): JSX.Element => {
     survey as SurveyActive,
     auditProgram as AuditProgram
   )
+
   const essentialAreaPk = auditProgram?.areas
     ? Object.values(auditProgram?.areas).find((area) => area.essential)
     : 0
