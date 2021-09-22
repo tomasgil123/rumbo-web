@@ -20,18 +20,11 @@ type GuidelinePk = {
   guidelinePk: string
 }
 
-// - tenemos que armar el sistemita de validacion con useForm
 // - tenemos que enviar la request del update de la tarea y hacer
 //   un update de la query que tiene los datos de las tareas
 //   eso significa que todo el hook se triggerea de vuelta?
 //   probablemente, pero no nos interesa porque aca solo vemos los datos
 //   de la tarea
-
-// Escribir validations que tiene que tener el form
-
-// tenemos que gregar la prop editable
-// si la tarea no es editable, entonces no se muestra el boton de submit
-// y se muestra un msj diciendo que la tarea no es editable
 
 const DateInput = forwardRef<null>(
   ({ value, onClick }: any, ref): JSX.Element => (
@@ -58,8 +51,10 @@ const Task = (): JSX.Element => {
   const task: TaskModel | '' = survey ? ((survey as SurveyActive).tasks as any)[guidelinePk][0] : ''
   const area: Area | '' = task ? (auditProgram as AuditProgram).areas[task.areaPk] : ''
   console.log('task', task)
+  console.log('survey', survey)
   const taskDate = task ? (task.deadline ? new Date(task.deadline) : new Date()) : new Date()
   const answerType = task ? task.answerType : 'b'
+  const isTaskDisabled = task ? task.status === STATUS_DONE : true
 
   const [errorOnSubmit, setErrorOnSubmit] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -112,7 +107,7 @@ const Task = (): JSX.Element => {
 
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
-      <div className="rounded shadow-lg p-4 bg-white">
+      <div className="rounded shadow-lg p-4 md:p-6 bg-white">
         <div className="pb-8">
           <h4 className="text-xs text-primary pb-2 font-bold">{area && area.name}</h4>
           <h2>{task && task.guidelineName}</h2>
@@ -175,24 +170,32 @@ const Task = (): JSX.Element => {
               Por favor, completa este campo con una breve descripción
             </span>
           )}
-          <Controller
-            render={({ field: { onChange, value } }): JSX.Element => (
-              <AnswerTaskInput answerType={answerType} value={value} onChange={onChange} />
-            )}
-            control={control}
-            name="answerTask"
-          />
-          {loading ? (
-            <button className="cursor-not-allowed rounded-lg w-40 p-2 bg-primary-light">
-              <Spinner />
-            </button>
-          ) : (
-            <input
-              className="h-12 cursor-pointer rounded-lg w-40 p-2 bg-primary-light text-white font-bold"
-              type="submit"
-              value="Guardar tarea"
+          {!isTaskDisabled && (
+            <Controller
+              render={({ field: { onChange, value } }): JSX.Element => (
+                <AnswerTaskInput answerType={answerType} value={value} onChange={onChange} />
+              )}
+              control={control}
+              name="answerTask"
             />
           )}
+
+          {!isTaskDisabled && (
+            <>
+              {loading ? (
+                <button className="cursor-not-allowed rounded-lg w-40 p-2 bg-primary-light">
+                  <Spinner />
+                </button>
+              ) : (
+                <input
+                  className="h-12 cursor-pointer rounded-lg w-40 p-2 bg-primary-light text-white font-bold"
+                  type="submit"
+                  value="Guardar tarea"
+                />
+              )}
+            </>
+          )}
+
           {errorOnSubmit && (
             <span className="text-danger text-center">
               Ha ocurrido un error al intentar modificar esta tarea
