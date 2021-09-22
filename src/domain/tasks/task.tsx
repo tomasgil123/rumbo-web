@@ -26,6 +26,10 @@ type GuidelinePk = {
 //   probablemente, pero no nos interesa porque aca solo vemos los datos
 //   de la tarea
 
+// no hacemos ningun update de las queries
+// cuando el usuario sale de esta route hjacemos un update
+// de las queries
+
 const DateInput = forwardRef<null>(
   ({ value, onClick }: any, ref): JSX.Element => (
     <button
@@ -88,7 +92,14 @@ const Task = (): JSX.Element => {
   }): Promise<void> => {
     setLoading(true)
     try {
-      //const results = await updateTask()
+      const taskUpdate = {
+        pk: task ? task.pk : 0,
+        status,
+        description,
+        assigned_to: assignedPerson,
+        deadline: date,
+      }
+      const results = await updateTask(taskUpdate, answerTask)
       setLoading(false)
     } catch (err) {
       setLoading(false)
