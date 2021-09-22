@@ -3922,32 +3922,10 @@ export const handlers = [
                         ],
                       },
                       {
-                        guideline_pk: 3666,
-                        value: '1.00',
-                        pk: 161726,
-                        tasks: [],
-                      },
-                      {
                         guideline_pk: 3632,
                         value: '60',
                         pk: 161725,
                         tasks: [],
-                      },
-                      {
-                        guideline_pk: 3631,
-                        value: '6',
-                        pk: 161724,
-                        tasks: [
-                          {
-                            pk: 37853,
-                            created_by: '2021guia+activador1@gmail.com',
-                            assigned_to: '',
-                            description: '',
-                            deadline: null,
-                            last_change: '2021-07-27T11:25:46.537457Z',
-                            status: '0',
-                          },
-                        ],
                       },
                       {
                         guideline_pk: 3630,

@@ -47,3 +47,16 @@ export const getFlatArrayFromObjectValues = (survey: any): Task[] => {
   )
   return arrayFlatTasks
 }
+
+export const getUnansweredGuidelines = (survey: any, auditProgram: any): any => {
+  const answeredGuide = Object.values(survey.answers)
+  const totalGuidelines = Object.values(auditProgram.guidelines)
+  const pkOfAnsweredGuide = answeredGuide.map((answer: any) => answer.guideline_pk)
+
+  const unansGuideline = totalGuidelines.filter(
+    (guideline: any) => pkOfAnsweredGuide.indexOf(guideline.pk) === -1
+  )
+
+  return unansGuideline
+  debugger
+}
