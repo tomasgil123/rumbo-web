@@ -16,6 +16,8 @@ import { TaskStatusEnum, Task as TaskModel } from 'types/tasks'
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
 import { Area } from 'types/area'
+import { Guideline } from 'types/guideline'
+
 type GuidelinePk = {
   guidelinePk: string
 }
@@ -27,8 +29,16 @@ type GuidelinePk = {
 //   de la tarea
 
 // no hacemos ningun update de las queries
-// cuando el usuario sale de esta route hjacemos un update
+// cuando el usuario sale de esta route hacemos un update
 // de las queries
+
+// esto tenemos que pensarlo mejor, porque no podemos estar
+// haciendo un refetch constante de los resultados de esas dos queries
+
+// aca por ahi igual es la seccion mas conveniente donde hacer un update
+// de las queries
+
+// tenemos que porbar si las evaluation lines andan bien
 
 const DateInput = forwardRef<null>(
   ({ value, onClick }: any, ref): JSX.Element => (
@@ -54,8 +64,13 @@ const Task = (): JSX.Element => {
 
   const task: TaskModel | '' = survey ? ((survey as SurveyActive).tasks as any)[guidelinePk][0] : ''
   const area: Area | '' = task ? (auditProgram as AuditProgram).areas[task.areaPk] : ''
+  const guideline: Guideline | '' = task
+    ? (auditProgram as AuditProgram).guidelines[task.guidelinePk]
+    : ''
+
   console.log('task', task)
   console.log('survey', survey)
+
   const taskDate = task ? (task.deadline ? new Date(task.deadline) : new Date()) : new Date()
   const answerType = task ? task.answerType : 'b'
   const isTaskDisabled = task ? task.status === STATUS_DONE : true
@@ -184,7 +199,13 @@ const Task = (): JSX.Element => {
           {!isTaskDisabled && (
             <Controller
               render={({ field: { onChange, value } }): JSX.Element => (
-                <AnswerTaskInput answerType={answerType} value={value} onChange={onChange} />
+                <AnswerTaskInput
+                  guidelineDescription={(guideline as Guideline).description}
+                  screen="task"
+                  answerType={answerType}
+                  value={value}
+                  onChange={onChange}
+                />
               )}
               control={control}
               name="answerTask"

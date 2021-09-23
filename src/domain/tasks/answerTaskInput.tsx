@@ -1,12 +1,41 @@
-import React from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 
 interface AnswerTaskInput {
   answerType: 'b' | 'n' | 'p'
   value: any
   onChange: any
+  guidelineDescription: string
+  screen: 'task' | 'area'
 }
 
-const AswerTaskInputComponent = ({ answerType, value, onChange }: AnswerTaskInput): JSX.Element => {
+const AswerTaskInputComponent = ({
+  answerType,
+  value,
+  onChange,
+  guidelineDescription,
+  screen,
+}: AnswerTaskInput): JSX.Element => {
+  const [description, setDescription] = useState('')
+  const [evaluationLines, setEvaluationLines] = useState<string[]>([])
+
+  useLayoutEffect(() => {
+    const indexFirstAsterisk = guidelineDescription.indexOf('*')
+    if (indexFirstAsterisk > -1) {
+      try {
+        setDescription(guidelineDescription.slice(0, indexFirstAsterisk))
+        const evaluationLinesText = guidelineDescription
+          .slice(indexFirstAsterisk, -1)
+          .replace(/(\r\n|\n|\r)/gm, '')
+        const listOfEvalutationLines = evaluationLinesText.split('*').filter((text) => text)
+        setEvaluationLines(listOfEvalutationLines)
+      } catch (err) {
+        setDescription(guidelineDescription)
+      }
+    } else {
+      setDescription(guidelineDescription)
+    }
+  }, [guidelineDescription])
+
   const renderInput = (): JSX.Element => {
     switch (answerType) {
       case 'b':
@@ -50,9 +79,36 @@ const AswerTaskInputComponent = ({ answerType, value, onChange }: AnswerTaskInpu
     }
   }
 
+  const renderEvaluationLines = (): JSX.Element | null => {
+    try {
+      return (
+        <div className="flex flex-col item-center pb-4">
+          {evaluationLines.map((evaluationLine, index) => (
+            <span className="text-xs text-primary" key={index}>{`${evaluationLine
+              .split('>')[0]
+              .replace(/\s+/g, ' ')
+              .trim()} = ${evaluationLine.split('>')[1].replace(/\s+/g, ' ').trim()}`}</span>
+          ))}
+        </div>
+      )
+    } catch (err) {
+      return null
+    }
+  }
+
   return (
-    <div className="">
-      <span className="self-start pb-2 font-bold">Respuesta</span>
+    <div>
+      {screen === 'task' && (
+        <>
+          <span className="self-start pb-2 font-bold">Respuesta</span>
+        </>
+      )}
+      {screen === 'area' && (
+        <>
+          <span>{description}</span>{' '}
+        </>
+      )}
+      {evaluationLines.length > 1 && renderEvaluationLines()}
       {renderInput()}
     </div>
   )
