@@ -5,8 +5,11 @@ import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import { getUnansweredGuidelines } from 'utils/tasks'
 //components
 import Spinner from 'components/spinner'
-import Layout from 'components/layout'
+
 //types
+import { Guideline } from 'types/guideline'
+import { SurveyActive } from 'types/survey'
+import { AuditProgram } from 'types/auditProgram'
 
 const UnansweredGuidelines = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
@@ -24,10 +27,13 @@ const UnansweredGuidelines = (): JSX.Element => {
 
   if (error || errorDistributor) return <div>Ha ocurrido un error</div>
 
-  const arrayOfUnansweredGuidelines = getUnansweredGuidelines(survey, auditProgram)
+  const arrayOfUnansweredGuidelines = getUnansweredGuidelines(
+    survey as SurveyActive,
+    auditProgram as AuditProgram
+  )
 
   return (
-    <div>
+    <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
       <div className="text-center mt-2">
         <i className="icon-close  text-danger text-sm md:text-5xl" />
         <div className="text-sm mt-8 mb-4 md:text-xl">
@@ -35,7 +41,7 @@ const UnansweredGuidelines = (): JSX.Element => {
         </div>
       </div>
       <div>
-        {arrayOfUnansweredGuidelines.map((guideline: any) => (
+        {arrayOfUnansweredGuidelines.map((guideline: Guideline) => (
           <div
             className="flex flex-row items-start text-center
            shadow-md h-14  p-2 md:w-70"

@@ -49,15 +49,17 @@ const Dashboard = (): JSX.Element => {
 
   if (error || errorDistributor) return <div>Ha ocurrido un error</div>
 
-  const arrayFlatTasks = getFlatArrayFromObjectValues(survey)
+  const arrayFlatTasks = getFlatArrayFromObjectValues(survey as SurveyActive)
   const taskByStatus = getTaskByStatus(arrayFlatTasks)
-  const arrayOfUnansweredGuidelines = getUnansweredGuidelines(survey, auditProgram)
+  const arrayOfUnansweredGuidelines = getUnansweredGuidelines(
+    survey as SurveyActive,
+    auditProgram as AuditProgram
+  )
   if (arrayFlatTasks.length === 0) {
     return <div>Todavia no se ha creado ninguna tarea</div>
   }
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
-      {arrayOfUnansweredGuidelines.length > 0 && <UnansweredGuidelineButton />}
       <div className="rounded shadow-lg p-4 bg-white">
         <div className="text-center text-primary-dark text-base md:text-xl ">
           Tareas plan operativo
@@ -157,6 +159,9 @@ const Dashboard = (): JSX.Element => {
           </div>
           <div></div>
         </div>
+      </div>
+      <div className="m-4 w-30">
+        {arrayOfUnansweredGuidelines.length > 0 && <UnansweredGuidelineButton />}
       </div>
     </div>
   )

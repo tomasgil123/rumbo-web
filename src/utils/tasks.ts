@@ -1,4 +1,8 @@
 // types
+import { Guideline } from 'types/guideline'
+import { Answer } from 'types/answer'
+import { AuditProgram } from 'types/auditProgram'
+import { SurveyActive } from 'types/survey'
 import { Task, TasksGroupedByStatus } from 'types/tasks'
 
 export const STATUS_NEW = '0'
@@ -39,24 +43,27 @@ export const getTaskByStatus = (arrayOfTasks: Task[]): TasksGroupedByStatus => {
   }
 }
 
-export const getFlatArrayFromObjectValues = (survey: any): Task[] => {
+export const getFlatArrayFromObjectValues = (survey: SurveyActive): Task[] => {
   const arrayOfTaskArray = Object.values(survey.tasks)
   const arrayFlatTasks = arrayOfTaskArray.reduce(
-    (acc: Task[], tasks: any): Task[] => acc.concat(tasks.map((task: Task) => task)),
+    (acc: Task[], tasks: Task[]): Task[] => acc.concat(tasks.map((task: Task) => task)),
     []
   )
   return arrayFlatTasks
 }
 
-export const getUnansweredGuidelines = (survey: any, auditProgram: any): any => {
-  const answeredGuide = Object.values(survey.answers)
-  const totalGuidelines = Object.values(auditProgram.guidelines)
-  const pkOfAnsweredGuide = answeredGuide.map((answer: any) => answer.guideline_pk)
+export const getUnansweredGuidelines = (
+  survey: SurveyActive,
+  auditProgram: AuditProgram
+): Guideline[] => {
+  const answers = Object.values(survey.answers)
+  const guidelines = Object.values(auditProgram.guidelines)
+  const answerPks = answers.map((answer: Answer) => answer.guideline_pk)
 
-  const unansGuideline = totalGuidelines.filter(
-    (guideline: any) => pkOfAnsweredGuide.indexOf(guideline.pk) === -1
+  const unansweredGuidelines = guidelines.filter(
+    (guideline: Guideline) => answerPks.indexOf(guideline.pk) === -1
   )
 
-  return unansGuideline
+  return unansweredGuidelines
   debugger
 }
