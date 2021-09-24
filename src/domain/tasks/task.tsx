@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker'
 import { updateTask } from 'services/task'
 // components
 import Spinner from 'components/spinner'
-import AnswerTaskInput from './answerTaskInput'
+import AnswerTaskInput, { inRange } from './answerTaskInput'
 // utils
 import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
@@ -38,8 +38,6 @@ type GuidelinePk = {
 // aca por ahi igual es la seccion mas conveniente donde hacer un update
 // de las queries
 
-// tenemos que porbar si las evaluation lines andan bien
-
 const DateInput = forwardRef<null>(
   ({ value, onClick }: any, ref): JSX.Element => (
     <button
@@ -67,9 +65,6 @@ const Task = (): JSX.Element => {
   const guideline: Guideline | '' = task
     ? (auditProgram as AuditProgram).guidelines[task.guidelinePk]
     : ''
-
-  console.log('task', task)
-  console.log('survey', survey)
 
   const taskDate = task ? (task.deadline ? new Date(task.deadline) : new Date()) : new Date()
   const answerType = task ? task.answerType : 'b'
@@ -130,6 +125,14 @@ const Task = (): JSX.Element => {
     )
 
   if (error || errorDistributor) return <div>Ha ocurrido un error</div>
+
+  const inRangeValue = (value: string): boolean => {
+    return inRange(
+      Number(value),
+      (guideline as Guideline).value_min,
+      (guideline as Guideline).value_max
+    )
+  }
 
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
@@ -196,22 +199,31 @@ const Task = (): JSX.Element => {
               Por favor, completa este campo con una breve descripción
             </span>
           )}
-          {!isTaskDisabled && (
-            <Controller
-              render={({ field: { onChange, value } }): JSX.Element => (
-                <AnswerTaskInput
-                  guidelineDescription={(guideline as Guideline).description}
-                  screen="task"
-                  answerType={answerType}
-                  value={value}
-                  onChange={onChange}
-                />
-              )}
-              control={control}
-              name="answerTask"
-            />
+          <div className="self-start">
+            {!isTaskDisabled && (
+              <Controller
+                render={({ field: { onChange, value } }): JSX.Element => (
+                  <AnswerTaskInput
+                    guidelineDescription={(guideline as Guideline).description}
+                    screen="task"
+                    answerType={answerType}
+                    value={value}
+                    onChange={onChange}
+                  />
+                )}
+                control={control}
+                rules={{ required: true, validate: inRangeValue }}
+                name="answerTask"
+              />
+            )}
+          </div>
+          {errors.answerTask && (
+            <span className="text-danger mb-4 text-left w-full">
+              {`El valor no puede ser menor a ${(guideline as Guideline).value_min} o mayor a ${
+                (guideline as Guideline).value_max
+              }`}
+            </span>
           )}
-
           {!isTaskDisabled && (
             <>
               {loading ? (
@@ -227,7 +239,6 @@ const Task = (): JSX.Element => {
               )}
             </>
           )}
-
           {errorOnSubmit && (
             <span className="text-danger text-center">
               Ha ocurrido un error al intentar modificar esta tarea

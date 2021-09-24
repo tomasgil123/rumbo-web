@@ -8,6 +8,10 @@ interface AnswerTaskInput {
   screen: 'task' | 'area'
 }
 
+export const inRange = (value: number, min: number | string, max: number | string): boolean => {
+  return value <= Number(max) && value >= Number(min)
+}
+
 const AswerTaskInputComponent = ({
   answerType,
   value,
@@ -108,7 +112,7 @@ const AswerTaskInputComponent = ({
           <span>{description}</span>{' '}
         </>
       )}
-      {evaluationLines.length > 1 && renderEvaluationLines()}
+      <div className="py-2">{evaluationLines.length > 1 && renderEvaluationLines()}</div>
       {renderInput()}
     </div>
   )
