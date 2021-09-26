@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import Login from 'screens/login'
 import Dashboard from 'screens/dashboard'
 import Tasks from 'screens/tasks'
-import UnansweredGuidelines from 'screens/unansweredGuidelines'
 // Utils
 import { getLocalAccessToken } from 'utils/session'
 
