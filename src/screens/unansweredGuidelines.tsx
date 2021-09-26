@@ -35,19 +35,16 @@ const UnansweredGuidelines = (): JSX.Element => {
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
       <div className="text-center mt-2">
-        <i className="icon-close  text-danger text-sm md:text-5xl" />
-        <div className="text-sm mt-8 mb-4 md:text-xl">
+        <i className="icon-close  text-danger text-3xl md:text-5xl" />
+        <div className="text-lg py-4 md:pb-6 md:text-xl">
           Te faltan contestar los siguientes lineamientos
         </div>
       </div>
       <div>
         {arrayOfUnansweredGuidelines.map((guideline: Guideline) => (
-          <div
-            className="flex flex-row items-start text-center
-           shadow-md h-14  p-2 md:w-70"
-          >
-            <div className="w-40 text-center ">{guideline.code}</div>
-            <div className="w-70 text-center md:w-50 px-4">{guideline.name}</div>
+          <div className="p-4 w-full flex flex-row shadow-md rounded bg-white my-2">
+            <div className="px-8">{guideline.code}</div>
+            <div>{guideline.name}</div>
           </div>
         ))}
       </div>
