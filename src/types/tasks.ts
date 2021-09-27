@@ -15,6 +15,7 @@ export interface Task extends TaskRaw {
   modulePk: number
   guidelinePk: number
   guidelineName: string
+  answerType: 'b' | 'n' | 'p'
 }
 
 export enum TaskStatus {

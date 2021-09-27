@@ -12,7 +12,7 @@ import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import { STATUS_NEW, STATUS_PENDING, STATUS_DONE } from 'utils/tasks'
 // types
-import { TaskStatusEnum, Task as TaskModel } from 'types/tasks'
+import { TaskStatus, Task as TaskModel } from 'types/tasks'
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
 import { Area } from 'types/area'
@@ -154,9 +154,9 @@ const Task = (): JSX.Element => {
                 className="rounded w-40 p-2 outline-none border border-gray-300"
                 {...register('status')}
               >
-                <option value={STATUS_NEW}>{TaskStatusEnum.new}</option>
-                <option value={STATUS_PENDING}>{TaskStatusEnum.pending}</option>
-                <option value={STATUS_DONE}>{TaskStatusEnum.done}</option>
+                <option value={STATUS_NEW}>{TaskStatus.new}</option>
+                <option value={STATUS_PENDING}>{TaskStatus.pending}</option>
+                <option value={STATUS_DONE}>{TaskStatus.done}</option>
               </select>
             </div>
             <div className="pb-4 flex-1 flex items-center">
