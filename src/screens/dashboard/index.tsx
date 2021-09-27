@@ -1,27 +1,31 @@
 import React from 'react'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 // components
 import Layout from 'components/layout'
 import Spinner from 'components/spinner'
 import ProgressCircle from 'components/progressCircle'
 import IconCircle from 'components/iconCircle'
+import UnansweredGuidelines from './unansweredGuidelines'
+import UnansweredGuidelineButton from 'domain/guidelines/unansweredGuidelineButton'
 // utils
 import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useSurveyCalculations from 'hooks/useSurveyCalculations'
 import useAreaCalculations from 'hooks/useAreaCalculations'
-import { getTaskByStatus, getFlatArrayFromObjectValues } from 'utils/tasks'
+import { getTaskByStatus, getFlatArrayFromObjectValues, getUnansweredGuidelines } from 'utils/tasks'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
 import { TaskStatus } from 'types/tasks'
 
-const DashboardScreen = (): JSX.Element => {
+const Dashboard = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
   const { isLoadingDistributor, errorDistributor, survey } = useInitialDataDistributor(
     distributorId,
     auditProgram
   )
+
   const { isApproved, points, percentage } = useSurveyCalculations(
     survey as SurveyActive,
     auditProgram as AuditProgram
@@ -35,6 +39,7 @@ const DashboardScreen = (): JSX.Element => {
     auditProgram as AuditProgram,
     essentialAreaPk
   )
+
   if (isLoading || isLoadingDistributor)
     return (
       <div className="mt-8 md:mt-16 mx-auto px-4">
@@ -44,9 +49,12 @@ const DashboardScreen = (): JSX.Element => {
 
   if (error || errorDistributor) return <div>Ha ocurrido un error</div>
 
-  const arrayFlatTasks = getFlatArrayFromObjectValues(survey)
+  const arrayFlatTasks = getFlatArrayFromObjectValues(survey as SurveyActive)
   const taskByStatus = getTaskByStatus(arrayFlatTasks)
-
+  const arrayOfUnansweredGuidelines = getUnansweredGuidelines(
+    survey as SurveyActive,
+    auditProgram as AuditProgram
+  )
   if (arrayFlatTasks.length === 0) {
     return <div>Todavia no se ha creado ninguna tarea</div>
   }
@@ -88,6 +96,7 @@ const DashboardScreen = (): JSX.Element => {
           </div>
         </div>
       </div>
+
       <div className="flex flex-row rounded shadow-lg p-4 mt-4 bg-white">
         <div className="flex-1 flex flex-col items-center md:ml-16">
           <div className="flex-grow pb-2 md:pb-4 md:text-lg text-gray-700">Puntaje total</div>
@@ -151,6 +160,30 @@ const DashboardScreen = (): JSX.Element => {
           <div></div>
         </div>
       </div>
+      <div className="m-4 w-30">
+        {arrayOfUnansweredGuidelines.length > 0 && <UnansweredGuidelineButton />}
+      </div>
+    </div>
+  )
+}
+
+const DashboardScreen = (): JSX.Element => {
+  const match = useRouteMatch()
+  return (
+    <div>
+      {/* The Topics page has its own <Switch> with more routes
+          that build on the /topics URL path. You can think of the
+          2nd <Route> here as an "index" page for all topics, or
+          the page that is shown when no topic is selected */}
+
+      <Switch>
+        <Route path={`${match.path}/lineamientos-sin-contestar`}>
+          <UnansweredGuidelines />
+        </Route>
+        <Route path={match.path}>
+          <Dashboard />
+        </Route>
+      </Switch>
     </div>
   )
 }

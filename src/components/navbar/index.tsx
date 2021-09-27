@@ -37,13 +37,13 @@ const Navbar = (): JSX.Element => {
             <div className="hidden md:flex items-center space-x-1">
               <Link
                 className={stylesLinkDesktop(location.pathname.includes(PageSections.dashboard))}
-                to={PageSections.dashboard}
+                to={`/${PageSections.dashboard}`}
               >
                 {PageSections.dashboard}
               </Link>
               <Link
                 className={stylesLinkDesktop(location.pathname.includes(PageSections.tasks))}
-                to={PageSections.tasks}
+                to={`/${PageSections.tasks}`}
               >
                 {PageSections.tasks}
               </Link>

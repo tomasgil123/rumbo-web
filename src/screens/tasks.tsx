@@ -18,6 +18,7 @@ import useTaskFilters from 'hooks/useTaskFilters'
 
 //types
 import { TypeTaskStatus } from 'types/tasks'
+import { SurveyActive } from 'types/survey'
 
 const TaskList = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
@@ -26,7 +27,7 @@ const TaskList = (): JSX.Element => {
     distributorId,
     auditProgram
   )
-  const arrayFlatTasks = survey ? getFlatArrayFromObjectValues(survey) : []
+  const arrayFlatTasks = survey ? getFlatArrayFromObjectValues(survey as SurveyActive) : []
 
   const {
     statusFilters,
