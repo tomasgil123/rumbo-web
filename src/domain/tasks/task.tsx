@@ -6,21 +6,20 @@ import DatePicker from 'react-datepicker'
 import { updateTask } from 'services/task'
 // components
 import Spinner from 'components/spinner'
+import AnswerTaskInput from './answerTaskInput'
 // utils
 import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import { STATUS_NEW, STATUS_PENDING, STATUS_DONE } from 'utils/tasks'
 // types
-import { TaskStatusEnum } from 'types/tasks'
-
-type TaskId = {
-  taskId: string
+import { TaskStatusEnum, Task as TaskModel } from 'types/tasks'
+import { SurveyActive } from 'types/survey'
+import { AuditProgram } from 'types/auditProgram'
+import { Area } from 'types/area'
+type GuidelinePk = {
+  guidelinePk: string
 }
 
-// tenemos que gestionar los errores de una forma global
-// no se si es el momento
-
-// - tenemos que corregir los estilos de los inputs
 // - tenemos que armar el sistemita de validacion con useForm
 // - tenemos que enviar la request del update de la tarea y hacer
 //   un update de la query que tiene los datos de las tareas
@@ -28,16 +27,26 @@ type TaskId = {
 //   probablemente, pero no nos interesa porque aca solo vemos los datos
 //   de la tarea
 
+// Escribir validations que tiene que tener el form
+
+// tenemos que gregar la prop editable
+// si la tarea no es editable, entonces no se muestra el boton de submit
+// y se muestra un msj diciendo que la tarea no es editable
+
 const DateInput = forwardRef<null>(
   ({ value, onClick }: any, ref): JSX.Element => (
-    <button className="cursor-pointer w-40 p-2 border border-gray-300" onClick={onClick} ref={ref}>
+    <button
+      className="cursor-pointer rounded w-40 p-2 border border-gray-300"
+      onClick={onClick}
+      ref={ref}
+    >
       {value}
     </button>
   )
 )
 
 const Task = (): JSX.Element => {
-  const { taskId } = useParams<TaskId>()
+  const { guidelinePk } = useParams<GuidelinePk>()
 
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
@@ -46,9 +55,11 @@ const Task = (): JSX.Element => {
     auditProgram
   )
 
-  // con el taskid nos traemos los datos de la tarea
-  // y completamos los campos que sean necesarios
-  // el usuario tendria que poder acceder a cualquier tarea
+  const task: TaskModel | '' = survey ? ((survey as SurveyActive).tasks as any)[guidelinePk][0] : ''
+  const area: Area | '' = task ? (auditProgram as AuditProgram).areas[task.areaPk] : ''
+  console.log('task', task)
+  const taskDate = task ? (task.deadline ? new Date(task.deadline) : new Date()) : new Date()
+  const answerType = task ? task.answerType : 'b'
 
   const [errorOnSubmit, setErrorOnSubmit] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -57,17 +68,28 @@ const Task = (): JSX.Element => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm({ shouldUseNativeValidation: false })
+  } = useForm({
+    shouldUseNativeValidation: false,
+    defaultValues: {
+      status: task ? task.status : '0',
+      assignedPerson: task ? task.assigned_to : '',
+      description: task ? task.description : '',
+      date: taskDate,
+      answerTask: '',
+    },
+  })
   const onSubmit = async ({
     status,
     date,
     assignedPerson,
     description,
+    answerTask,
   }: {
     status: string
     date: string
     assignedPerson: string
     description: string
+    answerTask: string | number
   }): Promise<void> => {
     setLoading(true)
     try {
@@ -79,12 +101,21 @@ const Task = (): JSX.Element => {
     }
   }
 
+  if (isLoading || isLoadingDistributor)
+    return (
+      <div className="mt-8 md:mt-16 mx-auto px-4">
+        <Spinner />
+      </div>
+    )
+
+  if (error || errorDistributor) return <div>Ha ocurrido un error</div>
+
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
       <div className="rounded shadow-lg p-4 bg-white">
         <div className="pb-8">
-          <h4>Nombre del area</h4>
-          <h2>Nombre de la tarea</h2>
+          <h4 className="text-xs text-primary pb-2 font-bold">{area && area.name}</h4>
+          <h2>{task && task.guidelineName}</h2>
         </div>
         <form
           className="flex justify-center flex-col items-center w-full"
@@ -96,7 +127,7 @@ const Task = (): JSX.Element => {
                 <div className="w-14">Estado</div>
               </div>
               <select
-                className="w-40 p-2 outline-none border border-gray-300"
+                className="rounded w-40 p-2 outline-none border border-gray-300"
                 {...register('status')}
               >
                 <option value={STATUS_NEW}>{TaskStatusEnum.new}</option>
@@ -115,34 +146,42 @@ const Task = (): JSX.Element => {
                     selected={value}
                     onChange={onChange}
                     customInput={<DateInput />}
+                    minDate={new Date()}
                   />
                 )}
                 control={control}
                 name="date"
-                defaultValue={new Date()}
+                defaultValue={taskDate}
               />
             </div>
           </div>
           <span className="self-start pb-2 font-bold">Persona asignada</span>
           <input
-            className="p-2 mb-4 w-full outline-none border border-gray-300"
+            className="rounded p-2 mb-4 w-full outline-none border border-gray-300"
             {...register('assignedPerson', { required: true })}
           />
-          {errors.user && (
-            <span className="text-danger">
+          {errors.assignedPerson && (
+            <span className="text-danger mb-4 text-left w-full">
               Por favor, completa este campo con el nombre de la persona responsable de la tarea
             </span>
           )}
           <span className="self-start pb-2 font-bold">Descripción</span>
           <textarea
-            className="p-2 mb-4 w-full outline-none border border-gray-300"
+            className="rounded p-2 mb-4 w-full outline-none border border-gray-300"
             {...register('description', { required: true })}
           />
-          {errors.password && (
-            <span className="text-danger">
+          {errors.description && (
+            <span className="text-danger mb-4 text-left w-full">
               Por favor, completa este campo con una breve descripción
             </span>
           )}
+          <Controller
+            render={({ field: { onChange, value } }): JSX.Element => (
+              <AnswerTaskInput answerType={answerType} value={value} onChange={onChange} />
+            )}
+            control={control}
+            name="answerTask"
+          />
           {loading ? (
             <button className="cursor-not-allowed rounded-lg w-40 p-2 bg-primary-light">
               <Spinner />

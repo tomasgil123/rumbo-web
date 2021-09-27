@@ -29,16 +29,8 @@ export interface TasksGroupedByStatus {
   Hechas: Task[]
 }
 
-<<<<<<< HEAD
 export type TypeTaskStatus =
   | TaskStatus.new
   | TaskStatus.pending
   | TaskStatus.expired
   | TaskStatus.done
-=======
-export enum TaskStatusEnum {
-  new = 'Nueva',
-  pending = 'Pendiente',
-  done = 'Hecha',
-}
->>>>>>> 87ec2ee... feat: add task form

@@ -11,7 +11,7 @@ export interface GuidelineRaw {
   name: string
   description: string
   required: boolean
-  answer_type: string
+  answer_type: 'b' | 'n' | 'p'
   answer_required: boolean
   value_min: string
   value_max: string
