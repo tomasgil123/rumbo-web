@@ -63,12 +63,21 @@ export const flatInitialDataDistributorSurvey = (
           const areaPk = auditProgram.guidelines[answer.guideline_pk].areaPk
           const modulePk = auditProgram.guidelines[answer.guideline_pk].modulePk
           const guidelineName = auditProgram.guidelines[answer.guideline_pk].name
+          const evaluationLines = [...auditProgram.guidelines[answer.guideline_pk].evaluation_lines]
+          const answerType = auditProgram.guidelines[answer.guideline_pk].answer_type
+          const valueMin = auditProgram.guidelines[answer.guideline_pk].value_min
+          const valueMax = auditProgram.guidelines[answer.guideline_pk].value_max
+
           const taskWithGuidelinePk = {
             ...task,
             guidelinePk: answer.guideline_pk,
             guidelineName,
             modulePk,
             areaPk,
+            evaluationLines,
+            answerType,
+            valueMin,
+            valueMax,
           }
           return taskWithGuidelinePk
         })

@@ -8,11 +8,14 @@ export interface TaskRaw {
   status: string
 }
 
+export type TaskUpdate = Omit<TaskRaw, 'created_by' | 'last_change'>
+
 export interface Task extends TaskRaw {
   areaPk: number
   modulePk: number
   guidelinePk: number
   guidelineName: string
+  answerType: 'b' | 'n' | 'p'
 }
 
 export enum TaskStatus {

@@ -89,7 +89,7 @@ const TasksScreen = (): JSX.Element => {
           the page that is shown when no topic is selected */}
 
       <Switch>
-        <Route path={`${match.path}/:taskId`}>
+        <Route path={`${match.path}/:guidelinePk`}>
           <Task />
         </Route>
         <Route path={match.path}>

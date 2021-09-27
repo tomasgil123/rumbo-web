@@ -10,7 +10,7 @@ interface TaskCardModel {
 }
 const TaskCard = ({ task, icon }: TaskCardModel): JSX.Element => {
   return (
-    <Link to={`tareas/${task.pk}`}>
+    <Link to={`tareas/${task.guidelinePk}`}>
       <div className="flex flex-row bg-white items-start shadow-md h-36 w-full p-2 md:w-100 my-2 rounded-lg">
         <span className="w-20 text-center ">{task.guidelinePk}</span>
         <div className="flex flex-col justify-center w-full md:w-60 px-4 ">
