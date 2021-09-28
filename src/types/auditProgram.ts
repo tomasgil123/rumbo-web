@@ -2,15 +2,15 @@ import { Area, AreaRaw } from './area'
 import { Module } from './module'
 import { Guideline } from './guideline'
 
-interface AuditProgramAreas {
+export interface AuditProgramAreas {
   [key: number]: Area
 }
 
-interface AuditProgramModules {
+export interface AuditProgramModules {
   [key: number]: Module
 }
 
-interface AuditProgramGuidelines {
+export interface AuditProgramGuidelines {
   [key: number]: Guideline
 }
 

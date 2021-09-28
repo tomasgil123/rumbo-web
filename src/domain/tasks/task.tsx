@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker'
 import { updateTask } from 'services/task'
 // components
 import Spinner from 'components/spinner'
-import AnswerTaskInput, { inRange } from './answerTaskInput'
+import AnswerTaskInput, { inRange } from 'components/answerInput'
 // utils
 import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
