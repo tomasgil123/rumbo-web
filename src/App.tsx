@@ -2,6 +2,7 @@ import React from 'react'
 import './App.css'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ToastContainer } from 'react-toastify'
 // Screens
 import Login from 'screens/login'
 import Dashboard from 'screens/dashboard'
@@ -28,6 +29,7 @@ const App = (): JSX.Element => {
           <Route path="/area">{token ? <Area /> : <Redirect to="/" />}</Route>
         </Switch>
       </Router>
+      <ToastContainer autoClose={5000} />
     </QueryClientProvider>
   )
 }

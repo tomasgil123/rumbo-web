@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 //components
 import AnswerInput from 'components/answerInput'
 // utils
@@ -20,16 +21,10 @@ interface GuidelineProps {
 import { sendAnswer } from 'services/answer'
 import Spinner from 'components/spinner'
 
-// - mostrar algun tipo de toaster si la request falla
 // - hacer update del query correspondiente cuando la respuesta se envia
 //   correctamente
-// - ver como podemos obtener la persona que envia la respuesta
 
 const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
-  console.log('guideline', guideline)
-  console.log('answer', survey.answers[guideline.pk])
-  console.log('survey', survey)
-
   const [approved, setApproved] = useState(false)
   const [givenPoints, setGivenPoints] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -53,9 +48,16 @@ const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
     setApproved(guidelineItem.isApproved())
   }, [])
 
+  useEffect(() => {
+    if (errorOnSubmit) {
+      toast.error('Ha ocurrido un erro al intentar guardar la respuesta al lineamiento')
+    }
+  }, [errorOnSubmit])
+
   const onAnswerGuideline = async (value: string | number): Promise<void> => {
     setLoading(true)
     try {
+      //TODO: add the name of the user which is sending the answer
       const answer = {
         guideline: guideline.pk,
         sent_by: '',
@@ -63,12 +65,13 @@ const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
         value: value,
       }
       const results = await sendAnswer(answer)
+      toast.success('La respuesta al lineamiento se guardo correctamente')
       setLoading(false)
     } catch (err) {
       setLoading(false)
       setErrorOnSubmit(true)
       setTimeout(() => {
-        setErrorOnSubmit(true)
+        setErrorOnSubmit(false)
       }, 2000)
     }
   }
