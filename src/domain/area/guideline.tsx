@@ -16,16 +16,24 @@ interface GuidelineProps {
   guideline: GuidelineModel
   survey: SurveyActive
 }
+// services
+import { sendAnswer } from 'services/answer'
+import Spinner from 'components/spinner'
 
-// - hacer service contestar lineamiento y agregar spinner o icono de error
 // - mostrar algun tipo de toaster si la request falla
+// - hacer update del query correspondiente cuando la respuesta se envia
+//   correctamente
+// - ver como podemos obtener la persona que envia la respuesta
 
 const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
   console.log('guideline', guideline)
   console.log('answer', survey.answers[guideline.pk])
+  console.log('survey', survey)
 
   const [approved, setApproved] = useState(false)
   const [givenPoints, setGivenPoints] = useState(0)
+  const [loading, setLoading] = useState(false)
+  const [errorOnSubmit, setErrorOnSubmit] = useState(false)
 
   const answer = survey.answers[guideline.pk]
     ? survey.answers[guideline.pk]
@@ -45,8 +53,24 @@ const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
     setApproved(guidelineItem.isApproved())
   }, [])
 
-  const onAnswerGuideline = (value: string | number): void => {
-    console.log('value', value)
+  const onAnswerGuideline = async (value: string | number): Promise<void> => {
+    setLoading(true)
+    try {
+      const answer = {
+        guideline: guideline.pk,
+        sent_by: '',
+        survey: survey.pk,
+        value: value,
+      }
+      const results = await sendAnswer(answer)
+      setLoading(false)
+    } catch (err) {
+      setLoading(false)
+      setErrorOnSubmit(true)
+      setTimeout(() => {
+        setErrorOnSubmit(true)
+      }, 2000)
+    }
   }
 
   const givenPointsStyles = cx('rounded-full h-12 w-12 border-2 flex items-center justify-center', {
@@ -64,8 +88,18 @@ const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
 
   return (
     <div className={` ${s.grid} bg-white shadow-md w-full p-2 md:p-4 my-2 md:my-3 rounded-lg`}>
-      <span className={`${s.guidelinePk} text-center underline font-bold text-primary`}>
-        {guideline.pk}
+      <span className={`${s.guidelinePk} text-center `}>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            {errorOnSubmit ? (
+              <i className="icon-close  text-danger text-lg md:text-2xl" />
+            ) : (
+              <span className="underline font-bold text-primary">{guideline.pk}</span>
+            )}
+          </>
+        )}
       </span>
       <div className={`${s.required}`}>
         {guideline.required && (
