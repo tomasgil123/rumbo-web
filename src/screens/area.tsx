@@ -13,24 +13,10 @@ import { getGuidelinesModule } from 'utils/modules'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
-import { TaskStatus } from 'types/tasks'
 
 type AreaPk = {
   areaPk: string
 }
-
-// como le mostramos al usuario que el lineamiento
-// se esta contestando?
-// podemos hacer que le pk del guideline se vuelva un spinner
-
-// tenemos que iterar sobre los guidelines
-// para cada guideline nos fijamos si tiene una asnwer asociada
-// y si ademas tiene una task
-
-// con el area sacamos los modulos
-
-// tenemos que hacer un funcion de getModulesFromArea
-// tenemos que hacer una funcion para obtener los guidelines de un module
 
 const Area = (): JSX.Element => {
   const { areaPk } = useParams<AreaPk>()
@@ -62,11 +48,13 @@ const Area = (): JSX.Element => {
       <div>
         {modules.map((module) => (
           <Module
+            key={module.pk}
             module={module}
             guidelines={getGuidelinesModule(
               module.guideline_pks,
               (auditProgram as AuditProgram).guidelines
             )}
+            survey={survey as SurveyActive}
           />
         ))}
       </div>

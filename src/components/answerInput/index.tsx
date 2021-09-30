@@ -1,4 +1,6 @@
 import React, { useLayoutEffect, useState } from 'react'
+// components
+import HandsSelect from './handsSelect'
 
 interface AnswerTaskInput {
   answerType: 'b' | 'n' | 'p'
@@ -23,6 +25,8 @@ const AswerTaskInputComponent = ({
   const [evaluationLines, setEvaluationLines] = useState<string[]>([])
 
   useLayoutEffect(() => {
+    // TODO: refactor component to only use necesary code
+    // this is only needed if answerType === "n" || answerType === "n"
     const indexFirstAsterisk = guidelineDescription.indexOf('*')
     if (indexFirstAsterisk > -1) {
       try {
@@ -45,17 +49,20 @@ const AswerTaskInputComponent = ({
       case 'b':
         return (
           <div>
-            <select
-              value={value ? value : 'default'}
-              onChange={onChange}
-              className="rounded w-60 p-2 mb-4 outline-none border border-gray-300"
-            >
-              <option value="default" disabled>
-                -- Selecciona una respuesta --
-              </option>
-              <option value="1.00">Si</option>
-              <option value="0">No</option>
-            </select>
+            {screen === 'task' && (
+              <select
+                value={value ? value : 'default'}
+                onChange={onChange}
+                className="rounded w-60 p-2 mb-4 outline-none border border-gray-300"
+              >
+                <option value="default" disabled>
+                  -- Selecciona una respuesta --
+                </option>
+                <option value="1.00">Si</option>
+                <option value="0">No</option>
+              </select>
+            )}
+            {screen === 'area' && <HandsSelect value={value} onChange={onChange} />}
           </div>
         )
       case 'n':
@@ -107,12 +114,12 @@ const AswerTaskInputComponent = ({
           <span className="self-start pb-2 font-bold">Respuesta</span>
         </>
       )}
-      {screen === 'area' && (
+      {screen === 'area' && (answerType === 'n' || answerType === 'p') && (
         <>
           <span>{description}</span>{' '}
         </>
       )}
-      <div className="py-2">{evaluationLines.length > 1 && renderEvaluationLines()}</div>
+      {evaluationLines.length > 1 && <div className="py-2">{renderEvaluationLines()}</div>}
       {renderInput()}
     </div>
   )
