@@ -12,6 +12,20 @@ export const handlers = [
       })
     )
   }),
+  rest.post('http://18.207.73.190/api/v1/answers/?version=2', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        survey: 1413,
+        guideline: 3157,
+        value: '"1.00"',
+        edited: false,
+        approved: true,
+        sent_by: 'distri_ba6',
+        last_change_user: '2020-09-24T18:27:21.680957Z',
+      })
+    )
+  }),
   rest.get(
     'http://18.207.73.190/api/v1/initialData?distributor_id=208&version=2',
     (req, res, ctx) => {

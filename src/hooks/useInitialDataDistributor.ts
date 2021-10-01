@@ -1,7 +1,6 @@
 import { useQuery } from 'react-query'
-import axios from 'interceptors'
-// utils
-import { flatInitialDataDistributorSurvey } from 'utils/initialData'
+// services
+import { getInitialDataDistributor } from 'services/initialDataDistribuidor'
 // types
 import { SurveyActive, SurveyInactive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
@@ -9,7 +8,7 @@ import { AuditProgram } from 'types/auditProgram'
 interface InitialDataDistributor {
   isLoadingDistributor: boolean
   errorDistributor: unknown
-  survey: SurveyActive | SurveyInactive | null
+  survey: SurveyActive | SurveyInactive | null | undefined
 }
 
 const useInitialDataDistributor = (
@@ -18,24 +17,21 @@ const useInitialDataDistributor = (
 ): InitialDataDistributor => {
   const { isLoading, error, data } = useQuery(
     'initialDataDistributorId',
-    () =>
-      axios.get(`/api/v1/initialData?distributor_id=${distributorId}&version=2`).then((res) => res),
+    () => getInitialDataDistributor(distributorId as number, auditProgram),
     {
       // The query will not execute until the distributorId exists
       enabled: !!distributorId,
     }
   )
-  const surveyActive = data
-    ? flatInitialDataDistributorSurvey(
-        data.data.distributors[0].surveys[0],
-        auditProgram as AuditProgram
-      )
-    : null
+
+  console.log('initialDataDistributorId', data)
+
+  const survey = data?.data
 
   return {
     isLoadingDistributor: isLoading,
     errorDistributor: error,
-    survey: surveyActive,
+    survey: survey,
   }
 }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { useMutation, useQueryClient } from 'react-query'
 //components
 import AnswerInput from 'components/answerInput'
 // utils
@@ -21,18 +22,46 @@ interface GuidelineProps {
 import { sendAnswer } from 'services/answer'
 import Spinner from 'components/spinner'
 
-// - hacer update del query correspondiente cuando la respuesta se envia
-//   correctamente
-
 const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
   const [approved, setApproved] = useState(false)
   const [givenPoints, setGivenPoints] = useState(0)
-  const [loading, setLoading] = useState(false)
   const [errorOnSubmit, setErrorOnSubmit] = useState(false)
-
   const answer = survey.answers[guideline.pk]
     ? survey.answers[guideline.pk]
     : { tasks: [], guideline_pk: '', value: '', pk: '' }
+
+  const cache = useQueryClient()
+
+  const { mutate, error, isLoading } = useMutation(sendAnswer, {
+    onMutate: (answer) => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      cache.cancelQueries('initialDataDistributorId')
+      // Snapshot the previous value
+      const previousDistributorData = cache.getQueryData('initialDataDistributorId')
+      // Optimistically update to the new value
+      cache.setQueryData('initialDataDistributorId', (distributorData) => {
+        ;(distributorData as any).data.answers[answer.guideline].value = answer.value
+        return distributorData
+      })
+      return previousDistributorData
+    },
+    onError: (error, variables, previousDistributorData) => {
+      // If the mutation fails, use the previousDistributorData returned from onMutate to roll back
+      cache.setQueriesData('initialDataDistributorId', previousDistributorData)
+    },
+    onSettled: (data, error, answerResponse, previousDistributorData) => {
+      // data is undefined. Why?
+      if (!error) {
+        cache.setQueryData('initialDataDistributorId', () => {
+          ;(previousDistributorData as any).data.answers[answerResponse.guideline].value =
+            answerResponse.value
+          return previousDistributorData
+        })
+      } else {
+        cache.setQueryData('initialDataDistributorId', () => previousDistributorData)
+      }
+    },
+  })
 
   useEffect(() => {
     const guidelineItem = new GuidelineCal(guideline, answer)
@@ -49,31 +78,24 @@ const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
   }, [])
 
   useEffect(() => {
-    if (errorOnSubmit) {
+    if (error) {
       toast.error('Ha ocurrido un erro al intentar guardar la respuesta al lineamiento')
-    }
-  }, [errorOnSubmit])
-
-  const onAnswerGuideline = async (value: string | number): Promise<void> => {
-    setLoading(true)
-    try {
-      //TODO: add the name of the user which is sending the answer
-      const answer = {
-        guideline: guideline.pk,
-        sent_by: '',
-        survey: survey.pk,
-        value: value,
-      }
-      const results = await sendAnswer(answer)
-      toast.success('La respuesta al lineamiento se guardo correctamente')
-      setLoading(false)
-    } catch (err) {
-      setLoading(false)
       setErrorOnSubmit(true)
       setTimeout(() => {
         setErrorOnSubmit(false)
       }, 2000)
     }
+  }, [error])
+
+  const onAnswerGuideline = async (value: string | number): Promise<void> => {
+    //TODO: add the name of the user which is sending the answer
+    const answer = {
+      guideline: guideline.pk,
+      sent_by: '',
+      survey: survey.pk,
+      value: value,
+    }
+    mutate(answer)
   }
 
   const givenPointsStyles = cx('rounded-full h-12 w-12 border-2 flex items-center justify-center', {
@@ -92,7 +114,7 @@ const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
   return (
     <div className={` ${s.grid} bg-white shadow-md w-full p-2 md:p-4 my-2 md:my-3 rounded-lg`}>
       <span className={`${s.guidelinePk} text-center `}>
-        {loading ? (
+        {isLoading ? (
           <Spinner />
         ) : (
           <>
