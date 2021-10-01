@@ -8,6 +8,7 @@ import Module from 'domain/area/module'
 // utils
 import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
+import useRefetchQuery from 'hooks/useRefetchQuery'
 import { getModulesArea } from 'utils/area'
 import { getGuidelinesModule } from 'utils/modules'
 // types
@@ -20,6 +21,10 @@ type AreaPk = {
 
 const Area = (): JSX.Element => {
   const { areaPk } = useParams<AreaPk>()
+
+  // when the user leaves the area screen we want to refetch the
+  // initialDataDistributorId query
+  useRefetchQuery('initialDataDistributorId')
 
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
