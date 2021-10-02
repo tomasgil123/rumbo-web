@@ -14,6 +14,8 @@ import { getGuidelinesModule } from 'utils/modules'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
+// context
+import { ChangesMadeProvider, useChangesMade } from 'domain/area/changesMadeContext'
 
 type AreaPk = {
   areaPk: string
@@ -22,9 +24,10 @@ type AreaPk = {
 const Area = (): JSX.Element => {
   const { areaPk } = useParams<AreaPk>()
 
+  const { wereChangesMade } = useChangesMade()
   // when the user leaves the area screen we want to refetch the
   // initialDataDistributorId query
-  useRefetchQuery('initialDataDistributorId')
+  useRefetchQuery('initialDataDistributorId', wereChangesMade)
 
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
@@ -73,7 +76,9 @@ const AreaScreen = (): JSX.Element => {
     <div>
       <Switch>
         <Route path={`${match.path}/:areaPk`}>
-          <Area />
+          <ChangesMadeProvider>
+            <Area />
+          </ChangesMadeProvider>
         </Route>
       </Switch>
     </div>

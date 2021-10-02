@@ -21,6 +21,8 @@ interface GuidelineProps {
 // services
 import { sendAnswer } from 'services/answer'
 import Spinner from 'components/spinner'
+// context
+import { useChangesMade } from './changesMadeContext'
 
 const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
   const [approved, setApproved] = useState(false)
@@ -31,6 +33,8 @@ const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
     : { tasks: [], guideline_pk: '', value: '', pk: '' }
 
   const cache = useQueryClient()
+
+  const { setWereChangesMade } = useChangesMade()
 
   const { mutate, error, isLoading } = useMutation(sendAnswer, {
     onMutate: (answer) => {
@@ -52,6 +56,8 @@ const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
     onSettled: (data, error, answerResponse, previousDistributorData) => {
       // data is undefined. Why?
       if (!error) {
+        // we save in context that changes were made
+        setWereChangesMade(true)
         cache.setQueryData('initialDataDistributorId', () => {
           ;(previousDistributorData as any).data.answers[answerResponse.guideline].value =
             answerResponse.value
