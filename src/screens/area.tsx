@@ -24,17 +24,17 @@ type AreaPk = {
 const Area = (): JSX.Element => {
   const { areaPk } = useParams<AreaPk>()
 
-  const { wereChangesMade } = useChangesMade()
-  // when the user leaves the area screen we want to refetch the
-  // initialDataDistributorId query
-  useRefetchQuery('initialDataDistributorId', wereChangesMade)
-
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
-  const { isLoadingDistributor, errorDistributor, survey } = useInitialDataDistributor(
+  const { isLoadingDistributor, errorDistributor, survey, refetch } = useInitialDataDistributor(
     distributorId,
     auditProgram
   )
+
+  const { wereChangesMade } = useChangesMade()
+  // when the user leaves the area screen we want to refetch the
+  // initialDataDistributorId query
+  useRefetchQuery(wereChangesMade, refetch)
 
   if (isLoading || isLoadingDistributor)
     return (
@@ -45,10 +45,8 @@ const Area = (): JSX.Element => {
 
   if (error || errorDistributor) return <div>Ha ocurrido un error</div>
 
-  console.log('auditProgram', auditProgram)
   const area = (auditProgram as AuditProgram).areas[Number(areaPk)]
   const modules = getModulesArea(area.module_pks, (auditProgram as AuditProgram).modules)
-  console.log('modules', modules)
 
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
@@ -63,6 +61,7 @@ const Area = (): JSX.Element => {
               (auditProgram as AuditProgram).guidelines
             )}
             survey={survey as SurveyActive}
+            distributorId={distributorId as number}
           />
         ))}
       </div>

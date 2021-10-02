@@ -9,22 +9,24 @@ interface InitialDataDistributor {
   isLoadingDistributor: boolean
   errorDistributor: unknown
   survey: SurveyActive | SurveyInactive | null | undefined
+  refetch: () => void
 }
 
 const useInitialDataDistributor = (
   distributorId: number | null,
   auditProgram: AuditProgram | null
 ): InitialDataDistributor => {
-  const { isLoading, error, data } = useQuery(
-    'initialDataDistributorId',
+  const { isLoading, error, data, refetch } = useQuery(
+    ['initialDataDistributorId', distributorId],
     () => getInitialDataDistributor(distributorId as number, auditProgram),
     {
       // The query will not execute until the distributorId exists
       enabled: !!distributorId,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     }
   )
-
-  console.log('initialDataDistributorId', data)
 
   const survey = data?.data
 
@@ -32,6 +34,7 @@ const useInitialDataDistributor = (
     isLoadingDistributor: isLoading,
     errorDistributor: error,
     survey: survey,
+    refetch,
   }
 }
 

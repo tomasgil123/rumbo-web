@@ -32,7 +32,6 @@ const useAreaCalculations = (
   const [numberRequiredGuidelines, setNumberRequiredGuidelines] = useState(0)
 
   useEffect(() => {
-    console.log('use effect useAreaCalculations')
     if (survey) {
       if ((survey as SurveyActive)?.answers) {
         const chosenArea = auditProgram.areas[areaPk]

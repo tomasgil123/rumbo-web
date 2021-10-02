@@ -17,6 +17,7 @@ import { STATUS_NEW, STATUS_PENDING } from 'utils/tasks'
 interface GuidelineProps {
   guideline: GuidelineModel
   survey: SurveyActive
+  distributorId: number
 }
 // services
 import { sendAnswer } from 'services/answer'
@@ -24,7 +25,7 @@ import Spinner from 'components/spinner'
 // context
 import { useChangesMade } from './changesMadeContext'
 
-const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
+const Guideline = ({ guideline, survey, distributorId }: GuidelineProps): JSX.Element => {
   const [approved, setApproved] = useState(false)
   const [givenPoints, setGivenPoints] = useState(0)
   const [errorOnSubmit, setErrorOnSubmit] = useState(false)
@@ -39,11 +40,14 @@ const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
   const { mutate, error, isLoading } = useMutation(sendAnswer, {
     onMutate: (answer) => {
       // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-      cache.cancelQueries('initialDataDistributorId')
+      cache.cancelQueries(['initialDataDistributorId', distributorId])
       // Snapshot the previous value
-      const previousDistributorData = cache.getQueryData('initialDataDistributorId')
+      const previousDistributorData = cache.getQueryData([
+        'initialDataDistributorId',
+        distributorId,
+      ])
       // Optimistically update to the new value
-      cache.setQueryData('initialDataDistributorId', (distributorData) => {
+      cache.setQueryData(['initialDataDistributorId', distributorId], (distributorData) => {
         ;(distributorData as any).data.answers[answer.guideline].value = answer.value
         return distributorData
       })
@@ -51,20 +55,26 @@ const Guideline = ({ guideline, survey }: GuidelineProps): JSX.Element => {
     },
     onError: (error, variables, previousDistributorData) => {
       // If the mutation fails, use the previousDistributorData returned from onMutate to roll back
-      cache.setQueriesData('initialDataDistributorId', previousDistributorData)
+      cache.setQueriesData(['initialDataDistributorId', distributorId], previousDistributorData)
     },
     onSettled: (data, error, answerResponse, previousDistributorData) => {
       // data is undefined. Why?
+      debugger
       if (!error) {
         // we save in context that changes were made
         setWereChangesMade(true)
-        cache.setQueryData('initialDataDistributorId', () => {
+        toast.success('La respuesta al lineamiento se guardo correctamente')
+        cache.setQueryData(['initialDataDistributorId', distributorId], () => {
           ;(previousDistributorData as any).data.answers[answerResponse.guideline].value =
             answerResponse.value
           return previousDistributorData
         })
       } else {
-        cache.setQueryData('initialDataDistributorId', () => previousDistributorData)
+        debugger
+        cache.setQueryData(
+          ['initialDataDistributorId', distributorId],
+          () => previousDistributorData
+        )
       }
     },
   })

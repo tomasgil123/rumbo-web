@@ -9,15 +9,21 @@ interface ModuleProps {
   module: ModuleModel
   guidelines: GuidelineModel[]
   survey: SurveyActive
+  distributorId: number
 }
 
-const Module = ({ module, guidelines, survey }: ModuleProps): JSX.Element => {
+const Module = ({ module, guidelines, survey, distributorId }: ModuleProps): JSX.Element => {
   return (
     <div>
       <div className="pt-6 md:pt-10 md:pb-2">{module.name}</div>
       <div>
         {guidelines.map((guideline) => (
-          <Guideline key={guideline.pk} guideline={guideline} survey={survey} />
+          <Guideline
+            key={guideline.pk}
+            guideline={guideline}
+            survey={survey}
+            distributorId={distributorId}
+          />
         ))}
       </div>
     </div>

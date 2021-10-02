@@ -8,11 +8,9 @@ interface AnswerResponse {
 }
 
 export const sendAnswer = async (answer: AnswerPost): Promise<AnswerResponse> => {
-  debugger
   const response: AxiosResponse<AnswerR> = await axios.post(
-    '/answers/?version=2',
+    '/api/v1/answers/?version=2',
     JSON.stringify(answer)
   )
-  debugger
   return { status: response.status, data: response.data }
 }

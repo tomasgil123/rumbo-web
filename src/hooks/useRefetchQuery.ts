@@ -1,15 +1,13 @@
 import { useEffect } from 'react'
-import { useQueryClient } from 'react-query'
 
-const useRefetchQuery = (query: string, wereChangesMade: boolean): void => {
-  const cache = useQueryClient()
+const useRefetchQuery = (wereChangesMade: boolean, refetch: () => void): void => {
   useEffect(() => {
     return function refetchQueries(): void {
       if (wereChangesMade) {
-        cache.invalidateQueries(query)
+        refetch()
       }
     }
-  }, [])
+  }, [wereChangesMade])
 }
 
 export default useRefetchQuery

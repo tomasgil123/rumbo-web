@@ -12,8 +12,10 @@ interface InitialData {
 }
 
 const useInitialData = (): InitialData => {
-  const { isLoading, error, data } = useQuery('initialData', () =>
-    axios.get('/api/v1/initialData?distributors_ids=true').then((res) => res)
+  const { isLoading, error, data } = useQuery(
+    'initialData',
+    () => axios.get('/api/v1/initialData?distributors_ids=true').then((res) => res),
+    { refetchOnMount: false, refetchOnWindowFocus: false, refetchOnReconnect: false }
   )
 
   const auditProgram = data
