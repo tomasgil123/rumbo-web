@@ -48,8 +48,9 @@ const Guideline = ({ guideline, survey, distributorId }: GuidelineProps): JSX.El
       ])
       // Optimistically update to the new value
       cache.setQueryData(['initialDataDistributorId', distributorId], (distributorData) => {
-        ;(distributorData as any).data.answers[answer.guideline].value = answer.value
-        return distributorData
+        const copyDistributorData = JSON.parse(JSON.stringify(distributorData))
+        copyDistributorData.data.answers[answer.guideline].value = answer.value
+        return copyDistributorData
       })
       return previousDistributorData
     },
@@ -59,7 +60,6 @@ const Guideline = ({ guideline, survey, distributorId }: GuidelineProps): JSX.El
     },
     onSettled: (data, error, answerResponse, previousDistributorData) => {
       // data is undefined. Why?
-      debugger
       if (!error) {
         // we save in context that changes were made
         setWereChangesMade(true)
@@ -70,7 +70,6 @@ const Guideline = ({ guideline, survey, distributorId }: GuidelineProps): JSX.El
           return previousDistributorData
         })
       } else {
-        debugger
         cache.setQueryData(
           ['initialDataDistributorId', distributorId],
           () => previousDistributorData
@@ -95,7 +94,7 @@ const Guideline = ({ guideline, survey, distributorId }: GuidelineProps): JSX.El
 
   useEffect(() => {
     if (error) {
-      toast.error('Ha ocurrido un erro al intentar guardar la respuesta al lineamiento')
+      toast.error('Ha ocurrido un error al intentar guardar la respuesta al lineamiento')
       setErrorOnSubmit(true)
       setTimeout(() => {
         setErrorOnSubmit(false)
