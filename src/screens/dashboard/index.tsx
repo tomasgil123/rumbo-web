@@ -6,6 +6,7 @@ import Layout from 'components/layout'
 import Spinner from 'components/spinner'
 import ProgressCircle from 'components/progressCircle'
 import IconCircle from 'components/iconCircle'
+import SurveySummaryPresentational from 'domain/dashboard/surveySummaryPresentational'
 import UnansweredGuidelines from './unansweredGuidelines'
 import UnansweredGuidelineButton from 'domain/dashboard/unansweredGuidelineButton'
 // utils
@@ -14,6 +15,7 @@ import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useSurveyCalculations from 'hooks/useSurveyCalculations'
 import useAreaCalculations from 'hooks/useAreaCalculations'
 import { getTaskByStatus, getFlatArrayFromObjectValues, getUnansweredGuidelines } from 'utils/tasks'
+import { capitalizeFirstLetter } from 'utils'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
@@ -59,6 +61,8 @@ const Dashboard = (): JSX.Element => {
   if (arrayFlatTasks.length === 0) {
     return <div>Todavia no se ha creado ninguna tarea</div>
   }
+  console.log('survey', survey)
+  const surveyDate = new Date((survey as SurveyActive).valid_since)
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
       <div className="rounded shadow-lg p-4 bg-white">
@@ -126,7 +130,7 @@ const Dashboard = (): JSX.Element => {
       </div>
       <Link to={`/area/${essentialAreaPk.pk}`}>
         <div className="pt-6 md:pt-8">
-          <div className="text-center pb-4 md:pb-4 md:text-lg font-bold text-gray-700">
+          <div className="text-center pb-4 md:text-lg font-bold text-gray-700">
             LINEAMIENTOS BASICOS
           </div>
           <div className="flex flex-row">
@@ -145,7 +149,9 @@ const Dashboard = (): JSX.Element => {
               />
             </div>
             <div className="flex-1 flex flex-col items-center md:mr-16">
-              <div className="pb-2 md:pb-4 md:text-lg text-gray-700">No aprobado</div>
+              <div className="pb-2 md:pb-4 md:text-lg text-gray-700">
+                {isAreaApproved ? 'Aprobado' : 'No aprobado'}
+              </div>
               {isAreaApproved ? (
                 <IconCircle
                   bgColor="text-success-light"
@@ -162,9 +168,19 @@ const Dashboard = (): JSX.Element => {
         </div>
       </Link>
 
-      <div className="m-4 w-30">
+      <div className="m-4 w-30 py-8">
         {arrayOfUnansweredGuidelines.length > 0 && <UnansweredGuidelineButton />}
       </div>
+      <SurveySummaryPresentational
+        points={points}
+        isApproved={isApproved}
+        percentage={percentage}
+        month={`${capitalizeFirstLetter(
+          surveyDate.toLocaleString('es-ES', {
+            month: 'long',
+          })
+        )}-${surveyDate.getFullYear()}`}
+      />
     </div>
   )
 }
