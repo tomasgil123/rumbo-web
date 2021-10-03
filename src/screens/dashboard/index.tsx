@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { Switch, Route, useRouteMatch } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { Switch, Route, useRouteMatch, Link } from 'react-router-dom'
 // components
 import Layout from 'components/layout'
 import Spinner from 'components/spinner'

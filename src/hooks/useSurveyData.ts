@@ -16,6 +16,7 @@ const useSurveyData = (surveyUrl: string, auditProgram: AuditProgram): SurveyDat
     ['survey', surveyUrl],
     () => getSurveyData(surveyUrl, auditProgram),
     {
+      enabled: !!auditProgram,
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,

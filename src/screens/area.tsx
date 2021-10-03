@@ -1,16 +1,14 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
-import { Switch, Route, useRouteMatch } from 'react-router-dom'
+import { Switch, Route, useRouteMatch, useParams } from 'react-router-dom'
 // components
 import Layout from 'components/layout'
 import Spinner from 'components/spinner'
-import Module from 'domain/area/module'
+import AreaPresentational from 'domain/area'
 // utils
 import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useRefetchQuery from 'hooks/useRefetchQuery'
 import { getModulesArea } from 'utils/area'
-import { getGuidelinesModule } from 'utils/modules'
 // types
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
@@ -49,23 +47,12 @@ const Area = (): JSX.Element => {
   const modules = getModulesArea(area.module_pks, (auditProgram as AuditProgram).modules)
 
   return (
-    <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
-      <div className="shadow-md rounded bg-white w-full p-4">Area header</div>
-      <div>
-        {modules.map((module) => (
-          <Module
-            key={module.pk}
-            module={module}
-            guidelines={getGuidelinesModule(
-              module.guideline_pks,
-              (auditProgram as AuditProgram).guidelines
-            )}
-            survey={survey as SurveyActive}
-            distributorId={distributorId as number}
-          />
-        ))}
-      </div>
-    </div>
+    <AreaPresentational
+      modules={modules}
+      survey={survey as SurveyActive}
+      distributorId={distributorId as number}
+      auditProgram={auditProgram as AuditProgram}
+    />
   )
 }
 

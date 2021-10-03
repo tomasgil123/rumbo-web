@@ -1,6 +1,9 @@
 import React, { useLayoutEffect, useState } from 'react'
 // components
 import HandsSelect from './handsSelect'
+import EvaluationLines from './evaluationLines'
+// utils
+import { getEvaluationLinesFromDescription } from 'utils/guideline'
 
 interface AnswerTaskInput {
   answerType: 'b' | 'n' | 'p'
@@ -21,27 +24,13 @@ const AswerTaskInputComponent = ({
   guidelineDescription,
   screen,
 }: AnswerTaskInput): JSX.Element => {
-  const [description, setDescription] = useState('')
   const [evaluationLines, setEvaluationLines] = useState<string[]>([])
 
   useLayoutEffect(() => {
     // TODO: refactor component to only use necesary code
     // this is only needed if answerType === "n" || answerType === "n"
-    const indexFirstAsterisk = guidelineDescription.indexOf('*')
-    if (indexFirstAsterisk > -1) {
-      try {
-        setDescription(guidelineDescription.slice(0, indexFirstAsterisk))
-        const evaluationLinesText = guidelineDescription
-          .slice(indexFirstAsterisk, -1)
-          .replace(/(\r\n|\n|\r)/gm, '')
-        const listOfEvalutationLines = evaluationLinesText.split('*').filter((text) => text)
-        setEvaluationLines(listOfEvalutationLines)
-      } catch (err) {
-        setDescription(guidelineDescription)
-      }
-    } else {
-      setDescription(guidelineDescription)
-    }
+    const { evaluationLines } = getEvaluationLinesFromDescription(guidelineDescription)
+    setEvaluationLines(evaluationLines)
   }, [guidelineDescription])
 
   const renderInput = (): JSX.Element => {
@@ -90,23 +79,6 @@ const AswerTaskInputComponent = ({
     }
   }
 
-  const renderEvaluationLines = (): JSX.Element | null => {
-    try {
-      return (
-        <div className="flex flex-col item-center pb-4">
-          {evaluationLines.map((evaluationLine, index) => (
-            <span className="text-xs text-primary" key={index}>{`${evaluationLine
-              .split('>')[0]
-              .replace(/\s+/g, ' ')
-              .trim()} = ${evaluationLine.split('>')[1].replace(/\s+/g, ' ').trim()}`}</span>
-          ))}
-        </div>
-      )
-    } catch (err) {
-      return null
-    }
-  }
-
   return (
     <div>
       {screen === 'task' && (
@@ -114,12 +86,13 @@ const AswerTaskInputComponent = ({
           <span className="self-start pb-2 font-bold">Respuesta</span>
         </>
       )}
-      {screen === 'area' && (answerType === 'n' || answerType === 'p') && (
+      {screen === 'task' && (
         <>
-          <span>{description}</span>{' '}
+          {evaluationLines.length > 1 && (
+            <div className="py-2">{EvaluationLines(evaluationLines)}</div>
+          )}
         </>
       )}
-      {evaluationLines.length > 1 && <div className="py-2">{renderEvaluationLines()}</div>}
       {renderInput()}
     </div>
   )

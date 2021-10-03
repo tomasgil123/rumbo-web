@@ -1,5 +1,5 @@
 //components
-import Guideline from './guideline'
+import Guideline from './guidelineContainer'
 //types
 import { Module as ModuleModel } from 'types/module'
 import { Guideline as GuidelineModel } from 'types/guideline'

@@ -8,6 +8,7 @@ import Login from 'screens/login'
 import Dashboard from 'screens/dashboard'
 import Tasks from 'screens/tasks'
 import Area from 'screens/area'
+import Survey from 'screens/survey'
 // Utils
 import { getLocalAccessToken } from 'utils/session'
 
@@ -27,6 +28,7 @@ const App = (): JSX.Element => {
           <Route path="/dashboard">{token ? <Dashboard /> : <Redirect to="/" />}</Route>
           <Route path="/tareas">{token ? <Tasks /> : <Redirect to="/" />}</Route>
           <Route path="/area">{token ? <Area /> : <Redirect to="/" />}</Route>
+          <Route path="/encuesta">{token ? <Survey /> : <Redirect to="/" />}</Route>
         </Switch>
       </Router>
       <ToastContainer autoClose={5000} />
