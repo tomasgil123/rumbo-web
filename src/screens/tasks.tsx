@@ -28,7 +28,6 @@ const TaskList = (): JSX.Element => {
     auditProgram
   )
 
-  //este array de tasks lo tenemos que ordenar
   const arrayFlatTasks = survey ? getFlatArrayFromObjectValues(survey as SurveyActive) : []
 
   useEffect(() => {
