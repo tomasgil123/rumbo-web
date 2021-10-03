@@ -10,6 +10,7 @@ import AnswerTaskInput, { inRange } from 'components/answerInput'
 // utils
 import useInitialData from 'hooks/useInitialData'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
+import useRefetchQuery from 'hooks/useRefetchQuery'
 import { STATUS_NEW, STATUS_PENDING, STATUS_DONE } from 'utils/tasks'
 // types
 import { TaskStatus, Task as TaskModel } from 'types/tasks'
@@ -21,22 +22,6 @@ import { Guideline } from 'types/guideline'
 type GuidelinePk = {
   guidelinePk: string
 }
-
-// - tenemos que enviar la request del update de la tarea y hacer
-//   un update de la query que tiene los datos de las tareas
-//   eso significa que todo el hook se triggerea de vuelta?
-//   probablemente, pero no nos interesa porque aca solo vemos los datos
-//   de la tarea
-
-// no hacemos ningun update de las queries
-// cuando el usuario sale de esta route hacemos un update
-// de las queries
-
-// esto tenemos que pensarlo mejor, porque no podemos estar
-// haciendo un refetch constante de los resultados de esas dos queries
-
-// aca por ahi igual es la seccion mas conveniente donde hacer un update
-// de las queries
 
 const DateInput = forwardRef<null>(
   ({ value, onClick }: any, ref): JSX.Element => (
@@ -52,13 +37,17 @@ const DateInput = forwardRef<null>(
 
 const Task = (): JSX.Element => {
   const { guidelinePk } = useParams<GuidelinePk>()
-
+  const [wereChangesMade, setWereChangesMade] = useState(false)
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
-  const { isLoadingDistributor, errorDistributor, survey } = useInitialDataDistributor(
+  const { isLoadingDistributor, errorDistributor, survey, refetch } = useInitialDataDistributor(
     distributorId,
     auditProgram
   )
+
+  // when the user leaves the area screen we want to refetch the
+  // initialDataDistributorId query
+  useRefetchQuery(wereChangesMade, refetch)
 
   const task: TaskModel | '' = survey ? ((survey as SurveyActive).tasks as any)[guidelinePk][0] : ''
   const area: Area | '' = task ? (auditProgram as AuditProgram).areas[task.areaPk] : ''
@@ -109,7 +98,8 @@ const Task = (): JSX.Element => {
         assigned_to: assignedPerson,
         deadline: date,
       }
-      const results = await updateTask(taskUpdate, answerTask)
+      await updateTask(taskUpdate, answerTask)
+      setWereChangesMade(true)
       setLoading(false)
     } catch (err) {
       setLoading(false)

@@ -8,14 +8,11 @@ import Spinner from 'components/spinner'
 import StatusFilter from 'domain/tasks/filters/statusFilter'
 import TasksByStatus from 'domain/tasks/TasksByStatus'
 import GuidelineNameFilter from 'domain/tasks/filters/GuidelineNameFilter'
-
-import { getFlatArrayFromObjectValues, TasksStyles } from 'utils/tasks'
-
 //utils
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useInitialData from 'hooks/useInitialData'
 import useTaskFilters from 'hooks/useTaskFilters'
-
+import { getFlatArrayFromObjectValues, TasksStyles } from 'utils/tasks'
 //types
 import { TypeTaskStatus } from 'types/tasks'
 import { SurveyActive } from 'types/survey'
