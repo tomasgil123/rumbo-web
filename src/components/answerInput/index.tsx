@@ -42,7 +42,7 @@ const AswerTaskInputComponent = ({
               <select
                 value={value ? value : 'default'}
                 onChange={onChange}
-                className="rounded w-60 p-2 mb-4 outline-none border border-gray-300"
+                className="rounded w-60 p-2 outline-none border border-gray-300"
               >
                 <option value="default" disabled>
                   -- Selecciona una respuesta --
@@ -58,7 +58,7 @@ const AswerTaskInputComponent = ({
         return (
           <div>
             <input
-              className="rounded p-2 mb-4 w-full outline-none border border-gray-300"
+              className="rounded p-2 w-full outline-none border border-gray-300"
               value={value}
               onChange={onChange}
               type="number"
@@ -67,13 +67,14 @@ const AswerTaskInputComponent = ({
         )
       case 'p':
         return (
-          <div>
+          <div className="flex">
             <input
-              className="rounded p-2 mb-4 w-full outline-none border border-gray-300"
+              className="rounded p-2 w-full outline-none border border-gray-300"
               value={value}
               onChange={onChange}
               type="number"
             />
+            <span className="font-bold pt-2 pl-1">%</span>
           </div>
         )
     }

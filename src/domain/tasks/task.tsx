@@ -232,7 +232,7 @@ const Task = (): JSX.Element => {
                 </button>
               ) : (
                 <input
-                  className="h-12 cursor-pointer rounded-lg w-40 p-2 bg-primary-light text-white font-bold"
+                  className="h-12 mt-4 cursor-pointer rounded-lg w-40 p-2 bg-primary-light text-white font-bold"
                   type="submit"
                   value="Guardar tarea"
                 />
