@@ -8,11 +8,12 @@ import Spinner from 'components/spinner'
 import StatusFilter from 'domain/tasks/filters/statusFilter'
 import TasksByStatus from 'domain/tasks/TasksByStatus'
 import GuidelineNameFilter from 'domain/tasks/filters/GuidelineNameFilter'
+import AreaDropdownButton from 'domain/tasks/AreaDropdownButton'
 //utils
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useInitialData from 'hooks/useInitialData'
 import useTaskFilters from 'hooks/useTaskFilters'
-import { getFlatArrayFromObjectValues, TasksStyles, getPriorityToTask } from 'utils/tasks'
+import { getFlatArrayFromObjectValues, TasksStyles, getPriorityToTask, getAreas } from 'utils/tasks'
 import { doesGuidelineBelongEssentialArea } from 'utils/guideline'
 //types
 import { TypeTaskStatus, TaskWithPriority } from 'types/tasks'
@@ -50,11 +51,18 @@ const TaskList = (): JSX.Element => {
     )
   }, [arrayFlatTasks.length])
 
+  const areasNames = getAreas(auditProgram as AuditProgram)
+
+  console.log('areas', areasNames)
+
   const {
+    areaFilter,
+    addAreaFilter,
     statusFilters,
     addFilterStatus,
     guidelineNameFilter,
     addGuidelineNameFilter,
+
     tasksToShowGrouped,
   } = useTaskFilters(arrayTasksOrdered)
 
@@ -84,6 +92,7 @@ const TaskList = (): JSX.Element => {
             guidelineNameFilter={guidelineNameFilter}
             handleSearchChange={handleSearchChange}
           />
+          <AreaDropdownButton areas={areasNames} addAreaFilter={addAreaFilter} />
         </div>
         {Object.keys(tasksToShowGrouped).map(
           (groupTasks): JSX.Element => (

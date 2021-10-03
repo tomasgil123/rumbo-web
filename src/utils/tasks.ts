@@ -49,6 +49,7 @@ export const getFlatArrayFromObjectValues = (survey: SurveyActive): Task[] => {
     (acc: Task[], tasks: Task[]): Task[] => acc.concat(tasks.map((task: Task) => task)),
     []
   )
+
   return arrayFlatTasks
 }
 
@@ -94,4 +95,11 @@ export const getPriorityToTask = (
     ]
   }
   return priorityValues.reduce((x, y) => x + y, 0)
+}
+
+export const getAreas = (auditProgram: AuditProgram): { name: string; pk: number }[] => {
+  const areas = Object.values(auditProgram.areas)
+
+  const areasNamesAndPks = areas.map((area) => ({ name: area.name, pk: area.pk }))
+  return areasNamesAndPks
 }
