@@ -8,7 +8,7 @@ import { AuditProgram } from 'types/auditProgram'
 
 interface InitialDataDistributorResponse {
   status: number
-  data: SurveyActive | SurveyInactive | null
+  data: { surveyActive: SurveyActive | SurveyInactive | null; previousSurveys: SurveyInactive[] }
 }
 
 export const getInitialDataDistributor = async (
@@ -24,5 +24,10 @@ export const getInitialDataDistributor = async (
         auditProgram as AuditProgram
       )
     : null
-  return { status: response.status, data: surveyActive }
+
+  const previousSurveys = response.data.distributors[0].surveys.filter(
+    (survey: { pk: any }) => !survey.pk
+  )
+
+  return { status: response.status, data: { surveyActive, previousSurveys } }
 }

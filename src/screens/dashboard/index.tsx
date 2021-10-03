@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 // components
@@ -7,6 +7,7 @@ import Spinner from 'components/spinner'
 import ProgressCircle from 'components/progressCircle'
 import IconCircle from 'components/iconCircle'
 import SurveySummaryPresentational from 'domain/dashboard/surveySummaryPresentational'
+import SurveySummaryContainer from 'domain/dashboard/surveySummaryContainer'
 import UnansweredGuidelines from './unansweredGuidelines'
 import UnansweredGuidelineButton from 'domain/dashboard/unansweredGuidelineButton'
 // utils
@@ -17,22 +18,34 @@ import useAreaCalculations from 'hooks/useAreaCalculations'
 import { getTaskByStatus, getFlatArrayFromObjectValues, getUnansweredGuidelines } from 'utils/tasks'
 import { capitalizeFirstLetter } from 'utils'
 // types
-import { SurveyActive } from 'types/survey'
+import { SurveyActive, SurveyInactive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
 import { TaskStatus } from 'types/tasks'
 
 const Dashboard = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
-  const { isLoadingDistributor, errorDistributor, survey } = useInitialDataDistributor(
-    distributorId,
-    auditProgram
-  )
+  const { isLoadingDistributor, errorDistributor, survey, previousSurveys } =
+    useInitialDataDistributor(distributorId, auditProgram)
 
   const { isApproved, points, percentage } = useSurveyCalculations(
     survey as SurveyActive,
     auditProgram as AuditProgram
   )
+
+  const [visiblePreviousSurveys, setVisiblePreviousSurveys] = useState<SurveyInactive[]>([])
+
+  const onSeeMore = (): void => {
+    const surveysToSee = (previousSurveys as SurveyInactive[])?.slice(
+      visiblePreviousSurveys.length,
+      visiblePreviousSurveys.length + 3
+    )
+    setVisiblePreviousSurveys([...visiblePreviousSurveys, ...surveysToSee])
+  }
+
+  const onSeeLess = (): void => {
+    setVisiblePreviousSurveys([])
+  }
 
   const essentialAreaPk = auditProgram?.areas
     ? Object.values(auditProgram?.areas).find((area) => area.essential)
@@ -61,7 +74,9 @@ const Dashboard = (): JSX.Element => {
   if (arrayFlatTasks.length === 0) {
     return <div>Todavia no se ha creado ninguna tarea</div>
   }
-  console.log('survey', survey)
+
+  console.log('visiblePreviousSurveys', visiblePreviousSurveys)
+
   const surveyDate = new Date((survey as SurveyActive).valid_since)
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
@@ -181,6 +196,32 @@ const Dashboard = (): JSX.Element => {
           })
         )}-${surveyDate.getFullYear()}`}
       />
+      <div className="my-4 md:my-6">
+        {visiblePreviousSurveys.map((surveyUrl) => (
+          <SurveySummaryContainer
+            surveyUrl={surveyUrl.url}
+            auditProgram={auditProgram as AuditProgram}
+          />
+        ))}
+      </div>
+      {(previousSurveys as SurveyInactive[]).length > 0 && (
+        <div className="flex flex-col md:flex-row justify-center">
+          <button
+            onClick={onSeeMore}
+            className=" mx-2 h-12 cursor-pointer rounded-lg w-40 p-2 bg-primary-light text-white font-bold"
+          >
+            Ver más
+          </button>
+          {visiblePreviousSurveys.length > 0 && (
+            <button
+              onClick={onSeeLess}
+              className="mx-2 h-12 cursor-pointer rounded-lg w-40 p-2 border border-solid border-primary-light text-primary-light bg-white font-bold"
+            >
+              Ver menos
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

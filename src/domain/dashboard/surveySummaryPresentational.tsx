@@ -1,7 +1,3 @@
-// la survey inicial va a usar el mismo html, pero los datos
-// los va a recibir de una forma diferente
-// tenemos que armar un compnoente container y una presentational
-
 // components
 import ProgressCircle from 'components/progressCircle'
 import IconCircle from 'components/iconCircle'

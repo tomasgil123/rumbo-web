@@ -9,6 +9,7 @@ interface InitialDataDistributor {
   isLoadingDistributor: boolean
   errorDistributor: unknown
   survey: SurveyActive | SurveyInactive | null | undefined
+  previousSurveys: SurveyInactive[] | undefined
   refetch: () => void
 }
 
@@ -28,12 +29,15 @@ const useInitialDataDistributor = (
     }
   )
 
-  const survey = data?.data
+  const survey = data?.data.surveyActive
+
+  const previousSurveys = data?.data.previousSurveys
 
   return {
     isLoadingDistributor: isLoading,
     errorDistributor: error,
-    survey: survey,
+    survey,
+    previousSurveys,
     refetch,
   }
 }
