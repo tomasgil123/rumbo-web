@@ -20,6 +20,7 @@ interface GuidelineProps {
   answer: Answer
   isLoading: boolean
   errorOnSubmit: boolean
+  isSurveyLocked: boolean
   onAnswerGuideline: (value: string | number) => Promise<void> | (() => void)
 }
 
@@ -28,6 +29,7 @@ const Guideline = ({
   answer,
   isLoading,
   errorOnSubmit,
+  isSurveyLocked,
   onAnswerGuideline,
 }: GuidelineProps): JSX.Element => {
   const [approved, setApproved] = useState(false)
@@ -105,6 +107,7 @@ const Guideline = ({
         <div className="flex-1 flex flex-row justify-around items-center">
           <span className={givenPointsStyles}>{givenPoints}</span>
           {answer.tasks.length > 0 &&
+            !isSurveyLocked &&
             (answer.tasks[0].status === STATUS_NEW ||
               answer.tasks[0].status === STATUS_PENDING) && (
               <Link to={`/tareas/${guideline.pk}`}>

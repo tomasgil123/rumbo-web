@@ -100,6 +100,7 @@ const Guideline = ({ guideline, survey, distributorId }: GuidelineProps): JSX.El
       isLoading={isLoading}
       errorOnSubmit={errorOnSubmit}
       onAnswerGuideline={onAnswerGuideline}
+      isSurveyLocked={survey.locked}
     />
   )
 }
