@@ -8,7 +8,7 @@ import Spinner from 'components/spinner'
 import StatusFilter from 'domain/tasks/filters/statusFilter'
 import TasksByStatus from 'domain/tasks/TasksByStatus'
 import GuidelineNameFilter from 'domain/tasks/filters/GuidelineNameFilter'
-import AreaDropdownButton from 'domain/tasks/AreaDropdownButton'
+import TaskByAreaFilter from 'domain/tasks/filters/taskByAreaFilter'
 //utils
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useInitialData from 'hooks/useInitialData'
@@ -92,7 +92,7 @@ const TaskList = (): JSX.Element => {
             guidelineNameFilter={guidelineNameFilter}
             handleSearchChange={handleSearchChange}
           />
-          <AreaDropdownButton areas={areasNames} addAreaFilter={addAreaFilter} />
+          <TaskByAreaFilter areas={areasNames} addAreaFilter={addAreaFilter} />
         </div>
         {Object.keys(tasksToShowGrouped).map(
           (groupTasks): JSX.Element => (
