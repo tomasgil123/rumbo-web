@@ -7,12 +7,13 @@ interface props {
 
 const GuidelineNameFilter = ({ handleSearchChange, guidelineNameFilter }: props): JSX.Element => {
   return (
-    <div>
-      ingresar lineamiento
+    <div className="flex flex-col items-center justify-center max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
       <input
-        className="focus:text-white text-white mb-4 w-full outline-none bg-primary-dark border-b-2 border-white"
+        type="search"
+        className="text-center focus:text-disabled text-disabled mb-4 outline-none  border-b-2 border-black"
         onChange={handleSearchChange}
         value={guidelineNameFilter}
+        placeholder="Ingresar Lineamiento..."
       />
     </div>
   )

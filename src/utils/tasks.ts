@@ -26,8 +26,8 @@ export const isTaskExpired = (task: Task): boolean => {
 export const TasksStyles = {
   Nuevas: { icon: 'icon-note text-danger-light', borderColor: 'border-danger-light' },
   Pendientes: { icon: 'icon-note text-primary-light', borderColor: 'border-primary-light' },
-  Vencidas: { icon: 'icon-note text-border-danger', borderColor: 'border-danger' },
-  Hechas: { icon: 'icon-note text-border-success', borderColor: 'border-success' },
+  Vencidas: { icon: 'icon-fire text-danger', borderColor: 'border-danger' },
+  Hechas: { icon: 'icon-note text-success', borderColor: 'border-success' },
 }
 
 export const getTaskByStatus = (arrayOfTasks: Task[]): TasksGroupedByStatus => {
