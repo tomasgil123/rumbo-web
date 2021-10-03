@@ -24,7 +24,7 @@ const TaskByAreaFilter = ({ areas, addAreaFilter }: Props): JSX.Element => {
       {isOpen && (
         <div className=" font-semibold py-4 px-2 rounded-lg w-full mt-4 text-sm md:text-base">
           <ul>
-            <li className="border-disabled p-1 border-b">
+            <li className="border-gray-200 p-1 border-b">
               <button
                 onClick={(): void => {
                   addAreaFilter(0)
@@ -36,7 +36,7 @@ const TaskByAreaFilter = ({ areas, addAreaFilter }: Props): JSX.Element => {
               </button>
             </li>
             {areas.map((area: areasNamesAndPks) => (
-              <li className="border-disabled p-1 border-b">
+              <li className="border-gray-200 p-1 border-b">
                 <button
                   onClick={(): void => {
                     addAreaFilter(area.pk)

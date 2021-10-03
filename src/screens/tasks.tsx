@@ -85,13 +85,15 @@ const TaskList = (): JSX.Element => {
 
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
-      <ul className="px-4">
-        <div className="shadow-md rounded bg-white w-full">
+      <ul>
+        <div className="shadow-md rounded bg-white w-full p-4">
           <StatusFilter taskByStatus={tasksToShowGrouped} handleClick={onApplyFilterStatus} />
-          <GuidelineNameFilter
-            guidelineNameFilter={guidelineNameFilter}
-            handleSearchChange={handleSearchChange}
-          />
+          <div className="text-center">
+            <GuidelineNameFilter
+              guidelineNameFilter={guidelineNameFilter}
+              handleSearchChange={handleSearchChange}
+            />
+          </div>
           <TaskByAreaFilter areas={areasNames} addAreaFilter={addAreaFilter} />
         </div>
         {Object.keys(tasksToShowGrouped).map(
