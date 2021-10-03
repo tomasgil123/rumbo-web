@@ -3,6 +3,7 @@ import { Guideline } from 'types/guideline'
 import { Answer } from 'types/answer'
 import { AuditProgram } from 'types/auditProgram'
 import { SurveyActive } from 'types/survey'
+
 import { Task, TasksGroupedByStatus } from 'types/tasks'
 
 export const STATUS_NEW = '0'
