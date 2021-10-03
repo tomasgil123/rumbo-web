@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useState, useEffect } from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 // components
 import Layout from 'components/layout'
@@ -12,19 +12,44 @@ import GuidelineNameFilter from 'domain/tasks/filters/GuidelineNameFilter'
 import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
 import useInitialData from 'hooks/useInitialData'
 import useTaskFilters from 'hooks/useTaskFilters'
-import { getFlatArrayFromObjectValues, TasksStyles } from 'utils/tasks'
+import { getFlatArrayFromObjectValues, TasksStyles, getPriorityToTask } from 'utils/tasks'
+import { doesGuidelineBelongEssentialArea } from 'utils/guideline'
 //types
-import { TypeTaskStatus } from 'types/tasks'
+import { TypeTaskStatus, TaskWithPriority } from 'types/tasks'
 import { SurveyActive } from 'types/survey'
+import { AuditProgram } from 'types/auditProgram'
 
 const TaskList = (): JSX.Element => {
+  const [arrayTasksOrdered, setArrayTasksOrdered] = useState<TaskWithPriority[]>([])
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
   const { isLoadingDistributor, errorDistributor, survey } = useInitialDataDistributor(
     distributorId,
     auditProgram
   )
+
+  //este array de tasks lo tenemos que ordenar
   const arrayFlatTasks = survey ? getFlatArrayFromObjectValues(survey as SurveyActive) : []
+
+  useEffect(() => {
+    arrayFlatTasks.forEach((task) => {
+      const guidelineTask = auditProgram?.guidelines[task.guidelinePk]
+      if (guidelineTask) {
+        ;(task as TaskWithPriority).priority = getPriorityToTask(
+          task,
+          guidelineTask,
+          doesGuidelineBelongEssentialArea(guidelineTask.pk, auditProgram as AuditProgram)
+        )
+      } else {
+        ;(task as TaskWithPriority).priority = 0
+      }
+    })
+    setArrayTasksOrdered(
+      (arrayFlatTasks as TaskWithPriority[]).sort(function (a, b) {
+        return a.priority - b.priority
+      })
+    )
+  }, [arrayFlatTasks.length])
 
   const {
     statusFilters,
@@ -32,7 +57,7 @@ const TaskList = (): JSX.Element => {
     guidelineNameFilter,
     addGuidelineNameFilter,
     tasksToShowGrouped,
-  } = useTaskFilters(arrayFlatTasks)
+  } = useTaskFilters(arrayTasksOrdered)
 
   if (isLoading || isLoadingDistributor)
     return (

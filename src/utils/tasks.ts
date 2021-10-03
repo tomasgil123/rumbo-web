@@ -65,5 +65,33 @@ export const getUnansweredGuidelines = (
   )
 
   return unansweredGuidelines
-  debugger
+}
+
+export const getPriorityToTask = (
+  taskData: Task,
+  guideline: Guideline,
+  isAreaEssential: boolean
+): number => {
+  let priorityValues
+
+  if (taskData.status === '2') {
+    priorityValues = [
+      10000000 * Number(taskData.status),
+      taskData && guideline.required ? 0 : 1000000,
+      taskData && isAreaEssential ? 0 : 100000,
+      taskData && !guideline.code.includes('P') ? 0 : 10000,
+      taskData && taskData.last_change ? new Date(taskData.last_change).getTime() / 100000000 : 0,
+      taskData && guideline.code ? Number(guideline.code.replace(/\D/g, '')) / 1000 : 1,
+    ]
+  } else {
+    priorityValues = [
+      10000000 * Number(taskData.status),
+      taskData && guideline.required ? 0 : 1000000,
+      taskData && isAreaEssential ? 0 : 100000,
+      taskData && !guideline.code.includes('P') ? 0 : 10000,
+      taskData && taskData.deadline ? new Date(taskData.deadline).getTime() / 100000000 : 0,
+      taskData && guideline.code ? Number(guideline.code.replace(/\D/g, '')) / 1000 : 1,
+    ]
+  }
+  return priorityValues.reduce((x, y) => x + y, 0)
 }

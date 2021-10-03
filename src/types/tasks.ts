@@ -18,6 +18,10 @@ export interface Task extends TaskRaw {
   answerType: 'b' | 'n' | 'p'
 }
 
+export interface TaskWithPriority extends Task {
+  priority: number
+}
+
 export enum TaskStatus {
   new = 'Nuevas',
   pending = 'Pendientes',

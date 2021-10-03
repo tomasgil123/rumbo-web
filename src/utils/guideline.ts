@@ -1,3 +1,8 @@
+//types
+import { Module } from 'types/module'
+import { Area } from 'types/area'
+import { AuditProgram } from 'types/auditProgram'
+
 export type EvaluationLine = string[] | []
 interface EvaluationLines {
   cleanDescription: string
@@ -27,5 +32,20 @@ export const getEvaluationLinesFromDescription = (
   return {
     cleanDescription,
     evaluationLines,
+  }
+}
+
+export const doesGuidelineBelongEssentialArea = (
+  guidelinePk: number,
+  auditProgram: AuditProgram
+): boolean => {
+  const modules: Module[] = Object.values(auditProgram.modules)
+  const moduleGuideline = modules.find((module) => module.guideline_pks.includes(guidelinePk))
+  if (moduleGuideline) {
+    const areas: Area[] = Object.values(auditProgram.areas)
+    const areaGuideline = areas.find((area) => area.module_pks.includes(moduleGuideline.pk))
+    return areaGuideline ? areaGuideline.essential : false
+  } else {
+    return false
   }
 }
