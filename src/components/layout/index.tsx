@@ -1,12 +1,15 @@
+// components
 import Navbar from 'components/navbar'
+import Footer from 'components/footer'
 // high order component to add a navbar to a screen
 const Layout =
   (Screen: () => JSX.Element) =>
   (props: any): JSX.Element => {
     return (
-      <div>
+      <div className="relative h-screen">
         <Navbar />
         <Screen {...props} />
+        <Footer />
       </div>
     )
   }
