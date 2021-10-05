@@ -22,7 +22,8 @@ import { getUnEsentialAreas } from 'utils/area'
 import { SurveyActive, SurveyInactive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
 import { TaskStatus } from 'types/tasks'
-
+import AreaCard from 'domain/area/areaCard'
+import { Area } from 'types/area'
 const Dashboard = (): JSX.Element => {
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
@@ -70,7 +71,6 @@ const Dashboard = (): JSX.Element => {
   const taskByStatus = getTaskByStatus(arrayFlatTasks)
 
   const unEsentialAreas = getUnEsentialAreas(auditProgram as AuditProgram)
-  console.log('unesentialareas', unEsentialAreas)
 
   const arrayOfUnansweredGuidelines = getUnansweredGuidelines(
     survey as SurveyActive,
@@ -121,39 +121,17 @@ const Dashboard = (): JSX.Element => {
           </div>
         </div>
       </div>
-
-      {unEsentialAreas.map((area: any) => (
-        <div className="flex flex-row rounded shadow-lg p-4 mt-4 bg-white">
-          <p>{area.name}</p>
-
-          <div className="flex-1 flex flex-col items-center md:ml-16">
-            <div className="flex-grow pb-2 md:pb-4 md:text-lg text-gray-700">Puntaje total</div>
-            <ProgressCircle
-              radius={45}
-              progresses={[
-                { percent: 100, color: isApproved ? 'text-success-light' : 'text-danger-light' },
-                { percent: points, color: isApproved ? 'text-success' : 'text-danger' },
-              ]}
-              value={points}
-              isPercentage={false}
+      <div className="grid grid-cols-2 grid-rows-4 gap-2">
+        {unEsentialAreas.map((area: Area) => (
+          <div>
+            <AreaCard
+              area={area}
+              survey={survey as SurveyActive}
+              auditProgram={auditProgram as AuditProgram}
             />
           </div>
-          <div className="flex-1 flex flex-col items-center md:mr-16">
-            <div className="text-center pb-2 md:pb-4 md:text-lg text-gray-700">
-              Porcentaje de aprobación
-            </div>
-            <ProgressCircle
-              radius={45}
-              progresses={[
-                { percent: 100, color: isApproved ? 'text-success-light' : 'text-danger-light' },
-                { percent: percentage, color: isApproved ? 'text-success' : 'text-danger' },
-              ]}
-              value={percentage}
-              isPercentage={true}
-            />
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
       <Link to={`/area/${essentialAreaPk.pk}`}>
         <div className="pt-6 md:pt-8">
           <div className="text-center pb-4 md:text-lg font-bold text-gray-700">
