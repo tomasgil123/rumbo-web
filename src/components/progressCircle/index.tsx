@@ -16,6 +16,7 @@ interface Props {
   progresses: Progress[]
   value: number
   isPercentage: boolean
+  radius: number
   duration?: number
   delay?: number
   easing?: string
@@ -30,6 +31,7 @@ const ProgressCircle = ({
   progresses,
   value,
   isPercentage,
+  radius,
   emptyStroke = 'text-disabled',
   emptyStrokeOpacity = 0.25,
   duration = 1.5,
@@ -38,13 +40,13 @@ const ProgressCircle = ({
   unavaliableData = false,
 }: Props): JSX.Element => {
   const { inView } = useContext(IntersectionContext)
-  const radius = 45
   const circumference = Math.ceil(2 * Math.PI * radius)
 
   const variants = generateVariants({
     percents: progresses.map((progress) => progress.percent),
     duration,
     delay,
+    radius,
   })
 
   return (

@@ -41,6 +41,7 @@ const AreaPreviousSurvey = (): JSX.Element => {
       survey={survey as SurveyActive}
       distributorId={distributorId as number}
       auditProgram={auditProgram as AuditProgram}
+      area={area}
     />
   )
 }

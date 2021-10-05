@@ -25,6 +25,7 @@ const SurveySummaryComponent = ({
         <div className="flex-1 flex flex-col items-center">
           <div className="flex-grow pb-2 md:pb-4 md:text-lg text-gray-700">Puntaje total</div>
           <ProgressCircle
+            radius={45}
             progresses={[
               { percent: 100, color: isApproved ? 'text-success-light' : 'text-danger-light' },
               { percent: points, color: isApproved ? 'text-success' : 'text-danger' },
@@ -38,6 +39,7 @@ const SurveySummaryComponent = ({
             Porcentaje de aprobación
           </div>
           <ProgressCircle
+            radius={45}
             progresses={[
               { percent: 100, color: isApproved ? 'text-success-light' : 'text-danger-light' },
               { percent: percentage, color: isApproved ? 'text-success' : 'text-danger' },
@@ -52,11 +54,13 @@ const SurveySummaryComponent = ({
           </div>
           {isApproved ? (
             <IconCircle
+              radius={45}
               bgColor="text-success-light"
               icon={<i className="icon-like text-success"></i>}
             />
           ) : (
             <IconCircle
+              radius={45}
               bgColor="text-danger-light"
               icon={<i className="icon-dislike text-danger"></i>}
             />

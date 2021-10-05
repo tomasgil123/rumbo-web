@@ -1,10 +1,10 @@
 interface Props {
   bgColor: string
   icon: JSX.Element
+  radius: number
 }
 
-const IconCircle = ({ bgColor, icon }: Props): JSX.Element => {
-  const radius = 45
+const IconCircle = ({ bgColor, icon, radius }: Props): JSX.Element => {
   return (
     <div className="relative flex items-center justify-center w-20 md:w-28 h-20 md:h-28">
       <div className="absolute font-bold text-base md:text-xl z-10">{icon}</div>

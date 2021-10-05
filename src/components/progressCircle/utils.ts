@@ -3,6 +3,7 @@ interface VariantsInput {
   percents: number[]
   duration: number
   delay: number
+  radius: number
 }
 
 type VariantProgressCircle = {
@@ -14,11 +15,11 @@ export const generateVariants = ({
   percents,
   duration,
   delay,
+  radius,
 }: VariantsInput): VariantProgressCircle[] => {
   const variants: VariantProgressCircle[] = []
 
   percents.forEach((percent) => {
-    const radius = 45
     const circumference = Math.ceil(2 * Math.PI * radius)
     const fillPercents = Math.abs(Math.ceil((circumference / 100) * (percent - 100)))
     const transition = {
