@@ -33,7 +33,9 @@ const Navbar = (): JSX.Element => {
       <div className="max-w-6xl mx-auto px-4 py-3 md:py-0">
         <div className="flex justify-between">
           <div className="flex space-x-7">
-            <div className="text-primary font-bold text-3xl self-center">Rumbo</div>
+            <div className="text-primary font-bold text-3xl self-center">
+              <Link to="/dashboard">Rumbo</Link>
+            </div>
             <div className="hidden md:flex items-center space-x-1">
               <Link
                 className={stylesLinkDesktop(location.pathname.includes(PageSections.dashboard))}
