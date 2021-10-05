@@ -33,8 +33,6 @@ const AreaPresentational = ({
     area.pk
   )
 
-  console.log('area', area)
-
   return (
     <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
       <div className="shadow-md flex flex-row rounded bg-white w-full p-4">
