@@ -6,9 +6,12 @@ const Layout =
   (Screen: () => JSX.Element) =>
   (props: any): JSX.Element => {
     return (
-      <div className="relative h-screen">
+      <div className="relative min-h-screen">
         <Navbar />
-        <Screen {...props} />
+        <div className="pb-32">
+          <Screen {...props} />
+        </div>
+
         <Footer />
       </div>
     )
