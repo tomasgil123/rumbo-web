@@ -4,6 +4,7 @@ import ProgressCircle from 'components/progressCircle'
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
 import { Area } from 'types/area'
+import classNames from 'classnames'
 
 interface props {
   area: Area
@@ -11,11 +12,13 @@ interface props {
   auditProgram: AuditProgram
 }
 const AreaCard = ({ area, survey, auditProgram }: props): JSX.Element => {
-  const { areaPoints, isAreaApproved, areaPercentage } = useAreaCalculations(
-    survey as SurveyActive,
-    auditProgram as AuditProgram,
-    area.pk
-  )
+  const {
+    areaPoints,
+    isAreaApproved,
+    areaPercentage,
+    numberRequiredGuidelines,
+    modulesApprovedStatus,
+  } = useAreaCalculations(survey as SurveyActive, auditProgram as AuditProgram, area.pk)
 
   return (
     <div className="flex flex-col rounded shadow-lg p-4 mt-4 bg-white">
@@ -45,6 +48,11 @@ const AreaCard = ({ area, survey, auditProgram }: props): JSX.Element => {
             isPercentage={true}
           />
         </div>
+      </div>
+      <div className={`grid grid-cols-${area.module_pks.length} gap-2 `}>
+        {area.module_pks.map((module) => (
+          <div className="bg-success mt-2 h-2 text-white text-opacity-0 ">{module}</div>
+        ))}
       </div>
     </div>
   )

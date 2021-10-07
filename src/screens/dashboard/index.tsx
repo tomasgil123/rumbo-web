@@ -71,6 +71,7 @@ const Dashboard = (): JSX.Element => {
   const taskByStatus = getTaskByStatus(arrayFlatTasks)
 
   const unEsentialAreas = getUnEsentialAreas(auditProgram as AuditProgram)
+  console.log('Unesential Area', unEsentialAreas)
 
   const arrayOfUnansweredGuidelines = getUnansweredGuidelines(
     survey as SurveyActive,
