@@ -8,7 +8,12 @@ import { AuditProgram } from 'types/auditProgram'
 
 interface InitialDataDistributorResponse {
   status: number
-  data: { surveyActive: SurveyActive | SurveyInactive | null; previousSurveys: SurveyInactive[] }
+  data: {
+    surveyActive: SurveyActive | SurveyInactive | null
+    previousSurveys: SurveyInactive[]
+    distributorName: string
+    distributorLogo: string
+  }
 }
 
 export const getInitialDataDistributor = async (
@@ -29,5 +34,12 @@ export const getInitialDataDistributor = async (
     (survey: { pk: any }) => !survey.pk
   )
 
-  return { status: response.status, data: { surveyActive, previousSurveys } }
+  const distributorName = response.data ? response.data.distributors[0].name : null
+
+  const distributorLogo = response.data ? response.data.distributors[0].logo : null
+
+  return {
+    status: response.status,
+    data: { surveyActive, previousSurveys, distributorName, distributorLogo },
+  }
 }
