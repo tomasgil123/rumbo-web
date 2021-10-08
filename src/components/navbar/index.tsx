@@ -3,6 +3,8 @@ import { Link, useLocation, useHistory } from 'react-router-dom'
 import cx from 'classnames'
 // utils
 import { setLocalAccessToken, setLocalRefreshToken } from 'utils/session'
+import useInitialDataDistributor from 'hooks/useInitialDataDistributor'
+import useInitialData from 'hooks/useInitialData'
 
 enum PageSections {
   dashboard = 'dashboard',
@@ -10,6 +12,11 @@ enum PageSections {
 }
 
 const Navbar = (): JSX.Element => {
+  const { isLoading, error, auditProgram, distributorIds } = useInitialData()
+  const distributorId = distributorIds ? distributorIds[0] : null
+  const { isLoadingDistributor, errorDistributor, survey, distributorLogo, distributorName } =
+    useInitialDataDistributor(distributorId, auditProgram)
+
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const location = useLocation()
   const history = useHistory()
@@ -52,8 +59,17 @@ const Navbar = (): JSX.Element => {
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-3 ">
-            <div className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">
-              Nombre distribuidor
+            <div className="flex flex-row items-center">
+              <div className="py-2 px-2 font-medium text-gray-500 rounded  hover:text-white transition duration-300">
+                {distributorName}
+              </div>
+              <div className="m-1  ">
+                {distributorLogo ? (
+                  <img className="w-10 h-10 rounded-full ring-1 ring-black" src={distributorLogo} />
+                ) : (
+                  <i className="icon-user text-2xl rounded-full ring-1 ring-black ring-offset-4	" />
+                )}
+              </div>
             </div>
             <button
               onClick={logOut}

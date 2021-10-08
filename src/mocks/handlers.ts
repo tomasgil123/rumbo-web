@@ -4738,7 +4738,7 @@ export const handlers = [
                 name: 'Distribuidor 1',
                 country: 'SA',
                 region: null,
-                logo: null,
+                logo: 'https://cdn5.dibujos.net/dibujos/pintados/202009/numero-1-letras-y-numeros-numeros-11714504.jpg',
                 auditors: [
                   {
                     username: '2021guia+auditor1@gmail.com',
