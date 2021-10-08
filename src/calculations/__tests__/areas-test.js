@@ -126,7 +126,7 @@ describe('Area.getBasePoints', function () {
     const module_guideline_pks = modules.map((moduleItem) => moduleItem.guideline_pks).flat()
 
     const answersComplete = StatisticsHelpers.generateAnswers(answers, module_guideline_pks)
-
+    console.log('answersComplete', answersComplete)
     const areaItem = new Area(
       audit_program.areas[20],
       audit_program.guidelines,
@@ -135,7 +135,7 @@ describe('Area.getBasePoints', function () {
       false
     )
 
-    expect(areaItem.getBasePoints()).toBe(5)
+    expect(areaItem.getBasePoints()).toBe(102)
   })
 
   it('returns 4 example with guidelines with answer_required = false and survey_prefix = Evaluación', function () {
@@ -182,7 +182,7 @@ describe('Area.getBasePoints', function () {
       true
     )
 
-    expect(areaItem.getBasePoints()).toBe(4)
+    expect(areaItem.getBasePoints()).toBe(67)
   })
 })
 
@@ -280,7 +280,7 @@ describe('Area.getGivenPoints', function () {
       modules
     )
 
-    expect(areaItem.getGivenPoints()).toBe(5)
+    expect(areaItem.getGivenPoints()).toBe(102)
   })
 
   it('returns 1 if sum_only_if_approved = false and area is not approved', function () {

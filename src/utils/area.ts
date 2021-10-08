@@ -1,6 +1,6 @@
 //types
 import { Module } from 'types/module'
-import { AuditProgramModules } from 'types/auditProgram'
+import { AuditProgram, AuditProgramModules } from 'types/auditProgram'
 
 export const getModulesArea = (modulePks: number[], modules: AuditProgramModules): Module[] => {
   const modulesArea: Module[] = []

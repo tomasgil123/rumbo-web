@@ -61,7 +61,6 @@ export default class Area {
     const requiredGuidelines = Object.values(this.guidelines).filter(
       (guideline) => guideline.required
     )
-
     for (let i = 0; i < requiredGuidelines.length; i++) {
       const guideline = new Guideline(
         requiredGuidelines[i],

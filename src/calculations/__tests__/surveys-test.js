@@ -160,7 +160,7 @@ describe('Survey.getBasePoints', function () {
       audit_program.modules
     )
 
-    expect(surveyItem.getBasePoints()).toBe(4)
+    expect(surveyItem.getBasePoints()).toBe(3)
   })
 
   it('returns 5 example with guidelines with answer_required = false and survey_prefix = Pre-Evaluación', function () {
