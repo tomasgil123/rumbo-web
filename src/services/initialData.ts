@@ -1,10 +1,10 @@
 import { AxiosResponse } from 'axios'
 import axios from 'interceptors'
 // utils
-import { flatInitialDataDistributorSurvey } from 'utils/initialData'
+import { flatInitialDataDistributorSurvey, flatInitialData } from 'utils/initialData'
 // types
 import { SurveyActive, SurveyInactive } from 'types/survey'
-import { AuditProgram } from 'types/auditProgram'
+import { AuditProgram, AuditProgramRaw } from 'types/auditProgram'
 
 interface InitialDataDistributorResponse {
   status: number
@@ -41,5 +41,30 @@ export const getInitialDataDistributor = async (
   return {
     status: response.status,
     data: { surveyActive, previousSurveys, distributorName, distributorLogo },
+  }
+}
+
+interface InitialDataResponse {
+  status: number
+  data: {
+    auditProgram: AuditProgram | null
+    distributorIds: number[] | null
+    userName: string | null
+  }
+}
+
+export const getInitialData = async (): Promise<InitialDataResponse> => {
+  const response: AxiosResponse<any> = await axios.get(`/api/v1/initialData?distributors_ids=true`)
+
+  const auditProgram = response?.data
+    ? flatInitialData((response?.data as any).audit_programs[0] as AuditProgramRaw)
+    : null
+  const distributorIds = response?.data ? response?.data.distributors_id : null
+
+  const userName = response?.data ? response?.data.user.username : null
+
+  return {
+    status: response.status,
+    data: { auditProgram, distributorIds, userName },
   }
 }

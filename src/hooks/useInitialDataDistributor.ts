@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
 // services
-import { getInitialDataDistributor } from 'services/initialDataDistribuidor'
+import { getInitialDataDistributor } from 'services/initialData'
 // types
 import { SurveyActive, SurveyInactive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'

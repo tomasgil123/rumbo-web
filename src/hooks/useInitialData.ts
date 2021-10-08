@@ -1,33 +1,35 @@
 import { useQuery } from 'react-query'
-import axios from 'interceptors'
-// utils
-import { flatInitialData } from 'utils/initialData'
+// services
+import { getInitialData } from 'services/initialData'
 // types
-import { AuditProgram, AuditProgramRaw } from 'types/auditProgram'
+import { AuditProgram } from 'types/auditProgram'
 interface InitialData {
   isLoading: boolean
   error: unknown
   auditProgram: AuditProgram | null
   distributorIds: number[] | null
+  userName: string | null
 }
 
 const useInitialData = (): InitialData => {
-  const { isLoading, error, data } = useQuery(
-    'initialData',
-    () => axios.get('/api/v1/initialData?distributors_ids=true').then((res) => res),
-    { refetchOnMount: false, refetchOnWindowFocus: false, refetchOnReconnect: false }
-  )
+  const { isLoading, error, data } = useQuery('initialData', () => getInitialData(), {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
 
-  const auditProgram = data
-    ? flatInitialData((data as any).data.audit_programs[0] as AuditProgramRaw)
-    : null
-  const distributorIds = data ? data.data.distributors_id : null
+  const auditProgram = data?.data.auditProgram as AuditProgram | null
+
+  const distributorIds = data?.data.distributorIds as number[] | null
+
+  const userName = data?.data.userName as string | null
 
   return {
     isLoading,
     error,
     auditProgram,
     distributorIds,
+    userName,
   }
 }
 
