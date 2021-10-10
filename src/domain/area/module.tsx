@@ -10,21 +10,30 @@ interface ModuleProps {
   guidelines: GuidelineModel[]
   survey: SurveyActive
   distributorId: number
+  guidelineNameByArea: string
 }
 
-const Module = ({ module, guidelines, survey, distributorId }: ModuleProps): JSX.Element => {
+const Module = ({
+  module,
+  guidelines,
+  survey,
+  distributorId,
+  guidelineNameByArea,
+}: ModuleProps): JSX.Element => {
   return (
     <div>
       <div className="pt-6 md:pt-10 md:pb-2">{module.name}</div>
       <div>
-        {guidelines.map((guideline) => (
-          <Guideline
-            key={guideline.pk}
-            guideline={guideline}
-            survey={survey}
-            distributorId={distributorId}
-          />
-        ))}
+        {guidelines
+          .filter((module) => module.name.includes(guidelineNameByArea.toLocaleUpperCase()))
+          .map((guideline) => (
+            <Guideline
+              key={guideline.pk}
+              guideline={guideline}
+              survey={survey}
+              distributorId={distributorId}
+            />
+          ))}
       </div>
     </div>
   )
