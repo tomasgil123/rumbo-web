@@ -57,6 +57,7 @@ const Dashboard = (): JSX.Element => {
     auditProgram as AuditProgram,
     essentialAreaPk
   )
+  console.log('esentialpk', essentialAreaPk)
   console.log('auditprogram', auditProgram)
   if (isLoading || isLoadingDistributor)
     return (
@@ -131,7 +132,7 @@ const Dashboard = (): JSX.Element => {
           </div>
         ))}
       </div>
-      <Link to={`/area/${essentialAreaPk.pk}`}>
+      <Link to={`/area/${essentialAreaPk}`}>
         <div className="pt-6 md:pt-8">
           <div className="text-center pb-4 md:text-lg font-bold text-gray-700">
             LINEAMIENTOS BASICOS

@@ -49,11 +49,17 @@ const AreaCard = ({ area, survey, auditProgram }: props): JSX.Element => {
           />
         </div>
       </div>
-      <div className={`grid grid-cols-${area.module_pks.length} gap-2 `}>
-        {area.module_pks.map((module) => (
-          <div className="bg-success mt-2 h-2 text-white text-opacity-0 ">{module}</div>
-        ))}
-      </div>
+      {numberRequiredGuidelines ? (
+        <div className={`grid grid-cols-${numberRequiredGuidelines} gap-2 `}>
+          {<div className="bg-success mt-2 h-2 text-white text-opacity-0 "></div>}
+        </div>
+      ) : (
+        <div className={`grid grid-cols-${area.module_pks.length} gap-2 `}>
+          {area.module_pks.map((module) => (
+            <div className="bg-success mt-2 h-2 text-white text-opacity-0 ">{module}</div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

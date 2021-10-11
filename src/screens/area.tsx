@@ -21,7 +21,7 @@ type AreaPk = {
 
 const Area = (): JSX.Element => {
   const { areaPk } = useParams<AreaPk>()
-
+  console.log('area pk', areaPk)
   const { isLoading, error, auditProgram, distributorIds } = useInitialData()
   const distributorId = distributorIds ? distributorIds[0] : null
   const { isLoadingDistributor, errorDistributor, survey, refetch } = useInitialDataDistributor(
@@ -45,7 +45,7 @@ const Area = (): JSX.Element => {
 
   const area = (auditProgram as AuditProgram).areas[Number(areaPk)]
   const modules = getModulesArea(area.module_pks, (auditProgram as AuditProgram).modules)
-
+  debugger
   return (
     <AreaPresentational
       modules={modules}
