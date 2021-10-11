@@ -9,3 +9,10 @@ export const getModulesArea = (modulePks: number[], modules: AuditProgramModules
   })
   return modulesArea
 }
+
+export const getUnEsentialAreas = (auditPogram: AuditProgram): any => {
+  const flatAreas = Object.values(auditPogram.areas)
+
+  const unEsentialAreas = flatAreas.filter((area: any) => area.essential === false)
+  return unEsentialAreas
+}
