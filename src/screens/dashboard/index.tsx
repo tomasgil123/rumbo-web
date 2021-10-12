@@ -57,8 +57,7 @@ const Dashboard = (): JSX.Element => {
     auditProgram as AuditProgram,
     essentialAreaPk
   )
-  console.log('esentialpk', essentialAreaPk)
-  console.log('auditprogram', auditProgram)
+
   if (isLoading || isLoadingDistributor)
     return (
       <div className="mt-8 md:mt-16 mx-auto px-4">
@@ -72,7 +71,6 @@ const Dashboard = (): JSX.Element => {
   const taskByStatus = getTaskByStatus(arrayFlatTasks)
 
   const unEsentialAreas = getUnEsentialAreas(auditProgram as AuditProgram)
-  console.log('Unesential Area', unEsentialAreas)
 
   const arrayOfUnansweredGuidelines = getUnansweredGuidelines(
     survey as SurveyActive,

@@ -4,7 +4,6 @@ import ProgressCircle from 'components/progressCircle'
 import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
 import { Area } from 'types/area'
-import classNames from 'classnames'
 
 interface props {
   area: Area
@@ -18,6 +17,8 @@ const AreaCard = ({ area, survey, auditProgram }: props): JSX.Element => {
     areaPercentage,
     numberRequiredGuidelines,
     modulesApprovedStatus,
+
+    requiredGuidelinesApprovedStatus,
   } = useAreaCalculations(survey as SurveyActive, auditProgram as AuditProgram, area.pk)
 
   return (
@@ -50,14 +51,30 @@ const AreaCard = ({ area, survey, auditProgram }: props): JSX.Element => {
         </div>
       </div>
       {numberRequiredGuidelines ? (
-        <div className={`grid grid-cols-${numberRequiredGuidelines} gap-2 `}>
-          {<div className="bg-success mt-2 h-2 text-white text-opacity-0 "></div>}
+        <div className="flex flex-row">
+          {requiredGuidelinesApprovedStatus.map((i) =>
+            i ? (
+              <div className=" flex-1 p-1 bg-success mt-2 mx-1 h-auto w-auto text-white text-opacity-0 ">
+                {i}
+              </div>
+            ) : (
+              <div className=" flex-1 p-1 bg-danger mt-2 mx-1 h-auto w-auto text-white text-opacity-0 ">
+                {i}
+              </div>
+            )
+          )}
         </div>
       ) : (
-        <div className={`grid grid-cols-${area.module_pks.length} gap-2 `}>
-          {area.module_pks.map((module) => (
-            <div className="bg-success mt-2 h-2 text-white text-opacity-0 ">{module}</div>
-          ))}
+        <div className=" flex flex-row">
+          {modulesApprovedStatus.map((module) =>
+            module ? (
+              <div className=" flex-1 p-1 bg-success mt-2 mx-1 h-auto w-auto text-white text-opacity-0 ">
+                {module}
+              </div>
+            ) : (
+              <div className="bg-danger mt-2 h-2 text-white text-opacity-0 ">{module}</div>
+            )
+          )}
         </div>
       )}
     </div>

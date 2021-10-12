@@ -1270,7 +1270,7 @@ export const handlers = [
                               {
                                 min_value: '1.00',
                                 given_points: '0',
-                                approved: true,
+                                approved: false,
                                 base_points: '0.00',
                               },
                             ],
