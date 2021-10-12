@@ -1,5 +1,6 @@
 //types
 import { Module } from 'types/module'
+
 import { AuditProgram, AuditProgramModules } from 'types/auditProgram'
 
 export const getModulesArea = (modulePks: number[], modules: AuditProgramModules): Module[] => {
@@ -8,4 +9,11 @@ export const getModulesArea = (modulePks: number[], modules: AuditProgramModules
     modulesArea.push(modules[modulePk])
   })
   return modulesArea
+}
+
+export const getUnEsentialAreas = (auditPogram: AuditProgram): any => {
+  const flatAreas = Object.values(auditPogram.areas)
+
+  const unEsentialAreas = flatAreas.filter((area: any) => area.essential === false)
+  return unEsentialAreas
 }
