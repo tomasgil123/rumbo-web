@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
 // services
-import { getInitialDataDistributor } from 'services/initialDataDistribuidor'
+import { getInitialDataDistributor } from 'services/initialData'
 // types
 import { SurveyActive, SurveyInactive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
@@ -8,6 +8,8 @@ import { AuditProgram } from 'types/auditProgram'
 interface InitialDataDistributor {
   isLoadingDistributor: boolean
   errorDistributor: unknown
+  distributorName: string | undefined
+  distributorLogo: string | undefined
   survey: SurveyActive | SurveyInactive | null | undefined
   previousSurveys: SurveyInactive[] | undefined
   refetch: () => void
@@ -33,9 +35,15 @@ const useInitialDataDistributor = (
 
   const previousSurveys = data?.data.previousSurveys
 
+  const distributorName = data?.data.distributorName
+
+  const distributorLogo = data?.data.distributorLogo
+
   return {
     isLoadingDistributor: isLoading,
     errorDistributor: error,
+    distributorName: distributorName,
+    distributorLogo: distributorLogo,
     survey,
     previousSurveys,
     refetch,

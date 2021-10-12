@@ -16,8 +16,11 @@ import { sendAnswer } from 'services/answer'
 // context
 import { useChangesMade } from './changesMadeContext'
 import { Answer } from 'types/answer'
+// utils
+import useInitialData from 'hooks/useInitialData'
 
 const Guideline = ({ guideline, survey, distributorId }: GuidelineProps): JSX.Element => {
+  const { userName } = useInitialData()
   const [errorOnSubmit, setErrorOnSubmit] = useState(false)
   const answer = survey.answers[guideline.pk]
     ? survey.answers[guideline.pk]
@@ -85,7 +88,7 @@ const Guideline = ({ guideline, survey, distributorId }: GuidelineProps): JSX.El
       //TODO: add the name of the user which is sending the answer
       const answer = {
         guideline: guideline.pk,
-        sent_by: '',
+        sent_by: userName as string,
         survey: survey.pk,
         value: value,
       }

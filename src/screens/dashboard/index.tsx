@@ -50,7 +50,7 @@ const Dashboard = (): JSX.Element => {
   }
 
   const essentialAreaPk = auditProgram?.areas
-    ? Object.values(auditProgram?.areas).find((area) => area.essential)
+    ? Object.values(auditProgram?.areas).find((area) => area.essential).pk
     : 0
   const { isAreaApproved, numberUnapprovedRequiredGuidelines } = useAreaCalculations(
     survey as SurveyActive,
@@ -79,8 +79,6 @@ const Dashboard = (): JSX.Element => {
   if (arrayFlatTasks.length === 0) {
     return <div>Todavia no se ha creado ninguna tarea</div>
   }
-
-  console.log('visiblePreviousSurveys', visiblePreviousSurveys)
 
   const surveyDate = new Date((survey as SurveyActive).valid_since)
   return (

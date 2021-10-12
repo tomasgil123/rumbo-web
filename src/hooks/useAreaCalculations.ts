@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 // calculations
 import Area from 'calculations/areas'
 import StatisticsHelpers from 'calculations/statisticsHelpers'
+// utils
+import { getModulesArea } from 'utils/area'
+import { getGuidelinesModuleObject } from 'utils/modules'
 // types
 import { AuditProgram } from 'types/auditProgram'
 import { SurveyActive } from 'types/survey'
@@ -35,14 +38,18 @@ const useAreaCalculations = (
     if (survey) {
       if ((survey as SurveyActive)?.answers) {
         const chosenArea = auditProgram.areas[areaPk]
+
+        const modulesArea = getModulesArea(chosenArea.module_pks, auditProgram.modules)
+        const guidelinePksArea = modulesArea
+          .map((module) => module.guideline_pks)
+          .reduce((prevValue, currentValue) => prevValue.concat(currentValue), [])
+        const guidelinesArea = getGuidelinesModuleObject(guidelinePksArea, auditProgram.guidelines)
+
         const areaResults = new Area(
           chosenArea,
-          auditProgram?.guidelines,
-          StatisticsHelpers.generateAnswers(
-            (survey as SurveyActive)?.answers,
-            Object.keys(auditProgram?.guidelines)
-          ),
-          auditProgram?.modules,
+          guidelinesArea,
+          StatisticsHelpers.generateAnswers((survey as SurveyActive)?.answers, guidelinePksArea),
+          modulesArea,
           survey.is_audit
         )
 

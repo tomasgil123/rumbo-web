@@ -12,3 +12,14 @@ export const getGuidelinesModule = (
   })
   return guidelinesModule
 }
+
+export const getGuidelinesModuleObject = (
+  guidelinePks: number[],
+  guidelines: AuditProgramGuidelines
+): AuditProgramGuidelines => {
+  const guidelinesModule: AuditProgramGuidelines = {}
+  guidelinePks.forEach((guidelinePk: number) => {
+    guidelinesModule[guidelinePk] = guidelines[guidelinePk]
+  })
+  return guidelinesModule
+}
