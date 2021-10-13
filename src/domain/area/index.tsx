@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent, useState } from 'react'
 // components
 import Module from 'domain/area/module'
 import ProgressCircle from 'components/progressCircle'
@@ -11,6 +11,7 @@ import { SurveyActive } from 'types/survey'
 import { AuditProgram } from 'types/auditProgram'
 import { Module as ModuleModel } from 'types/module'
 import { Area } from 'types/area'
+import GuidelineByAreaFilter from './guidelineByAreaFilter'
 
 type AreaPresentationalModel = {
   modules: ModuleModel[]
@@ -32,9 +33,14 @@ const AreaPresentational = ({
     auditProgram as AuditProgram,
     area.pk
   )
+  const [guidelineNameByArea, setGuidelineNameByArea] = useState('')
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setGuidelineNameByArea(event.target.value)
+  }
 
   return (
-    <div className="max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
+    <div className="flex flex-col max-w-screen-sm mt-8 md:mt-16 mx-auto px-4">
       <div className="shadow-md flex flex-row rounded bg-white w-full p-4">
         <div
           className="font-bold text-lg md:text-xl flex items-center"
@@ -94,9 +100,16 @@ const AreaPresentational = ({
           </div>
         </div>
       </div>
+      <div className="shadow-md  rounded bg-white w-full">
+        <GuidelineByAreaFilter
+          handleSearchChange={handleSearchChange}
+          guidelineNameByArea={guidelineNameByArea}
+        />
+      </div>
       <div>
         {modules.map((module) => (
           <Module
+            guidelineNameByArea={guidelineNameByArea}
             key={module.pk}
             module={module}
             guidelines={getGuidelinesModule(
