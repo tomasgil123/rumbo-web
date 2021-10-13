@@ -11,15 +11,16 @@ interface props {
   auditProgram: AuditProgram
 }
 const AreaCard = ({ area, survey, auditProgram }: props): JSX.Element => {
+
   const {
     areaPoints,
     isAreaApproved,
     areaPercentage,
     numberRequiredGuidelines,
     modulesApprovedStatus,
-
     requiredGuidelinesApprovedStatus,
   } = useAreaCalculations(survey as SurveyActive, auditProgram as AuditProgram, area.pk)
+
 
   return (
     <div className="flex flex-col rounded shadow-lg p-4 mt-4 bg-white">

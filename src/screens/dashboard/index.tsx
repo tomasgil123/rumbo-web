@@ -57,7 +57,7 @@ const Dashboard = (): JSX.Element => {
     auditProgram as AuditProgram,
     essentialAreaPk
   )
-
+  console.log('auditprogram', auditProgram)
   if (isLoading || isLoadingDistributor)
     return (
       <div className="mt-8 md:mt-16 mx-auto px-4">
